@@ -40,4 +40,12 @@ public class Token {
                 break;
         }
     }
+
+    public boolean isLambda() {
+        return (type == Options.LAMBDA);
+    }
+
+    public boolean isVar() {
+        return (type == Options.VAR);
+    }
 }
