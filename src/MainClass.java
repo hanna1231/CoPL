@@ -2,15 +2,15 @@ import java.util.Scanner;
 
 public class MainClass {
 
-    public static boolean leesIn(String invoer, Parser parser) {
+    public static boolean leesIn(String invoer, Parser parser) { // Reads the whole expression token by token in 
         boolean isVar = false;
         String var = "";
         
-        for(int i = 0; i < invoer.length(); i++) {
-            System.out.println("leesIn: " + invoer.charAt(i));
-            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')') {
-                if(isVar) {
-                    Token nieuwVarToken = new Token(var);
+        for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
+            System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')') { // Check if the character is a lambda, paropen or parclose
+                if(isVar) { // Check for variables 
+                    Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
                 }
                 Token nieuw  = new Token(invoer.substring(i, i + 1));
@@ -28,6 +28,7 @@ public class MainClass {
                     Token nieuwVarToken = new Token(var);
                     parser.addToken(nieuwVarToken);
                 }
+                isVar = false;
             }
 
             else {
@@ -47,17 +48,17 @@ public class MainClass {
         
     }
     
-    public static int main(String[] args) {
-        Parser parser = new Parser();
+    public static void main(String[] args) {
+        Parser parser = new Parser(); // We initialize a new object parser
         System.out.println("Please enter a string:");
 
-        Scanner sc = new Scanner(System.in);
-        String string = sc.nextLine();
-        leesIn(string, parser);
+        Scanner sc = new Scanner(System.in); // We initialize a new scanner
+        String string = sc.nextLine(); // We read the input of the user
+        leesIn(string, parser); 
         parser.parse();
         sc.close();
         System.out.println(string);
-        return 0;
+        //return 0;
     }
     
 }
