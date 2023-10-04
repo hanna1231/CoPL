@@ -47,7 +47,7 @@ public class MainClass {
         
     }
     
-    public static void main(String[] args) {
+    public static int main(String[] args) {
         Parser parser = new Parser();
         System.out.println("Please enter a string:");
 
@@ -57,7 +57,7 @@ public class MainClass {
         parser.parse();
         sc.close();
         System.out.println(string);
-        
+        return 0;
     }
     
 }
