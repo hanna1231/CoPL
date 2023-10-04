@@ -60,7 +60,7 @@ public class MainClass {
         leesIn(string, parser);
         exitStatus = parser.parse();
         sc.close();
-        System.out.println(string);
+        System.out.println(exitStatus);
 
         if(exitStatus) {
             System.exit(0);

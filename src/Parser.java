@@ -33,7 +33,7 @@ public class Parser {
         System.out.print("Output: ");
         for (Token token : tokenList) {
             System.out.print(token.value);
-            if(token.isVar()) {
+            if(token.isVar() && !(iterator == tokenList.size() || tokenList.get(iterator).isParClose())) {
                 System.out.print(" ");
             }
         }
@@ -78,6 +78,11 @@ public class Parser {
             tokenList.add(iterator, openingToken); // Add parantheses for ambiguity
             if(next() && next() && tokenList.get(iterator).isVar()) {
                 System.out.println("var (" + tokenList.get(iterator).value + ")");
+                if(!next()) {
+                    System.out.println("Missing expression after lambda");
+                    error = true;
+                    return;
+                }
                 lexpr();
                 if(error) {
                     return;
@@ -98,6 +103,12 @@ public class Parser {
 
     private void pexpr() {
         System.out.println("pexpr");
+        if(tokenList.size() == iterator) {
+            System.out.println("Not a complete expression");
+            error = true;
+            return;
+        }
+
         if(tokenList.get(iterator).isParOpen()) {
             openPars++;
             if(!next()) {
@@ -119,8 +130,8 @@ public class Parser {
         }
 
         else if(tokenList.get(iterator).isVar()) {
-            iterator++;
             System.out.println("var (" + tokenList.get(iterator).value + ")");
+            iterator++;
         }
     
         else if(tokenList.get(iterator).isParClose()){

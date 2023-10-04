@@ -15,8 +15,8 @@ In Java moet de main functie een void functie zijn omdat die anders niet de main
 
 ## To do variabelen mogen niet met een letter beginnen
 
-## To do iets met preference
-Nu wordt bij lambda gewoon nieuwe haakjes toegevoegd. Kijken hoe je kan voorkomen dat je niet teveel haakjes hebt.
+## To do iets met preference - Hanna mee bezig
+Nu wordt bij lambda gewoon nieuwe haakjes toegevoegd. Kijken hoe je kan voorkomen dat je niet teveel haakjes hebt. Ook wordt printen nu niet goed gedaan want ik wilde zoveel mogelijk spaties printen
 
 ### Meerdere expressies kunnen inlezen
 
