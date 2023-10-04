@@ -13,18 +13,18 @@ public class MainClass {
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
                 }
-                Token nieuw  = new Token(invoer.substring(i, i + 1));
+                Token nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
                 parser.addToken(nieuw);
-                isVar = false;
-                var = "";
+                isVar = false; // Reset the variable
+                var = ""; // Make variable empty again
             }
 
-            else if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) || (invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) || (invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z')) {
+            else if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) || (invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) || (invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z')) { //If number or letter
                 isVar = true;
-                var = var.concat(invoer.substring(i, i + 1));
+                var = var.concat(invoer.substring(i, i + 1)); // Add the number or letter to variable
             }
 
-            else if(invoer.charAt(i) == ' ') {
+            else if(invoer.charAt(i) == ' ') {// if space add variable to tokenlist
                 if(isVar) {
                     Token nieuwVarToken = new Token(var);
                     parser.addToken(nieuwVarToken);
@@ -33,10 +33,9 @@ public class MainClass {
                 var = "";
             }
 
-            else {
+            else { // Fault has occured
                 System.out.println("Dit werkt niet loser");
                 return false;
-                
             }
 
         }
