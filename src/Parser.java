@@ -30,9 +30,14 @@ public class Parser {
     }
 
     public void printList() {
+        System.out.print("Output: ");
         for (Token token : tokenList) {
-        System.out.println(token.value);
+            System.out.print(token.value);
+            if(token.isVar()) {
+                System.out.print(" ");
+            }
         }
+        System.out.print("\n");
     }
 
     public boolean parse() {
@@ -43,7 +48,11 @@ public class Parser {
         iterator = 0;
         openPars = 0;
         expr();
-        return (!error && openPars == 0);
+        if(!error && openPars == 0) {
+            printList();
+            return true;
+        }
+        return false;
     }
 
     private void expr1() {
@@ -64,9 +73,17 @@ public class Parser {
     private void lexpr() {
         System.out.println("lexpr");
         if(tokenList.get(iterator).isLambda()) {
-            if(next() && tokenList.get(iterator).isVar()) {
+            Token openingToken = new Token("(");
+            tokenList.add(iterator, openingToken); // Add parantheses for ambiguity
+            if(next() && next() && tokenList.get(iterator).isVar()) {
                 System.out.println("var");
                 lexpr();
+                if(error) {
+                    return;
+                }
+                Token closingToken = new Token(")");
+                tokenList.add(iterator, closingToken);
+                
             } 
             else {
                 error = true;

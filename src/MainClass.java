@@ -47,17 +47,25 @@ public class MainClass {
         
     }
     
-    public static int main(String[] args) {
+    public static void main(String[] args) {
         Parser parser = new Parser();
         System.out.println("Please enter a string:");
+        boolean exitStatus = false;
 
         Scanner sc = new Scanner(System.in);
         String string = sc.nextLine();
         leesIn(string, parser);
-        parser.parse();
+        exitStatus = parser.parse();
         sc.close();
         System.out.println(string);
-        return 0;
+
+        if(exitStatus) {
+            System.exit(0);
+        }
+
+        else {
+            System.exit(1);
+        }
     }
     
 }
