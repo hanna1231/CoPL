@@ -1,6 +1,6 @@
 # CoPL
 
-This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (???) and Domen (????)
+This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (???) and Domen van Soest (s2962632)
 
 ## To do uitleg over hoe te compilen en uitzoeken hoe dat via de command line kan
 
