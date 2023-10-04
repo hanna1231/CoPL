@@ -16,6 +16,7 @@ public class MainClass {
                 Token nieuw  = new Token(invoer.substring(i, i + 1));
                 parser.addToken(nieuw);
                 isVar = false;
+                var = "";
             }
 
             else if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) || (invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) || (invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z')) {
@@ -28,6 +29,8 @@ public class MainClass {
                     Token nieuwVarToken = new Token(var);
                     parser.addToken(nieuwVarToken);
                 }
+                isVar = false;
+                var = "";
             }
 
             else {

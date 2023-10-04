@@ -41,6 +41,7 @@ public class Parser {
     }
 
     public boolean parse() {
+        printList();
         if(tokenList.isEmpty()) {
             System.out.println("Expression is empty");
             return false;
@@ -76,7 +77,7 @@ public class Parser {
             Token openingToken = new Token("(");
             tokenList.add(iterator, openingToken); // Add parantheses for ambiguity
             if(next() && next() && tokenList.get(iterator).isVar()) {
-                System.out.println("var");
+                System.out.println("var (" + tokenList.get(iterator).value + ")");
                 lexpr();
                 if(error) {
                     return;
@@ -119,7 +120,7 @@ public class Parser {
 
         else if(tokenList.get(iterator).isVar()) {
             iterator++;
-            System.out.println("var");
+            System.out.println("var (" + tokenList.get(iterator).value + ")");
         }
     
         else if(tokenList.get(iterator).isParClose()){
