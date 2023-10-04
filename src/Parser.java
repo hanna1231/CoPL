@@ -9,6 +9,16 @@ public class Parser {
 
     private boolean error; // To show whether there's an error in the recursion
 
+    private boolean next() {
+        if(iterator+1 < tokenList.size()) {
+            iterator++;
+            System.out.println("Next is true");
+            return true;
+        }
+            System.out.println("Next is false");
+        return false;
+    }
+
     public Parser() {
         iterator = 0;
         openPars = 0;
@@ -27,6 +37,7 @@ public class Parser {
 
     public boolean parse() {
         if(tokenList.isEmpty()) {
+            System.out.println("Expression is empty");
             return false;
         }
         iterator = 0;
@@ -36,22 +47,30 @@ public class Parser {
     }
 
     private void expr1() {
-        if(iterator == tokenList.size()-1 || tokenList.get(iterator).isParClose()){
+        System.out.println("expr1");
+        System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
+        if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
+            System.out.println("Nested expression finished");
             return;
         }
+        System.out.println("Continuing in expr1");
         lexpr();
+        if(error) {
+            return;
+        }
         expr1();
     }
 
     private void lexpr() {
+        System.out.println("lexpr");
         if(tokenList.get(iterator).isLambda()) {
-            iterator++;
-            if(tokenList.get(iterator).isVar()) {
-                iterator++;
+            if(next() && tokenList.get(iterator).isVar()) {
+                System.out.println("var");
                 lexpr();
             } 
             else {
                 error = true;
+                System.out.println("(missing variable after lambda)");
             }
         }   
         else {
@@ -60,33 +79,44 @@ public class Parser {
     }
 
     private void pexpr() {
+        System.out.println("pexpr");
         if(tokenList.get(iterator).isParOpen()) {
             openPars++;
-            iterator++;
+            if(!next()) {
+                return;
+            }
             expr();
             if(error) {
                 return;
             } // There's an error in the code we don't continue
             if(tokenList.get(iterator).isParClose()) {
                 openPars--;
-                iterator++;
-                
-                
+                iterator++;                
             }
 
             else {
                 error = true;
+                System.out.println("Missing closing Parantesis");
             }
         }
 
         else if(tokenList.get(iterator).isVar()) {
-            iterator++;  
+            iterator++;
+            System.out.println("var");
+        }
+    
+        else if(tokenList.get(iterator).isParClose()){
+            System.out.println("(missing expression after opening parenthesis)");
+            error = true;
         }
     }
-
-
+    
     private void expr() {
+        System.out.println("expr");
         lexpr();
+        if(error) {
+            return;
+        } // Don't continue after an error
         expr1();
     }
 }

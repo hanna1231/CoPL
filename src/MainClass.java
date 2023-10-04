@@ -8,10 +8,10 @@ public class MainClass {
         
         for(int i = 0; i < invoer.length(); i++) {
             System.out.println("leesIn: " + invoer.charAt(i));
-            if(invoer.charAt(i) == ' ' || invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')') {
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')') {
                 if(isVar) {
                     Token nieuwVarToken = new Token(var);
-                    parser.addToken(nieuwVarToken);
+                    parser.addToken(nieuwVarToken); 
                 }
                 Token nieuw  = new Token(invoer.substring(i, i + 1));
                 parser.addToken(nieuw);
@@ -21,6 +21,13 @@ public class MainClass {
             else if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) || (invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) || (invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z')) {
                 isVar = true;
                 var = var.concat(invoer.substring(i, i + 1));
+            }
+
+            else if(invoer.charAt(i) == ' ') {
+                if(isVar) {
+                    Token nieuwVarToken = new Token(var);
+                    parser.addToken(nieuwVarToken);
+                }
             }
 
             else {
@@ -47,6 +54,7 @@ public class MainClass {
         Scanner sc = new Scanner(System.in);
         String string = sc.nextLine();
         leesIn(string, parser);
+        parser.parse();
         sc.close();
         System.out.println(string);
         

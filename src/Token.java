@@ -4,7 +4,6 @@ public class Token {
         PARCLOSE,
         LAMBDA,
         VAR,
-        SPACE,
         DOT  // MISSCHIEN DEZE WEGHALEN
     }
 
@@ -13,11 +12,6 @@ public class Token {
 
     public Token(String newValue) {
         switch(newValue) {
-            case " ":
-                type = Options.SPACE;
-                this.value = newValue;
-                System.out.println("Token constructor space: " + this.value);
-                break;
             case "(":
                 type = Options.PAROPEN;
                 this.value = newValue;
@@ -48,4 +42,17 @@ public class Token {
     public boolean isVar() {
         return (type == Options.VAR);
     }
+
+    public boolean isParClose() {
+        return (type == Options.PARCLOSE);
+    }
+
+    public boolean isParOpen() {
+        return (type == Options.PAROPEN);
+    }
+
+    // public boolean isDot() {
+    //     return (type == Options.DOT);
+    // }
+    
 }
