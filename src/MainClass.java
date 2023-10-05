@@ -56,8 +56,10 @@ public class MainClass {
 
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
         String string = sc.nextLine(); // We read the input of the user
-        leesIn(string, parser);
-        exitStatus = parser.parse();
+        if(leesIn(string, parser)) {
+            exitStatus = parser.parse();
+        }
+
         sc.close();
         System.out.println(exitStatus);
 

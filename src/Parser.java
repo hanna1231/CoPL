@@ -7,6 +7,8 @@ public class Parser {
 
     private int openPars;
 
+    private boolean twoParantheses;
+
     private boolean error; // To show whether there's an error in the recursion
 
     private boolean next() {
@@ -23,6 +25,7 @@ public class Parser {
         iterator = 0;
         openPars = 0;
         error = false;
+        twoParantheses = false;
     }
 
     public void addToken(Token nieuwToken) {
@@ -31,11 +34,11 @@ public class Parser {
 
     public void printList() {
         System.out.print("Output: ");
-        for (Token token : tokenList) {
-            System.out.print(token.value);
-            if(token.isVar() && !(iterator == tokenList.size() || tokenList.get(iterator).isParClose())) {
+        for (int i = 0; i < tokenList.size(); i++) {
+            System.out.print(tokenList.get(i).value);
+            if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
                 System.out.print(" ");
-            }
+            } // Only print a whitespace whenever there's no closing parantheses following or it isn't the end of line
         }
         System.out.print("\n");
     }
@@ -118,7 +121,7 @@ public class Parser {
             if(error) {
                 return;
             } // There's an error in the code we don't continue
-            if(tokenList.get(iterator).isParClose()) {
+            if(iterator != tokenList.size() && tokenList.get(iterator).isParClose()) {
                 openPars--;
                 iterator++;                
             }
