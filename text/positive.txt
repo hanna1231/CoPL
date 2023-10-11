@@ -7,3 +7,4 @@ a (b c)
 
 \x x
 a
+(\x a) b
