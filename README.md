@@ -4,7 +4,25 @@ This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (???) and
 
 ## To do uitleg over hoe te compilen en uitzoeken hoe dat via de command line kan
 
+For ubuntu on how to download java:
+sudo apt-get update.
+sudo apt install default-jdk.
+java -version.
+update-alternatives --config java.
+sudo nano /etc/environment.
+source /etc/environment.
+
+Als het nog niet werkt, voeg dan dit toe:
+sudo apt-get update -y
+sudo apt-get install -y openjdk-11-jdk-headless
+
+
+Compilen: javac MainClass.javac
+Runnen: java Mainclass
+
 ## To do uitleg over of het programma helemaal werkt
+
+
 
 ## To do uitleg over hoe het programma werkt
 Ons programma werkt als volgt:
