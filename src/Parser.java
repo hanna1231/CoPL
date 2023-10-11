@@ -53,6 +53,7 @@ public class Parser {
         openPars = 0;
         expr();
         if(iterator < tokenList.size()) {
+            System.out.println("iterator: " + tokenList.get(iterator).value);
             System.out.println("(Expression isn't valid)");
             return false;
         } // When the expression isn't finished but the parser is
@@ -96,6 +97,7 @@ public class Parser {
                 }
                 Token closingToken = new Token(")");
                 tokenList.add(iterator, closingToken);
+                iterator++;
                 
             } 
             else {
