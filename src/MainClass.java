@@ -20,6 +20,10 @@ public class MainClass {
             }
 
             else if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) || (invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) || (invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z')) { //If number or letter
+               if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) && !isVar) { // If number and not variable
+                    System.out.println("Syntax error: number first character of variable");
+                    return false;
+                }
                 isVar = true;
                 var = var.concat(invoer.substring(i, i + 1)); // Add the number or letter to variable
             }
