@@ -55,7 +55,7 @@ public class Parser {
         if(iterator < tokenList.size()) {
             System.out.println("(Expression isn't valid)");
             return false;
-        }
+        } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
             printList();
             return true;
