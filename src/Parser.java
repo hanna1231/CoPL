@@ -52,6 +52,10 @@ public class Parser {
         iterator = 0;
         openPars = 0;
         expr();
+        if(iterator < tokenList.size()) {
+            System.out.println("(Expression isn't valid)");
+            return false;
+        }
         if(!error && openPars == 0) {
             printList();
             return true;
@@ -128,7 +132,7 @@ public class Parser {
 
             else {
                 error = true;
-                System.out.println("Missing closing Parantesis");
+                System.out.println("Missing closing paranteses");
             }
         }
 
