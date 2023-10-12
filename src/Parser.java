@@ -1,13 +1,12 @@
 import java.util.ArrayList;
 
 public class Parser {
+
     private ArrayList<Token> tokenList = new ArrayList<Token>();
 
     private int iterator;
 
     private int openPars;
-
-    private boolean twoParantheses;
 
     private boolean error; // To show whether there's an error in the recursion
 
@@ -25,7 +24,6 @@ public class Parser {
         iterator = 0;
         openPars = 0;
         error = false;
-        twoParantheses = false;
     }
 
     public void addToken(Token nieuwToken) {
