@@ -41,6 +41,30 @@ Nu wordt bij lambda gewoon nieuwe haakjes toegevoegd. Kijken hoe je kan voorkome
 
 Application associates to the left
 
+## Code voor het inlezen van een file inplaats vanuit de terminal
+
+        String input = "";               //The input read from the file        
+        try {
+            FileReader filereader 
+                = new FileReader(string);     //initialize a new filereader
+
+
+            int i;
+            while((i=filereader.read()) != -1) {    //making of the input
+                input = input + (char)i;
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+
+        if(leesIn(input, parser)) {
+            exitStatus = parser.parse();
+        }
+
+
+import java.io.*;
+
 ### Meerdere expressies kunnen inlezen
 
 ### Ook lambda anders kunnen inlezen

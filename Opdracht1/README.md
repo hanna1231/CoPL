@@ -6,18 +6,14 @@ This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (???) and
 
 For ubuntu on how to download java:
 sudo apt-get update.
-sudo apt install default-jdk.
-java -version.
-update-alternatives --config java.
-sudo nano /etc/environment.
-source /etc/environment.
+sudo apt install default-jdk
 
 Als het nog niet werkt, voeg dan dit toe:
 sudo apt-get update -y
 sudo apt-get install -y openjdk-11-jdk-headless
 
-
-Compilen: javac MainClass.javac
+Zorg dat je in de src map zit
+Compilen: javac MainClass.java
 Runnen: java Mainclass
 
 ## To do uitleg over of het programma helemaal werkt

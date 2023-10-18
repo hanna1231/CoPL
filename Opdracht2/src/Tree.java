@@ -28,7 +28,7 @@ public class Tree {
         return (findGap(node.rightChild, gapNode));
     }
 
-    // Adds a node (newnode) to the left or right child of a parent node (gapNode)
+    // Adds a node (newNode) to the left or right child of a parent node (gapNode)
     public boolean addNode(Node newNode, Node gapNode) {
         if(gapNode == null) {
             root = newNode;
@@ -45,6 +45,35 @@ public class Tree {
             }
             else {
                 return false;
+            }
+        }
+    }
+
+    // Prints the tree with parameter node as root
+    public void printTree(Node node) {
+        if(node != null) {
+            if(node.getTokenValue() == "@") {
+                System.out.print("(");
+            }
+
+            else {
+                System.out.print(node.getTokenValue());
+            }
+
+            printTree(node.leftChild);
+
+            if(node.getTokenValue() == "@") {
+                System.out.print(" ");
+            }
+
+            else if(node.getTokenValue() == "\\") {
+                System.out.print("(");
+            }
+
+            printTree(node.rightChild);
+
+            if(node.getTokenValue() == "@" || node.getTokenValue() == "\\") {
+                System.out.print(")");
             }
         }
     }

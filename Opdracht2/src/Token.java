@@ -9,7 +9,7 @@ public class Token { // All possible options for tokens
     }
 
     Options type;
-    String value;
+    private String value;
 
     public Token(String newValue) { // Check what character the token is
         switch(newValue) {
@@ -28,7 +28,7 @@ public class Token { // All possible options for tokens
                 this.value = newValue;
                 System.out.println("Token constructor lambda: " + this.value);
                 break;
-            case "*":
+            case "@":
                 type = Options.APPLY;
                 this.value = newValue;
                 System.out.println("Token constructor apply: " + this.value);
@@ -60,6 +60,10 @@ public class Token { // All possible options for tokens
 
     public boolean isApply() {
         return (type == Options.APPLY);
+    }
+
+    public String getValue() {
+        return value;
     }
 
     // public boolean isDot() {

@@ -10,4 +10,8 @@ public class Node {
         rightChild = null;
         this.token = token;
     }
+
+    public String getTokenValue() {
+        return this.token.getValue();
+    }
 }

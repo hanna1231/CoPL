@@ -35,7 +35,7 @@ public class Parser {
     public void printList() {
         System.out.print("Output: ");
         for (int i = 0; i < tokenList.size(); i++) {
-            System.out.print(tokenList.get(i).value);
+            System.out.print(tokenList.get(i).getValue());
             if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
                 System.out.print(" ");
             } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
@@ -53,12 +53,14 @@ public class Parser {
         openPars = 0;
         expr();
         if(iterator < tokenList.size()) { 
-            System.out.println("iterator: " + tokenList.get(iterator).value);
+            System.out.println("iterator: " + tokenList.get(iterator).getValue());
             System.out.println("(Expression isn't valid)");
             return false;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
             printList();
+            System.out.print("Output tree: ");
+            tree.printTree(tree.getRoot());
             return true;
         }
         return false;
@@ -84,8 +86,17 @@ public class Parser {
         if(tokenList.get(iterator).isLambda()) {
             Token openingToken = new Token("(");
             tokenList.add(iterator, openingToken); // Add parentheses for ambiguity
-            if(next() && next() && tokenList.get(iterator).isVar()) { // Jump to variable
-                System.out.println("var (" + tokenList.get(iterator).value + ")");
+
+            // Add lamda to tree
+            next(); // Move iterator to lambda
+            Node gapNode = tree.getRoot();
+            Node newNode = new Node(tokenList.get(iterator));
+            if(tree.findGap(tree.getRoot(), gapNode)) {
+                tree.addNode(newNode, gapNode);
+            }
+
+            if(next() && tokenList.get(iterator).isVar()) { // Jump to variable
+                System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
                 if(!next()) { // If no expression --> error
                     System.out.println("Missing expression after lambda");
                     error = true;
@@ -104,6 +115,7 @@ public class Parser {
                 error = true;
                 System.out.println("(missing variable after lambda)");
             }
+
         }   
         else {
             pexpr();
@@ -139,12 +151,12 @@ public class Parser {
         }
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
-            Node gapNode;
+            Node gapNode = tree.getRoot();
             Node newNode = new Node(tokenList.get(iterator));
             if(tree.findGap(tree.getRoot(), gapNode)) {
                 tree.addNode(newNode, gapNode);
             }
-            System.out.println("var (" + tokenList.get(iterator).value + ")");
+            System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
             iterator++;
         }
     
