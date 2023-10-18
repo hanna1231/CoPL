@@ -52,10 +52,6 @@ public class Token { // All possible options for tokens
         return (type == Options.PAROPEN);
     }
 
-    public boolean isApply() {
-        return (type == Options.APPLY);
-    }
-
     // public boolean isDot() {
     //     return (type == Options.DOT);
     // }
