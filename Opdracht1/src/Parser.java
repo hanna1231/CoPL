@@ -2,8 +2,6 @@ import java.util.ArrayList;
 
 public class Parser {
 
-    private Tree tree; // Create a new abstract syntax tree
-
     private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
 
     private int iterator; // Iterator which iterates over the expression
@@ -139,11 +137,6 @@ public class Parser {
         }
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
-            Node gapNode;
-            Node newNode = new Node(tokenList.get(iterator));
-            if(tree.findGap(tree.getRoot(), gapNode)) {
-                tree.addNode(newNode, gapNode);
-            }
             System.out.println("var (" + tokenList.get(iterator).value + ")");
             iterator++;
         }

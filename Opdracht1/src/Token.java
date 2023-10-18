@@ -4,7 +4,6 @@ public class Token { // All possible options for tokens
         PARCLOSE,
         LAMBDA,
         VAR,
-        APPLY,
         DOT  // MISSCHIEN DEZE WEGHALEN
     }
 
@@ -27,11 +26,6 @@ public class Token { // All possible options for tokens
                 type = Options.LAMBDA;
                 this.value = newValue;
                 System.out.println("Token constructor lambda: " + this.value);
-                break;
-            case "*":
-                type = Options.APPLY;
-                this.value = newValue;
-                System.out.println("Token constructor apply: " + this.value);
                 break;
             default:
                 type = Options.VAR;
