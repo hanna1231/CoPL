@@ -1,16 +1,17 @@
-public class Token {
+public class Token { // All possible options for tokens
     enum Options {
         PAROPEN,
         PARCLOSE,
         LAMBDA,
         VAR,
+        APPLY,
         DOT  // MISSCHIEN DEZE WEGHALEN
     }
 
     Options type;
     String value;
 
-    public Token(String newValue) {
+    public Token(String newValue) { // Check what character the token is
         switch(newValue) {
             case "(":
                 type = Options.PAROPEN;
@@ -27,6 +28,11 @@ public class Token {
                 this.value = newValue;
                 System.out.println("Token constructor lambda: " + this.value);
                 break;
+            case "*":
+                type = Options.APPLY;
+                this.value = newValue;
+                System.out.println("Token constructor apply: " + this.value);
+                break;
             default:
                 type = Options.VAR;
                 this.value = newValue;
@@ -35,6 +41,7 @@ public class Token {
         }
     }
 
+    // Check the type of a character 
     public boolean isLambda() {
         return (type == Options.LAMBDA);
     }
@@ -49,6 +56,10 @@ public class Token {
 
     public boolean isParOpen() {
         return (type == Options.PAROPEN);
+    }
+
+    public boolean isApply() {
+        return (type == Options.APPLY);
     }
 
     // public boolean isDot() {

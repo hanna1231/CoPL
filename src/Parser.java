@@ -2,11 +2,13 @@ import java.util.ArrayList;
 
 public class Parser {
 
-    private ArrayList<Token> tokenList = new ArrayList<Token>();
+    private Tree tree; // Create a new abstract syntax tree
 
-    private int iterator;
+    private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
 
-    private int openPars;
+    private int iterator; // Iterator which iterates over the expression
+
+    private int openPars; // Check how many open parenthesis there are
 
     private boolean error; // To show whether there's an error in the recursion
 
@@ -36,21 +38,21 @@ public class Parser {
             System.out.print(tokenList.get(i).value);
             if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
                 System.out.print(" ");
-            } // Only print a whitespace whenever there's no closing parantheses following or it isn't the end of line
+            } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
         }
         System.out.print("\n");
     }
 
     public boolean parse() {
         printList();
-        if(tokenList.isEmpty()) {
+        if(tokenList.isEmpty()) { // Nothing in expression
             System.out.println("Expression is empty");
             return false;
         }
         iterator = 0;
         openPars = 0;
         expr();
-        if(iterator < tokenList.size()) {
+        if(iterator < tokenList.size()) { 
             System.out.println("iterator: " + tokenList.get(iterator).value);
             System.out.println("(Expression isn't valid)");
             return false;
@@ -62,7 +64,7 @@ public class Parser {
         return false;
     }
 
-    private void expr1() {
+    private void expr1() { // <expr1> ::= <lexpr><expr1> | e
         System.out.println("expr1");
         System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
         if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
@@ -77,14 +79,14 @@ public class Parser {
         expr1();
     }
 
-    private void lexpr() {
+    private void lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
         System.out.println("lexpr");
         if(tokenList.get(iterator).isLambda()) {
             Token openingToken = new Token("(");
-            tokenList.add(iterator, openingToken); // Add parantheses for ambiguity
-            if(next() && next() && tokenList.get(iterator).isVar()) {
+            tokenList.add(iterator, openingToken); // Add parentheses for ambiguity
+            if(next() && next() && tokenList.get(iterator).isVar()) { // Jump to variable
                 System.out.println("var (" + tokenList.get(iterator).value + ")");
-                if(!next()) {
+                if(!next()) { // If no expression --> error
                     System.out.println("Missing expression after lambda");
                     error = true;
                     return;
@@ -93,7 +95,7 @@ public class Parser {
                 if(error) {
                     return;
                 }
-                Token closingToken = new Token(")");
+                Token closingToken = new Token(")"); // Add parentheses for ambiguity
                 tokenList.add(iterator, closingToken);
                 iterator++;
                 
@@ -108,15 +110,15 @@ public class Parser {
         }
     }
 
-    private void pexpr() {
+    private void pexpr() { // <pexpr> ::= <var> | (<expr>)
         System.out.println("pexpr");
         if(tokenList.size() == iterator) {
             System.out.println("Not a complete expression");
             error = true;
             return;
-        }
+        } // If expression stop here it is not a complete one
 
-        if(tokenList.get(iterator).isParOpen()) {
+        if(tokenList.get(iterator).isParOpen()) { // <pexpr> --> (<expr>)
             openPars++;
             if(!next()) {
                 return;
@@ -125,29 +127,34 @@ public class Parser {
             if(error) {
                 return;
             } // There's an error in the code we don't continue
-            if(iterator != tokenList.size() && tokenList.get(iterator).isParClose()) {
+            if(iterator != tokenList.size() && tokenList.get(iterator).isParClose()) { // Check for closing parenthesis
                 openPars--;
                 iterator++;                
             }
 
-            else {
+            else { // Error if there is no closing parenthesis
                 error = true;
-                System.out.println("Missing closing paranteses");
+                System.out.println("Missing closing parenteses");
             }
         }
 
-        else if(tokenList.get(iterator).isVar()) {
+        else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
+            Node gapNode;
+            Node newNode = new Node(tokenList.get(iterator));
+            if(tree.findGap(tree.getRoot(), gapNode)) {
+                tree.addNode(newNode, gapNode);
+            }
             System.out.println("var (" + tokenList.get(iterator).value + ")");
             iterator++;
         }
     
-        else if(tokenList.get(iterator).isParClose()){
+        else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
             System.out.println("(missing expression after opening parenthesis)");
             error = true;
         }
     }
     
-    private void expr() {
+    private void expr() { // <expr> ::= <lexpr><expr1>
         System.out.println("expr");
         lexpr();
         if(error) {

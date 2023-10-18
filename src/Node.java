@@ -5,8 +5,9 @@ public class Node {
 
     public Token token;
 
-    public Node() {
+    public Node(Token token) {
         leftChild = null;
         rightChild = null;
+        this.token = token;
     }
 }

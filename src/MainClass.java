@@ -64,10 +64,10 @@ public class MainClass {
             exitStatus = parser.parse();
         }
 
-        sc.close();
+        sc.close(); // We close the scanner
         System.out.println(exitStatus);
 
-        if(exitStatus) {
+        if(exitStatus) { // Print the exit status
             System.exit(0);
         }
 
