@@ -1,31 +1,38 @@
-public class Tree {
+public class BinaryTree {
     private Node root;
 
-    public Tree() {
-        root = null;
+    public BinaryTree() {
+        // root = null;
     }
 
     public Node getRoot() {
         return root;
     }
+    
+    public boolean findGap(Node newNode) {
+        System.out.println("hoi");
+        return findGap(root, newNode);
+    }
+
 
     // Returns a node which still has availability for children
-    public boolean findGap(Node node, Node gapNode) {
+    private boolean findGap(Node node, Node newNode) {
+        System.out.println("hoi");
         if(node == null) {
-            gapNode = node;
+            addNode(newNode, node);
             return true;
         }
 
-        if(findGap(node.leftChild, gapNode)) {
+        if(findGap(node.leftChild, newNode)) {
             return true;
         }
 
         if((node.token.isLambda() || node.token.isApply()) && (node.leftChild == null || node.rightChild == null)) {
-            gapNode = node;
+            addNode(newNode, node);
             return true;
         }
 
-        return (findGap(node.rightChild, gapNode));
+        return (findGap(node.rightChild, newNode));
     }
 
     // Adds a node (newNode) to the left or right child of a parent node (gapNode)

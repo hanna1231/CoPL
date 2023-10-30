@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Parser {
 
-    private Tree tree; // Create a new abstract syntax tree
+    private BinaryTree tree; // Create a new abstract syntax tree
 
     private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
 
@@ -89,11 +89,11 @@ public class Parser {
 
             // Add lamda to tree
             next(); // Move iterator to lambda
-            Node gapNode = tree.getRoot();
-            Node newNode = new Node(tokenList.get(iterator));
-            if(tree.findGap(tree.getRoot(), gapNode)) {
-                tree.addNode(newNode, gapNode);
-            }
+            // Node gapNode = null;
+            // Node newNode = new Node(tokenList.get(iterator));
+            // if(tree.findGap(tree.getRoot(), gapNode)) {
+            //     tree.addNode(newNode, gapNode);
+            // } NOG AANPASSEN
 
             if(next() && tokenList.get(iterator).isVar()) { // Jump to variable
                 System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
@@ -151,10 +151,12 @@ public class Parser {
         }
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
-            Node gapNode = tree.getRoot();
+            System.out.println("tot hier");
             Node newNode = new Node(tokenList.get(iterator));
-            if(tree.findGap(tree.getRoot(), gapNode)) {
-                tree.addNode(newNode, gapNode);
+            System.out.println("tot hier2");
+            System.out.println(newNode.getTokenValue());
+            if(!tree.findGap(newNode)) {
+                System.out.println("Node can't be added to tree");
             }
             System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
             iterator++;
