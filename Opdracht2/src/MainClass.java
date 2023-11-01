@@ -65,7 +65,7 @@ public class MainClass {
         }
 
         sc.close(); // We close the scanner
-        System.out.println(exitStatus);
+        System.out.println("\n" + exitStatus);
 
         if(exitStatus) { // Print the exit status
             System.exit(0);

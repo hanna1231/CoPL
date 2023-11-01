@@ -2,58 +2,56 @@ public class BinaryTree {
     private Node root;
 
     public BinaryTree() {
-        // root = null;
+        root = null;
     }
 
     public Node getRoot() {
         return root;
     }
-    
-    public boolean findGap(Node newNode) {
-        System.out.println("hoi");
-        return findGap(root, newNode);
-    }
 
-
-    // Returns a node which still has availability for children
-    private boolean findGap(Node node, Node newNode) {
-        System.out.println("hoi");
+    // Returns if there is node which still has availability for 
+    // and stores that in gapNode
+    private boolean findGap(Node node, Node gapNode) {
         if(node == null) {
-            addNode(newNode, node);
-            return true;
+            return false;
         }
 
-        if(findGap(node.leftChild, newNode)) {
+        if(findGap(node.leftChild, gapNode)) {
             return true;
         }
 
         if((node.token.isLambda() || node.token.isApply()) && (node.leftChild == null || node.rightChild == null)) {
-            addNode(newNode, node);
+            gapNode = node;
+            System.out.println("changed");
             return true;
         }
 
-        return (findGap(node.rightChild, newNode));
+        if(findGap(node.rightChild, gapNode)) {
+            return true;
+        }
+
+        return false;
     }
 
     // Adds a node (newNode) to the left or right child of a parent node (gapNode)
-    public boolean addNode(Node newNode, Node gapNode) {
-        if(gapNode == null) {
+    public boolean addNode(Node newNode) {
+        if(root == null) {
             root = newNode;
             return true;
         }
-        else {
+
+        Node gapNode = null;
+        if(findGap(root, gapNode)) {
+            System.out.println(gapNode == null);
             if(gapNode.leftChild == null) {
                 gapNode.leftChild = newNode;
-                return true;
-            }
-            else if(gapNode.rightChild == null) {
-                gapNode.rightChild = newNode;
-                return true;
             }
             else {
-                return false;
+                gapNode.rightChild = newNode;
             }
+            return true;
         }
+        return false;
     }
 
     // Prints the tree with parameter node as root
