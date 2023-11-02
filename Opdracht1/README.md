@@ -18,7 +18,9 @@ Runnen: java Mainclass
 
 ## To do uitleg over of het programma helemaal werkt
 
+## TO DO BIJ ABSTRACTIE IETS UIT DE BOOM HALEN
 
+## gapnode een membervariabele van binary tree maken, UITLEGGEN WAAROM
 
 ## To do uitleg over hoe het programma werkt
 Ons programma werkt als volgt:
