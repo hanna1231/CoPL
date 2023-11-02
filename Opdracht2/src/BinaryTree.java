@@ -1,8 +1,10 @@
 public class BinaryTree {
     private Node root;
+    private Node gapNode; // Stores the parent of a node which still has room for children
 
     public BinaryTree() {
         root = null;
+        gapNode = null;
     }
 
     public Node getRoot() {
@@ -11,22 +13,23 @@ public class BinaryTree {
 
     // Returns if there is node which still has availability for 
     // and stores that in gapNode
-    private boolean findGap(Node node, Node gapNode) {
+    private boolean findGap(Node node) {
         if(node == null) {
             return false;
         }
 
-        if(findGap(node.leftChild, gapNode)) {
+        if(findGap(node.leftChild)) {
             return true;
         }
 
         if((node.token.isLambda() || node.token.isApply()) && (node.leftChild == null || node.rightChild == null)) {
             gapNode = node;
+            System.out.println(gapNode == null);
             System.out.println("changed");
             return true;
         }
 
-        if(findGap(node.rightChild, gapNode)) {
+        if(findGap(node.rightChild)) {
             return true;
         }
 
@@ -39,9 +42,9 @@ public class BinaryTree {
             root = newNode;
             return true;
         }
-
-        Node gapNode = null;
-        if(findGap(root, gapNode)) {
+        
+        gapNode = null;
+        if(findGap(root)) {
             System.out.println(gapNode == null);
             if(gapNode.leftChild == null) {
                 gapNode.leftChild = newNode;
@@ -71,13 +74,13 @@ public class BinaryTree {
                 System.out.print(" ");
             }
 
-            else if(node.getTokenValue() == "\\") {
+            else if(node.getTokenValue().equals("\\")) {
                 System.out.print("(");
             }
 
             printTree(node.rightChild);
 
-            if(node.getTokenValue() == "@" || node.getTokenValue() == "\\") {
+            if(node.getTokenValue().equals("@") || node.getTokenValue().equals("\\")) {
                 System.out.print(")");
             }
         }

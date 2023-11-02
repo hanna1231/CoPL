@@ -81,6 +81,18 @@ public class Parser {
         expr1();
     }
 
+    // Creates a new node for tree with a token where iterator is pointing to in
+    // tokenList and adds it to the tree
+    private boolean addNode() {
+        Node newNode = new Node(tokenList.get(iterator));
+        if(!tree.addNode(newNode)) {
+            System.out.println("Node can't be added to tree");
+            return false;
+        }
+
+        return true;
+    }
+
     private void lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
         System.out.println("lexpr");
         if(tokenList.get(iterator).isLambda()) {
@@ -89,16 +101,14 @@ public class Parser {
 
             // Add lamda to tree
             next(); // Move iterator to lambda
-            Node newNode = new Node(tokenList.get(iterator));
-            if(!tree.addNode(newNode)) {
-                System.out.println("Node can't be added to tree");
-            }
+            addNode();
             System.out.print("Output tree: ");
             tree.printTree(tree.getRoot());
             System.out.print("\n");
 
             if(next() && tokenList.get(iterator).isVar()) { // Jump to variable
                 System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
+                addNode();
                 if(!next()) { // If no expression --> error
                     System.out.println("Missing expression after lambda");
                     error = true;
@@ -154,10 +164,7 @@ public class Parser {
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
             System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
-            Node newNode = new Node(tokenList.get(iterator));
-            if(!tree.addNode(newNode)) {
-                System.out.println("Node can't be added to tree");
-            }
+            addNode(); // Add var to tree
             iterator++;
         }
     
