@@ -81,10 +81,19 @@ public class Parser {
         expr1();
     }
 
-    // Creates a new node for tree with a token where iterator is pointing to in
-    // tokenList and adds it to the tree
-    private boolean addNode() {
-        Node newNode = new Node(tokenList.get(iterator));
+    // Creates a new node for tree and adds it to the tree. If fromList is true
+    // the node will have a token where iterator is pointing to in tokenList. If
+    // fromList is false an application token is used
+    private boolean addNode(boolean fromList) {
+        Node newNode;
+        if(fromList) {
+            newNode = new Node(tokenList.get(iterator));
+        }
+        else {
+            Token newToken = new Token("@");
+            newNode = new Node(newToken);
+        }
+
         if(!tree.addNode(newNode)) {
             System.out.println("Node can't be added to tree");
             return false;
@@ -101,14 +110,14 @@ public class Parser {
 
             // Add lamda to tree
             next(); // Move iterator to lambda
-            addNode();
+            addNode(false);
             System.out.print("Output tree: ");
             tree.printTree(tree.getRoot());
             System.out.print("\n");
 
             if(next() && tokenList.get(iterator).isVar()) { // Jump to variable
                 System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
-                addNode();
+                addNode(false);
                 if(!next()) { // If no expression --> error
                     System.out.println("Missing expression after lambda");
                     error = true;
@@ -164,7 +173,7 @@ public class Parser {
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
             System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
-            addNode(); // Add var to tree
+            addNode(false); // Add var to tree
             iterator++;
         }
     
@@ -176,6 +185,7 @@ public class Parser {
     
     private void expr() { // <expr> ::= <lexpr><expr1>
         System.out.println("expr");
+        addNode(true);
         lexpr();
         if(error) {
             return;

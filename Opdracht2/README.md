@@ -22,6 +22,16 @@ Runnen: java Mainclass
 
 ## To do uitleg over of het programma helemaal werkt
 
+## TO DO bedenken wat er gebeurd als addNode false returned
+
+## TO DO abstractie
+
+## gapnode een membervariabele van binary tree maken, UITLEGGEN WAAROM
+
+## TO DO makefile maken en opdracht structuur aanpassen
+
+## TO DO reduction
+
 
 
 ## To do uitleg over hoe het programma werkt
