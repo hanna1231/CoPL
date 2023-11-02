@@ -54,26 +54,36 @@ public class MainClass {
     }
     
     public static void main(String[] args) {
+       
+      // Make it so that the user can input multiple expressions
         Parser parser = new Parser(); // We initialize a new object parser
         System.out.println("Please enter a string:");
         boolean exitStatus = false;
-
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
         String string = sc.nextLine(); // We read the input of the user
-        if(leesIn(string, parser)) {
-            exitStatus = parser.parse();
+        
+        while(!string.equals("exit")){
+         if(leesIn(string, parser)) {
+               exitStatus = parser.parse();
+         }
+         System.out.println("\n" + exitStatus);
+
+         // if(exitStatus) { // Print the exit status
+         //       System.exit(0);
+         // }
+
+         if(!exitStatus) {
+            System.exit(1);
+         }
+
+         parser = new Parser(); // We initialize a new object parser
+         System.out.println("Please enter a string:");
+         //exitStatus = false;
+         sc = new Scanner(System.in); // We initialize a new scanner
+         string = sc.nextLine(); // We read the input of the user
         }
 
         sc.close(); // We close the scanner
-        System.out.println("\n" + exitStatus);
-
-        if(exitStatus) { // Print the exit status
-            System.exit(0);
-        }
-
-        else {
-            System.exit(1);
-        }
     }
     
 }
