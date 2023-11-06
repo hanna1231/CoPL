@@ -16,12 +16,6 @@ Zorg dat je in de src map zit
 Compilen: javac MainClass.java
 Runnen: java Mainclass
 
-## To do uitleg over of het programma helemaal werkt
-
-## TO DO BIJ ABSTRACTIE IETS UIT DE BOOM HALEN
-
-## gapnode een membervariabele van binary tree maken, UITLEGGEN WAAROM
-
 ## To do uitleg over hoe het programma werkt
 Ons programma werkt als volgt:
 We beginnen met het maken van een object parser, deze moet ervoor gaan zorgen dat de expressie later correct wordt geparsed. Hierna wordt de expressie ingelezen, deze expressie wordt in de variabele string gezet en vervolgens wordt string, karakter per karakter, geanalyseerd in de functie leesIn. Als er zich een fout optreedt bij het tokenizen van alle karakters, wordt de leesIn functie false en blijft de exitstatus false. Als het tokenizen goed is gegaan, staan alle tokens in de vector TokenList in de class parser. Vanuit deze vector wordt de ingevoerde expressie parsen met de LL grammar die wij hebben gekregen. Om te checken of de expressie voldoet aan de LL grammar, wordt de expressie vervolgens recursief gecheckt. Als er een fout optreedt bij deze stap wordt er een specifieke error message verstuurd en stopt de recursie. Als alles is goedgegaan, wat inhoud geen errors en de haakjes die kloppen, wordt er bij de parse functie true gereturned, anders false. De waarde van parser.parse wordt dan de waarde van exitStatus, en met een kleine ifstatement checken we dan of de expressie klopt of dat er een fout in zit.

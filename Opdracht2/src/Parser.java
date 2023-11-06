@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Parser {
 
     private BinaryTree tree = new BinaryTree(); // Create a new abstract syntax tree
+    
+    private Stack<Node> stack = new Stack<Node>();
 
     private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
 
@@ -74,6 +77,7 @@ public class Parser {
             return;
         }
         System.out.println("Continuing in expr1");
+        Node leftChild = stack.pop();
         lexpr();
         if(error) {
             return;
@@ -175,7 +179,16 @@ public class Parser {
     }
     
     private void expr() { // <expr> ::= <lexpr><expr1>
+        Node newNode;
         System.out.println("expr");
+        if(tree.getRoot() == null) {
+            newNode = null;
+        }
+        else {
+            tree.findGap(tree.getRoot());
+            newNode = tree.getGapNode();
+        }
+        stack.push(newNode);
         lexpr();
         if(error) {
             return;

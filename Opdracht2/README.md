@@ -1,6 +1,6 @@
 # CoPL
 
-This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (???) and Domen van Soest (s2962632)
+This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (s2984113) and Domen van Soest (s2962632)
 
 ## To do uitleg over hoe te compilen en uitzoeken hoe dat via de command line kan
 
@@ -20,7 +20,12 @@ sudo apt-get install -y openjdk-11-jdk-headless
 Compilen: javac MainClass.javac
 Runnen: java Mainclass
 
+
 ## To do uitleg over of het programma helemaal werkt
+
+## TO DO BIJ ABSTRACTIE IETS UIT DE BOOM HALEN
+
+## gapnode een membervariabele van binary tree maken, UITLEGGEN WAAROM
 
 
 

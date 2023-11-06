@@ -11,9 +11,13 @@ public class BinaryTree {
         return root;
     }
 
+    public Node getGapNode() {
+        return gapNode;
+    }
+
     // Returns if there is node which still has availability for 
     // and stores that in gapNode
-    private boolean findGap(Node node) {
+    public boolean findGap(Node node) {
         if(node == null) {
             return false;
         }
@@ -55,6 +59,12 @@ public class BinaryTree {
             return true;
         }
         return false;
+    }
+
+    public void addAbstraction(Node leftchild) {
+        Token abToken = new Token("@");
+        Node abNode = new Node(abToken);
+        Node temp = leftchild;
     }
 
     // Prints the tree with parameter node as root
