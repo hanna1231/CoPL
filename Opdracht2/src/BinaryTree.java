@@ -95,5 +95,18 @@ public class BinaryTree {
             }
         }
     }
+
+    // When there's no reference to objects in the tree Java will delete the objects
+    // automatically with the garbage collector
+    public void clearTree() {
+        root = null;
+        gapNode = null;
+    }
+
+    public BinaryTree mergeTree(BinaryTree addTree) {
+        t
+        findGap(
+
+    }
 }
 

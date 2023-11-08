@@ -1,11 +1,8 @@
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class Parser {
 
     private BinaryTree tree = new BinaryTree(); // Create a new abstract syntax tree
-    
-    private Stack<Node> stack = new Stack<Node>();
 
     private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
 
@@ -77,7 +74,6 @@ public class Parser {
             return;
         }
         System.out.println("Continuing in expr1");
-        Node leftChild = stack.pop();
         lexpr();
         if(error) {
             return;
@@ -95,9 +91,10 @@ public class Parser {
         }
 
         return true;
-    }
+    } // DEZE NOG WEGHALEN LATER
 
-    private void lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
+    private BinaryTree lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
+        BinaryTree lexprTree = new BinaryTree();
         System.out.println("lexpr");
         if(tokenList.get(iterator).isLambda()) {
             Token openingToken = new Token("(");
@@ -105,22 +102,39 @@ public class Parser {
 
             // Add lamda to tree
             next(); // Move iterator to lambda
-            addNode();
+            Node lambdaNode = new Node(tokenList.get(iterator));
+            if(!lexprTree.addNode(lambdaNode)) {
+                System.out.println("Node can't be added to tree");
+                error = true;
+                lexprTree.clearTree();
+                return lexprTree;
+            }
             System.out.print("Output tree: ");
             tree.printTree(tree.getRoot());
             System.out.print("\n");
 
             if(next() && tokenList.get(iterator).isVar()) { // Jump to variable
                 System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
-                addNode();
+
+                // Add var to tree
+                Node varNode = new Node(tokenList.get(iterator));
+                if(!lexprTree.addNode(varNode)) {
+                    System.out.println("Node can't be added to tree");
+                    error = true;
+                    lexprTree.clearTree();
+                    return lexprTree;
+                }
+
                 if(!next()) { // If no expression --> error
                     System.out.println("Missing expression after lambda");
                     error = true;
-                    return;
+                    lexprTree.clearTree();
+                    return lexprTree;
                 }
                 lexpr();
                 if(error) {
-                    return;
+                    lexprTree.clearTree();
+                    return lexprTree;
                 }
                 Token closingToken = new Token(")"); // Add parentheses for ambiguity
                 tokenList.add(iterator, closingToken);
@@ -136,6 +150,7 @@ public class Parser {
         else {
             pexpr();
         }
+        return lexprTree;
     }
 
     private void pexpr() { // <pexpr> ::= <var> | (<expr>)
@@ -188,7 +203,6 @@ public class Parser {
             tree.findGap(tree.getRoot());
             newNode = tree.getGapNode();
         }
-        stack.push(newNode);
         lexpr();
         if(error) {
             return;
