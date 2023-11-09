@@ -1,12 +1,13 @@
 public class BinaryTree {
     private Node root;
     private Node gapNode; // Stores the parent of a node which still has room for children
+    
 
     public BinaryTree() {
         root = null;
         gapNode = null;
     }
-
+    
     public Node getRoot() {
         return root;
     }
@@ -61,10 +62,23 @@ public class BinaryTree {
         return false;
     }
 
-    public void addAbstraction(Node leftchild) {
-        Token abToken = new Token("@");
-        Node abNode = new Node(abToken);
-        Node temp = leftchild;
+    public boolean addApplication() {
+        Token apToken = new Token("@");
+        Node apNode = new Node(apToken);
+        
+        if(this.root == null) {
+            this.root = apNode;
+        }
+        else if(!findGap(this.root)) {
+            return false;
+        }
+        else if(gapNode.leftChild == null) {
+            gapNode.leftChild = apNode;
+        }
+        else {
+            gapNode.rightChild = apNode;
+        }
+        return true;
     }
 
     // Prints the tree with parameter node as root
@@ -103,10 +117,21 @@ public class BinaryTree {
         gapNode = null;
     }
 
-    public BinaryTree mergeTree(BinaryTree addTree) {
-        t
-        findGap(
+    public boolean mergeTree(BinaryTree addTree) {
+        if(this.root == null) {
+            this.root = addTree.getRoot();
+        }
+        else if(!findGap(this.root)) {
+            return false;
+        }
+        else if(gapNode.leftChild == null) {
+            gapNode.leftChild = addTree.getRoot();
+        }
+        else {
+            gapNode.rightChild = addTree.getRoot();
+        }
 
+        return true;
     }
 }
 

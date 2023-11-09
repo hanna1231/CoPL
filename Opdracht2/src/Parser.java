@@ -81,18 +81,6 @@ public class Parser {
         expr1();
     }
 
-    // Creates a new node for tree with a token where iterator is pointing to in
-    // tokenList and adds it to the tree
-    private boolean addNode() {
-        Node newNode = new Node(tokenList.get(iterator));
-        if(!tree.addNode(newNode)) {
-            System.out.println("Node can't be added to tree");
-            return false;
-        }
-
-        return true;
-    } // DEZE NOG WEGHALEN LATER
-
     private BinaryTree lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
         BinaryTree lexprTree = new BinaryTree();
         System.out.println("lexpr");
@@ -131,11 +119,12 @@ public class Parser {
                     lexprTree.clearTree();
                     return lexprTree;
                 }
-                lexpr();
+                BinaryTree rightChild = lexpr();
                 if(error) {
                     lexprTree.clearTree();
                     return lexprTree;
                 }
+                lexprTree.mergeTree(rightChild); // Add rightChild to the tree
                 Token closingToken = new Token(")"); // Add parentheses for ambiguity
                 tokenList.add(iterator, closingToken);
                 iterator++;
@@ -153,57 +142,67 @@ public class Parser {
         return lexprTree;
     }
 
-    private void pexpr() { // <pexpr> ::= <var> | (<expr>)
+    private BinaryTree pexpr() { // <pexpr> ::= <var> | (<expr>)
+        BinaryTree pexprTree = new BinaryTree();
         System.out.println("pexpr");
+
         if(tokenList.size() == iterator) {
             System.out.println("Not a complete expression");
             error = true;
-            return;
+            pexprTree.clearTree();
+            return pexprTree;
         } // If expression stop here it is not a complete one
 
         if(tokenList.get(iterator).isParOpen()) { // <pexpr> --> (<expr>)
             openPars++;
             if(!next()) {
-                return;
+                pexprTree.clearTree();
+                return pexprTree;
             }
-            expr();
+            BinaryTree child = expr();
             if(error) {
-                return;
-            } // There's an error in the code we don't continue
+                pexprTree.clearTree();
+                return pexprTree;
+            } // There's an error in the code we do n't continue
             if(iterator != tokenList.size() && tokenList.get(iterator).isParClose()) { // Check for closing parenthesis
                 openPars--;
-                iterator++;                
+                iterator++;
+                pexprTree.mergeTree(child);               
             }
-
             else { // Error if there is no closing parenthesis
                 error = true;
                 System.out.println("Missing closing parenteses");
+                pexprTree.clearTree();
             }
         }
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
             System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
-            addNode(); // Add var to tree
+            Node varNode = new Node(tokenList.get(iterator));
+            if(!pexprTree.addNode(varNode)) {
+                System.out.println("Node can't be added to tree");
+                error = true;
+                pexprTree.clearTree();
+                return pexprTree;
+            }
             iterator++;
         }
     
         else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
             System.out.println("(missing expression after opening parenthesis)");
             error = true;
+            pexprTree.clearTree();
+
         }
+        return pexprTree;
     }
     
-    private void expr() { // <expr> ::= <lexpr><expr1>
-        Node newNode;
+    private BinaryTree expr() { // <expr> ::= <lexpr><expr1>
+        BinaryTree exprTree = new BinaryTree();
         System.out.println("expr");
-        if(tree.getRoot() == null) {
-            newNode = null;
-        }
-        else {
-            tree.findGap(tree.getRoot());
-            newNode = tree.getGapNode();
-        }
-        lexpr();
+        
+        BinaryTree leftChild = lexpr();
+        exprTree.mergeTree(leftChild);
         if(error) {
             return;
         } // Don't continue after an error
