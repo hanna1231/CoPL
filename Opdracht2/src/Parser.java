@@ -43,6 +43,17 @@ public class Parser {
         System.out.print("\n");
     }
 
+    // Returns true when (nested) expression is finished, otherwise false
+    public boolean isFinished() {
+        System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
+        if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
+            System.out.println("Nested expression finished");
+            return true;
+        }
+        
+        return false;
+    }
+
     public boolean parse() {
         printList();
         if(tokenList.isEmpty()) { // Nothing in expression
@@ -51,7 +62,7 @@ public class Parser {
         }
         iterator = 0;
         openPars = 0;
-        expr();
+        tree = expr();
         if(iterator < tokenList.size()) { 
             System.out.println("iterator: " + tokenList.get(iterator).getValue());
             System.out.println("(Expression isn't valid)");
@@ -66,19 +77,38 @@ public class Parser {
         return false;
     }
 
-    private void expr1() { // <expr1> ::= <lexpr><expr1> | e
+    private BinaryTree expr1() { // <expr1> ::= <lexpr><expr1> | e
         System.out.println("expr1");
+        BinaryTree expr1Tree =  new BinaryTree();
         System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
-        if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
-            System.out.println("Nested expression finished");
-            return;
+        if(isFinished()){
+            return expr1Tree;
         }
         System.out.println("Continuing in expr1");
-        lexpr();
+        BinaryTree leftChild = lexpr();
+            System.out.println("leftChild");
+            leftChild.printTree(leftChild.getRoot());
+    
         if(error) {
-            return;
+            return expr1Tree;
         }
-        expr1();
+
+        if(!isFinished()) {
+            if(!expr1Tree.addApplication() || !expr1Tree.mergeTree(leftChild)) {
+                error = true;
+                expr1Tree.clearTree();
+                return expr1Tree;
+            } // If application and/or merging of leftChild with expr1Tree didn't work
+            BinaryTree rightChild = expr1();
+            expr1Tree.mergeTree(rightChild);
+        }
+        else {
+            expr1Tree.mergeTree(leftChild);
+        }
+            System.out.println("expr1tree");
+            expr1Tree.printTree(expr1Tree.getRoot());
+
+        return expr1Tree;
     }
 
     private BinaryTree lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
@@ -137,7 +167,10 @@ public class Parser {
 
         }   
         else {
-            pexpr();
+            lexprTree = pexpr();
+            System.out.println("lexprTree");
+            lexprTree.printTree(lexprTree.getRoot());
+            
         }
         return lexprTree;
     }
@@ -177,8 +210,9 @@ public class Parser {
         }
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
-            System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
+            System.out.println("var (" + tokenList.get(iterator).getValue() + "), iterator: " + iterator);
             Node varNode = new Node(tokenList.get(iterator));
+            System.out.println(varNode.getTokenValue());
             if(!pexprTree.addNode(varNode)) {
                 System.out.println("Node can't be added to tree");
                 error = true;
@@ -186,6 +220,8 @@ public class Parser {
                 return pexprTree;
             }
             iterator++;
+            System.out.println("pexprTree");
+            pexprTree.printTree(pexprTree.getRoot());
         }
     
         else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
@@ -202,10 +238,26 @@ public class Parser {
         System.out.println("expr");
         
         BinaryTree leftChild = lexpr();
-        exprTree.mergeTree(leftChild);
         if(error) {
-            return;
+            return exprTree;
         } // Don't continue after an error
-        expr1();
+
+        if(!isFinished()) {
+            if(!exprTree.addApplication() || !exprTree.mergeTree(leftChild)) {
+                System.out.println("hallo");
+                error = true;
+                exprTree.clearTree();
+                return exprTree;
+            }
+            BinaryTree rightChild = expr1();
+            System.out.println("rechterkind");
+        rightChild.printTree(rightChild.getRoot());
+            exprTree.mergeTree(rightChild);
+            exprTree.printTree(exprTree.getRoot());
+        }
+        else {
+            exprTree.mergeTree(leftChild);
+        }
+        return exprTree;
     }
 }

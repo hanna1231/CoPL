@@ -65,6 +65,7 @@ public class BinaryTree {
     public boolean addApplication() {
         Token apToken = new Token("@");
         Node apNode = new Node(apToken);
+        System.out.println("addApplication");
         
         if(this.root == null) {
             this.root = apNode;
@@ -118,16 +119,22 @@ public class BinaryTree {
     }
 
     public boolean mergeTree(BinaryTree addTree) {
+        System.out.println("HET IS HIER HANNA!");
+        addTree.printTree(addTree.getRoot());
         if(this.root == null) {
+            System.out.println("ROOT");
             this.root = addTree.getRoot();
         }
         else if(!findGap(this.root)) {
+            System.out.println("FOUT");
             return false;
         }
         else if(gapNode.leftChild == null) {
+            System.out.println("LINKS");
             gapNode.leftChild = addTree.getRoot();
         }
         else {
+            System.out.println("RECHTS");
             gapNode.rightChild = addTree.getRoot();
         }
 
