@@ -12,6 +12,10 @@ public class BinaryTree {
         return root;
     }
 
+    public void setRoot(Node newNode) {
+        root = newNode;
+    }
+
     public Node getGapNode() {
         return gapNode;
     }

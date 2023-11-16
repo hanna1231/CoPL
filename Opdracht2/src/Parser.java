@@ -11,7 +11,7 @@ public class Parser {
     private int openPars; // Check how many open parenthesis there are
 
     private boolean error; // To show whether there's an error in the recursion
-
+;;;;ppp;;'p;[[PP]]'
     private boolean next() {
         if(iterator+1 < tokenList.size()) {
             iterator++;
@@ -62,7 +62,8 @@ public class Parser {
         }
         iterator = 0;
         openPars = 0;
-        tree = expr();
+        Node emptyNode = null;
+        tree = expr(emptyNode);
         if(iterator < tokenList.size()) { 
             System.out.println("iterator: " + tokenList.get(iterator).getValue());
             System.out.println("(Expression isn't valid)");
@@ -77,31 +78,28 @@ public class Parser {
         return false;
     }
 
-    private BinaryTree expr1() { // <expr1> ::= <lexpr><expr1> | e
+    private BinaryTree expr1(Node leftChild) { // <expr1> ::= <lexpr><expr1> | e
         System.out.println("expr1");
         BinaryTree expr1Tree =  new BinaryTree();
+        expr1Tree.setRoot(leftChild);
         System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
         if(isFinished()){
             return expr1Tree;
         }
         System.out.println("Continuing in expr1");
-        expr1Tree = lexpr();
+        BinaryTree lexpTree = lexpr();
     
         if(error) {
             return expr1Tree;
         }
 
+        expr1Tree.addApplication();
+        expr1Tree.addNodeApp(lexpTree.getRoot());
+
         if(!isFinished()) {
-            if(!expr1Tree.addApplication()) {
-                error = true;
-                expr1Tree.clearTree();
-                return expr1Tree;
-            } // If application and/or merging of leftChild with expr1Tree didn't work
-            BinaryTree rightChild = expr1();
-            expr1Tree.addNodeApp(rightChild.getRoot());
+            BinaryTree rightChild = expr1(expr1Tree.getRoot());
+            return rightChild;
         }
-            System.out.println("expr1tree");
-            expr1Tree.printTree(expr1Tree.getRoot());
 
         return expr1Tree;
     }
@@ -229,30 +227,23 @@ public class Parser {
         return pexprTree;
     }
     
-    private BinaryTree expr() { // <expr> ::= <lexpr><expr1>
+    private BinaryTree expr(Node leftChild) { // <expr> ::= <lexpr><expr1>
         BinaryTree exprTree = new BinaryTree();
         System.out.println("expr");
+        exprTree.setRoot(leftChild);
         
-        exprTree = lexpr();
+        BinaryTree lexpTree = lexpr();
         if(error) {
             return exprTree;
         } // Don't continue after an error
+        exprTree.addApplication();
+        exprTree.addNodeApp(lexpTree.getRoot());
 
         if(!isFinished()) {
-            if(!exprTree.addApplication()) {
-                System.out.println("hallo");
-                error = true;
-                exprTree.clearTree();
-                return exprTree;
-            }
-            BinaryTree rightChild = expr1();
+            BinaryTree rightChild = expr1(exprTree.getRoot());
             System.out.println("rightChild");
             rightChild.printTree(rightChild.getRoot());
-            System.out.println("exptree");
-            exprTree.printTree(exprTree.getRoot());
-            System.out.println("\n");
-            exprTree.addNodeApp(rightChild.getRoot());
-            exprTree.printTree(exprTree.getRoot());
+            return rightChild;
         }
         return exprTree;
     }
