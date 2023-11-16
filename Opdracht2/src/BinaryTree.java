@@ -197,5 +197,35 @@ public class BinaryTree {
         return false;
     }
 
+    public void deleteApp() {
+        Node node = this.root;
+        Node parent = node;
+
+        deleteApp(node, parent);
+    }
+
+    // Recursive decent through the tree and deleting all empty leaves
+    private void deleteApp(Node node, Node parent) {
+        if(node == null) {
+            return;
+        }
+
+        if(node.leftChild == null && node.rightChild != null) {
+            if(node == this.root) {
+                this.root = node.rightChild;
+            }
+            else if(parent.leftChild == node) {
+                parent.leftChild = node.rightChild;
+            }
+            else if(parent.rightChild == node) {
+                parent.rightChild = node.rightChild;
+            }
+            return;
+        }
+
+        deleteApp(node.leftChild, node);
+        deleteApp(node.rightChild, node);
+    }
+
 }
 

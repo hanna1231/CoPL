@@ -11,7 +11,7 @@ public class Parser {
     private int openPars; // Check how many open parenthesis there are
 
     private boolean error; // To show whether there's an error in the recursion
-;;;;ppp;;'p;[[PP]]'
+
     private boolean next() {
         if(iterator+1 < tokenList.size()) {
             iterator++;
@@ -71,6 +71,9 @@ public class Parser {
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
             printList();
+            BinaryTree oldTree = tree;
+            tree.deleteApp();
+            System.out.println(oldTree.equals(tree));
             System.out.print("Output tree: ");
             tree.printTree(tree.getRoot());
             return true;
@@ -185,15 +188,15 @@ public class Parser {
                 pexprTree.clearTree();
                 return pexprTree;
             }
-            BinaryTree child = expr();
+            BinaryTree child = expr(pexprTree.getRoot());
             if(error) {
                 pexprTree.clearTree();
                 return pexprTree;
-            } // There's an error in the code we do n't continue
+            } // There's an error in the code we don't continue
             if(iterator != tokenList.size() && tokenList.get(iterator).isParClose()) { // Check for closing parenthesis
                 openPars--;
                 iterator++;
-                pexprTree.mergeTree(child);               
+                return child;         
             }
             else { // Error if there is no closing parenthesis
                 error = true;
@@ -206,8 +209,8 @@ public class Parser {
             System.out.println("var (" + tokenList.get(iterator).getValue() + "), iterator: " + iterator);
             Node varNode = new Node(tokenList.get(iterator));
             System.out.println(varNode.getTokenValue());
-            pexprTree.addApplication();
-            if(!pexprTree.addNodeApp(varNode)) {
+            // pexprTree.addApplication();
+            if(!pexprTree.addNode(varNode)) {
                 System.out.println("Node can't be added to tree");
                 error = true;
                 pexprTree.clearTree();
