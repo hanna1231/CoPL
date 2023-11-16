@@ -85,25 +85,20 @@ public class Parser {
             return expr1Tree;
         }
         System.out.println("Continuing in expr1");
-        BinaryTree leftChild = lexpr();
-            System.out.println("leftChild");
-            leftChild.printTree(leftChild.getRoot());
+        expr1Tree = lexpr();
     
         if(error) {
             return expr1Tree;
         }
 
         if(!isFinished()) {
-            if(!expr1Tree.addApplication() || !expr1Tree.mergeTree(leftChild)) {
+            if(!expr1Tree.addApplication()) {
                 error = true;
                 expr1Tree.clearTree();
                 return expr1Tree;
             } // If application and/or merging of leftChild with expr1Tree didn't work
             BinaryTree rightChild = expr1();
-            expr1Tree.mergeTree(rightChild);
-        }
-        else {
-            expr1Tree.mergeTree(leftChild);
+            expr1Tree.addNodeApp(rightChild.getRoot());
         }
             System.out.println("expr1tree");
             expr1Tree.printTree(expr1Tree.getRoot());
@@ -121,7 +116,7 @@ public class Parser {
             // Add lamda to tree
             next(); // Move iterator to lambda
             Node lambdaNode = new Node(tokenList.get(iterator));
-            if(!lexprTree.addNode(lambdaNode)) {
+            if(!lexprTree.addNodeApp(lambdaNode)) {
                 System.out.println("Node can't be added to tree");
                 error = true;
                 lexprTree.clearTree();
@@ -136,7 +131,7 @@ public class Parser {
 
                 // Add var to tree
                 Node varNode = new Node(tokenList.get(iterator));
-                if(!lexprTree.addNode(varNode)) {
+                if(!lexprTree.addNodeLeft(varNode)) {
                     System.out.println("Node can't be added to tree");
                     error = true;
                     lexprTree.clearTree();
@@ -154,7 +149,7 @@ public class Parser {
                     lexprTree.clearTree();
                     return lexprTree;
                 }
-                lexprTree.mergeTree(rightChild); // Add rightChild to the tree
+                lexprTree.addNodeApp(rightChild.getRoot()); // Add rightChild to the tree
                 Token closingToken = new Token(")"); // Add parentheses for ambiguity
                 tokenList.add(iterator, closingToken);
                 iterator++;
@@ -213,7 +208,8 @@ public class Parser {
             System.out.println("var (" + tokenList.get(iterator).getValue() + "), iterator: " + iterator);
             Node varNode = new Node(tokenList.get(iterator));
             System.out.println(varNode.getTokenValue());
-            if(!pexprTree.addNode(varNode)) {
+            pexprTree.addApplication();
+            if(!pexprTree.addNodeApp(varNode)) {
                 System.out.println("Node can't be added to tree");
                 error = true;
                 pexprTree.clearTree();
@@ -237,26 +233,26 @@ public class Parser {
         BinaryTree exprTree = new BinaryTree();
         System.out.println("expr");
         
-        BinaryTree leftChild = lexpr();
+        exprTree = lexpr();
         if(error) {
             return exprTree;
         } // Don't continue after an error
 
         if(!isFinished()) {
-            if(!exprTree.addApplication() || !exprTree.mergeTree(leftChild)) {
+            if(!exprTree.addApplication()) {
                 System.out.println("hallo");
                 error = true;
                 exprTree.clearTree();
                 return exprTree;
             }
             BinaryTree rightChild = expr1();
-            System.out.println("rechterkind");
-        rightChild.printTree(rightChild.getRoot());
-            exprTree.mergeTree(rightChild);
+            System.out.println("rightChild");
+            rightChild.printTree(rightChild.getRoot());
+            System.out.println("exptree");
             exprTree.printTree(exprTree.getRoot());
-        }
-        else {
-            exprTree.mergeTree(leftChild);
+            System.out.println("\n");
+            exprTree.addNodeApp(rightChild.getRoot());
+            exprTree.printTree(exprTree.getRoot());
         }
         return exprTree;
     }

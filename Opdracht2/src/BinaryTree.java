@@ -41,6 +41,30 @@ public class BinaryTree {
         return false;
     }
 
+    public boolean addNodeApp(Node newNode) {
+        if(root == null) {
+            root = newNode;
+            return true;
+        }
+        else if(root.rightChild == null) {
+            root.rightChild = newNode;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addNodeLeft(Node newNode) {
+        if(root == null) {
+            root = newNode;
+            return true;
+        }
+        else if(root.leftChild == null) {
+            root.leftChild = newNode;
+            return true;
+        }
+        return false;
+    }
+
     // Adds a node (newNode) to the left or right child of a parent node (gapNode)
     public boolean addNode(Node newNode) {
         if(root == null) {
@@ -66,19 +90,12 @@ public class BinaryTree {
         Token apToken = new Token("@");
         Node apNode = new Node(apToken);
         System.out.println("addApplication");
-        
-        if(this.root == null) {
-            this.root = apNode;
+
+        // Application becomes the root of the tree
+        if(this.root != null) {
+            apNode.leftChild = this.root;
         }
-        else if(!findGap(this.root)) {
-            return false;
-        }
-        else if(gapNode.leftChild == null) {
-            gapNode.leftChild = apNode;
-        }
-        else {
-            gapNode.rightChild = apNode;
-        }
+        this.root = apNode;
         return true;
     }
 
@@ -140,5 +157,41 @@ public class BinaryTree {
 
         return true;
     }
+    // Finds the parent of the parent of the gapNode
+    public boolean findDeleteGap(Node node, Node childNode) {
+        if(node == null) {
+            return false;
+        }
+
+        if(findGap(node.leftChild)) {
+            return true;
+        }
+        
+        if(node.leftChild == childNode) {
+            gapNode = node;
+            System.out.println("gapNode is nu parent");
+            return true;
+        }
+
+        if(findGap(node.rightChild)) {
+            return true;
+        }
+
+        return false;
+
+    }
+    
+    //Deletes the parent of the gapnode to trim the tree 
+    public boolean deleteGap() {
+        if(findGap(this.root)) {
+            Node deleteNode = gapNode;
+            if(findDeleteGap(this.root, gapNode)) {
+                gapNode.leftChild = deleteNode.rightChild;
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
