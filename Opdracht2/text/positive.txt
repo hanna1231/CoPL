@@ -3,8 +3,9 @@ abc
 a b c
 a (b c)
 (\ x a b)
-(\x((a) (b)))
+(\x((a) (b))) - nog niet goed
 
 \x x
 a
-(\x a) b
+(\x a) b - nog niet goed
+x (\y z) a
