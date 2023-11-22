@@ -72,6 +72,9 @@ public class Parser {
         if(!error && openPars == 0) {
             printList();
             BinaryTree oldTree = tree;
+            System.out.print("Old tree: ");
+            tree.printTree(tree.getRoot());
+
             tree.deleteApp();
             System.out.println(oldTree.equals(tree));
             System.out.print("Output tree: ");

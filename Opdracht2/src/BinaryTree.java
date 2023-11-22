@@ -210,6 +210,10 @@ public class BinaryTree {
             return;
         }
 
+        deleteApp(node.leftChild, node);
+        deleteApp(node.rightChild, node);
+
+        System.out.println("deleteApp" + node.getTokenValue());
         if(node.leftChild == null && node.rightChild != null) {
             if(node == this.root) {
                 this.root = node.rightChild;
@@ -222,9 +226,6 @@ public class BinaryTree {
             }
             return;
         }
-
-        deleteApp(node.leftChild, node);
-        deleteApp(node.rightChild, node);
     }
 
 }
