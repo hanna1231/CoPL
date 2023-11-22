@@ -62,28 +62,20 @@ public class MainClass {
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
         String string = sc.nextLine(); // We read the input of the user
         
-        while(!string.equals("exit")){
-         if(leesIn(string, parser)) {
-               exitStatus = parser.parse();
-         }
-         System.out.println("\n" + exitStatus);
-
-         // if(exitStatus) { // Print the exit status
-         //       System.exit(0);
-         // }
-
-         if(!exitStatus) {
-            System.exit(1);
+        if(leesIn(string, parser)) {
+         exitStatus = parser.parse();
          }
 
-         parser = new Parser(); // We initialize a new object parser
-         System.out.println("Please enter a string:");
-         //exitStatus = false;
-         sc = new Scanner(System.in); // We initialize a new scanner
-         string = sc.nextLine(); // We read the input of the user
-        }
+         sc.close(); // We close the scanner
+          System.out.println(exitStatus);
 
-        sc.close(); // We close the scanner
+         if(exitStatus) { // Print the exit status
+            System.exit(0);
+         }
+
+         else {
+         System.exit(1);
+         }
     }
     
 }
