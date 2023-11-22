@@ -23,13 +23,33 @@ Runnen: java Mainclass
 
 ## To do uitleg over of het programma helemaal werkt
 
-## TO DO bedenken wat er gebeurd als addNode false returned
+The assignment submission must include a README file that documents:
+• The class and group number, and the names of the student(s) who worked on the assignment. (Putting the names of the student(s) in each source file is good practice too.)
+• The compiler version and operating system used by the student(s) if applicable.
+• Whether it is known that the program works correctly, or whether the program has known defects.
+• Whether there are any deviations from the assignment, and reasons why.
 
-## TO DO abstractie
+The README may include an explanation of how the program works, and
+remarks for improving the assignment. Finally, the assignment submission may
+include the following two files:
+• An archive (positive.tar.gz) of the positive examples used for testing.
+• An archive (negative.tar.gz) of the negative examples used for testing.
+
+
+Ons programma werkt als volgt:
+
+Samenvatting opdracht 1:
+We hebben de code van opdracht 1 herbruikt voor deze opdracht. Dit betekent dat we de expressie eerst tokenizen en vervolgens checken we de expressie recursief om te kijken of hij aan alle eisen voldoet.
+
+Wat we hierbij hebben toegevoegd is dat er een abstract syntax tree wordt gemaakt tijdens de recursie. Dit gebeurt als volgt:
+
+Alle functies hebben we ten eerste veranderd van void functies naar Binary tree functies. Dit hebben we gedaan zodat we de boom stapje voor stapje kunnen opbouwen. Dit doen we omdat we de verschillende functies recursief meegeven en deze maken steeds kleine subbomen. De subbomen worden dan zo aan de boom toegevoegd dat het uiteindelijke resultaat left associative is. Als we een fout tegenkomen bij het maken van de boom dan wordt de root van de boom verwijderd en door de garbage collector van java worden alle andere kinderen ook automatisch verwijderd. Als de expressie een valide expressie is, wordt er gekeken of we alpha conversion, beta reduction of beide moeten toepassen. Met alpha conversion wordt er gekeken of variabele niet onderling clashen in verschillende scopes.
+
+
+## TO DO bedenken wat er gebeurd als addNode false returned
 
 ## gapnode een membervariabele van binary tree maken, UITLEGGEN WAAROM
 
-## TO DO makefile maken en opdracht structuur aanpassen
 
 ## TO DO reduction
 

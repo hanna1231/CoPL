@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class BinaryTree {
     private Node root;
     private Node gapNode; // Stores the parent of a node which still has room for children
@@ -19,7 +21,7 @@ public class BinaryTree {
     public Node getGapNode() {
         return gapNode;
     }
-
+    
     // Returns if there is node which still has availability for 
     // and stores that in gapNode
     public boolean findGap(Node node) {
@@ -161,41 +163,6 @@ public class BinaryTree {
 
         return true;
     }
-    // Finds the parent of the parent of the gapNode
-    public boolean findDeleteGap(Node node, Node childNode) {
-        if(node == null) {
-            return false;
-        }
-
-        if(findGap(node.leftChild)) {
-            return true;
-        }
-        
-        if(node.leftChild == childNode) {
-            gapNode = node;
-            System.out.println("gapNode is nu parent");
-            return true;
-        }
-
-        if(findGap(node.rightChild)) {
-            return true;
-        }
-
-        return false;
-
-    }
-    
-    //Deletes the parent of the gapnode to trim the tree 
-    public boolean deleteGap() {
-        if(findGap(this.root)) {
-            Node deleteNode = gapNode;
-            if(findDeleteGap(this.root, gapNode)) {
-                gapNode.leftChild = deleteNode.rightChild;
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void deleteApp() {
         Node node = this.root;
@@ -226,6 +193,63 @@ public class BinaryTree {
             }
             return;
         }
+    }
+
+    public void checkConversion(Node node) {
+        if(node == null || node.leftChild == null) {
+            return;
+        }
+
+        ArrayList<Token> boundVariables = new ArrayList<Token>();
+        ArrayList<Token> freeVarList = findFreeVar(node.rightChild, boundVariables);
+        
+        for(int i = 0; i < freeVarList.size(); i++) {
+            if(isBound(node.leftChild, freeVarList.get(i))) {
+                // TODO alpha conversion
+            }
+        }
+    }
+
+    // Returns true when the token var is bound in the (sub)tree with root "node"
+    public boolean isBound(Node node, Token var) {
+        if(node == null) {
+            return false;
+        }
+        if(node.getTokenValue() == "\\") {
+            if(node.leftChild.getTokenValue() == var.getValue()) {
+                return true;
+            }
+        }
+
+        if(isBound(node.leftChild, var)) {
+            return true;
+        }
+        
+        if(isBound(node.rightChild, var)){
+            return true;   
+        }
+        return false;
+    }
+
+    // Returns all free variables from the (sub)tree node
+    public ArrayList<Token> findFreeVar(Node node, ArrayList<Token> boundVariables) {
+        ArrayList<Token> varList = new ArrayList<Token>();
+        if(node == null) {
+            return varList;
+        }
+        
+        if(node.getTokenValue() == "\\") {
+            boundVariables.add(node.leftChild.token);
+        }
+
+        if(node.token.isVar() && !boundVariables.contains(node.token)) {
+            varList.add(node.token);
+        }
+
+        varList.addAll(findFreeVar(node.leftChild, boundVariables));
+        varList.addAll(findFreeVar(node.rightChild, boundVariables));
+
+        return varList;
     }
 
 }
