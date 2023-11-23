@@ -79,6 +79,14 @@ public class Parser {
             System.out.println(oldTree.equals(tree));
             System.out.print("Output tree: ");
             tree.printTree(tree.getRoot());
+            // ArrayList<String> boundVar = new ArrayList<String>();
+            // ArrayList<String> freeVar = tree.findFreeVar(tree.getRoot(), boundVar);
+            // System.out.println("\nFree variables");
+            // for(int i = 0; i < freeVar.size(); i++) {
+            //     System.out.println(freeVar.get(i));
+            // }
+            tree.findAppLambda(tree.getRoot());
+            tree.printTree(tree.getRoot());
             return true;
         }
         return false;

@@ -69,5 +69,9 @@ public class Token { // All possible options for tokens
     // public boolean isDot() {
     //     return (type == Options.DOT);
     // }
+
+    public void setTokenValue(String newValue) {
+        this.value = newValue;
+    }
     
 }

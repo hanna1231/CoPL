@@ -1,13 +1,17 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class BinaryTree {
     private Node root;
     private Node gapNode; // Stores the parent of a node which still has room for children
-    
+    private int iterator;
+    private int sizeVar;
 
     public BinaryTree() {
         root = null;
         gapNode = null;
+        iterator = 0;
+        sizeVar = 3;
     }
     
     public Node getRoot() {
@@ -108,7 +112,7 @@ public class BinaryTree {
     // Prints the tree with parameter node as root
     public void printTree(Node node) {
         if(node != null) {
-            if(node.getTokenValue() == "@") {
+            if(node.getTokenValue().equals("@")) {
                 System.out.print("(");
             }
 
@@ -118,7 +122,7 @@ public class BinaryTree {
 
             printTree(node.leftChild);
 
-            if(node.getTokenValue() == "@") {
+            if(node.getTokenValue().equals("@")) {
                 System.out.print(" ");
             }
 
@@ -195,28 +199,85 @@ public class BinaryTree {
         }
     }
 
-    public void checkConversion(Node node) {
+    // New variables will be produced. Variables are of the form x*[0-9] where
+    // the number at the end is increased until 9 and then an extra x is added in front
+    public String newVar() {
+        String newString = "";
+        for(int i = 0; i < sizeVar; i++) {
+            newString += "x";
+        }
+        newString += iterator;
+
+        if(iterator == 9) {
+            iterator = 0;
+            sizeVar++;
+        }
+        else {
+            iterator++;
+        }
+
+        return newString;  
+    }
+
+
+    //function that looks for application node with leftchild lambda, returns true when found
+    public void findAppLambda (Node node) {
         if(node == null || node.leftChild == null) {
             return;
         }
+                                        //TODO
+        findAppLambda(node.leftChild);
+        findAppLambda(node.rightChild);
 
-        ArrayList<Token> boundVariables = new ArrayList<Token>();
-        ArrayList<Token> freeVarList = findFreeVar(node.rightChild, boundVariables);
-        
-        for(int i = 0; i < freeVarList.size(); i++) {
-            if(isBound(node.leftChild, freeVarList.get(i))) {
-                // TODO alpha conversion
-            }
+        if(node.getTokenValue().equals("@") && node.leftChild.getTokenValue().equals("\\") ) {
+            System.out.println("hoi");
+            checkConversion(node);
         }
     }
 
+    // Returns false whenever
+    public boolean checkConversion(Node node) {
+        if(node == null || node.leftChild == null) {
+            return true;
+        }
+
+        ArrayList<String> boundVariables = new ArrayList<String>();
+        ArrayList<String> freeVarList = findFreeVar(node.rightChild, boundVariables);
+        System.out.println("\nFree variables of N");
+        for(int i = 0; i < freeVarList.size(); i++) {
+            System.out.println(freeVarList.get(i));
+        }
+        
+        for(int i = 0; i < freeVarList.size(); i++) {
+            if(isBound(node.leftChild, freeVarList.get(i))) {
+                doConversion(node.leftChild, freeVarList.get(i), newVar());
+                System.out.println("free var is bound in M" + freeVarList.get(i));
+                return false;
+            }
+        }
+        return true;
+    }
+ 
+    public void doConversion(Node node, String oldVar, String newVar) {
+        if(node == null) {
+            return;
+        }
+
+        if(node.getTokenValue().equals(oldVar)) {
+            node.token.setTokenValue(newVar);
+        }
+
+        doConversion(node.leftChild, oldVar, newVar);
+        doConversion(node.rightChild, oldVar, newVar);
+     }
+
     // Returns true when the token var is bound in the (sub)tree with root "node"
-    public boolean isBound(Node node, Token var) {
+    public boolean isBound(Node node, String var) {
         if(node == null) {
             return false;
         }
-        if(node.getTokenValue() == "\\") {
-            if(node.leftChild.getTokenValue() == var.getValue()) {
+        if(node.getTokenValue().equals("\\")) {
+            if(node.leftChild.getTokenValue().equals(var)) {
                 return true;
             }
         }
@@ -231,19 +292,28 @@ public class BinaryTree {
         return false;
     }
 
+    private Boolean hasVar(String var, ArrayList<String> varList) {
+        for(int i = 0; i < varList.size(); i++) {
+            if(varList.get(i).equals(var)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Returns all free variables from the (sub)tree node
-    public ArrayList<Token> findFreeVar(Node node, ArrayList<Token> boundVariables) {
-        ArrayList<Token> varList = new ArrayList<Token>();
+    private ArrayList<String> findFreeVar(Node node, ArrayList<String> boundVariables) {
+        ArrayList<String> varList = new ArrayList<String>();
         if(node == null) {
             return varList;
         }
         
-        if(node.getTokenValue() == "\\") {
-            boundVariables.add(node.leftChild.token);
+        if(node.getTokenValue().equals("\\")) {
+            boundVariables.add(node.leftChild.getTokenValue());
         }
 
-        if(node.token.isVar() && !boundVariables.contains(node.token)) {
-            varList.add(node.token);
+        else if(node.token.isVar() && !hasVar(node.getTokenValue(), boundVariables)) {
+            varList.add(node.getTokenValue());
         }
 
         varList.addAll(findFreeVar(node.leftChild, boundVariables));
