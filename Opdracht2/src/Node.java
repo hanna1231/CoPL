@@ -14,4 +14,10 @@ public class Node {
     public String getTokenValue() {
         return this.token.getValue();
     }
+
+    public void setNode(Node node) {
+        token.setTokenValue(node.getTokenValue());
+        leftChild = node.leftChild;
+        rightChild = node.rightChild;
+    }
 }

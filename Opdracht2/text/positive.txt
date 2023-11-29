@@ -1,11 +1,8 @@
-(a b)
-abc
-a b c
-a (b c)
-(\ x a b)
-(\x((a) (b))) - nog niet goed
+(x y)                         ## no b reduction ##
+\x\y(x\z y)                   ## no b reduction ##
+(\x x)(\y y)                  ## b reduction to (\y y) ##
+(\x \y x)(\z y)               ## a conversion to (\x \Randomvar x)(\z y) b reduction to (\x \w x)(\z y) b redcution to (\w \z y) 
 
-\x x
-a
-(\x a) b - nog niet goed
-x (\y z) a
+(\x y)((\x (x x))(\x (x x)))  ## (\x y)((\x (x x))(\x (x x))) --> ((\x (x x))(\x (x x))) --> ()
+
+(\x x x)(\x x x)              ## b reduction to (x x)       

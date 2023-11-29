@@ -26,6 +26,7 @@ public class Parser {
         iterator = 0;
         openPars = 0;
         error = false;
+
     }
 
     public void addToken(Token nieuwToken) {
@@ -54,11 +55,11 @@ public class Parser {
         return false;
     }
 
-    public boolean parse() {
+    public int parse() {
         printList();
         if(tokenList.isEmpty()) { // Nothing in expression
             System.out.println("Expression is empty");
-            return false;
+            return 1;
         }
         iterator = 0;
         openPars = 0;
@@ -67,7 +68,7 @@ public class Parser {
         if(iterator < tokenList.size()) { 
             System.out.println("iterator: " + tokenList.get(iterator).getValue());
             System.out.println("(Expression isn't valid)");
-            return false;
+            return 1;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
             printList();
@@ -85,11 +86,15 @@ public class Parser {
             // for(int i = 0; i < freeVar.size(); i++) {
             //     System.out.println(freeVar.get(i));
             // }
-            tree.findAppLambda(tree.getRoot());
+            
+            if(tree.findAppLambda(tree.getRoot())) {
+                tree.printTree(tree.getRoot());
+                return 0;
+            }
             tree.printTree(tree.getRoot());
-            return true;
+            return 2;      
         }
-        return false;
+        return 1;
     }
 
     private BinaryTree expr1(Node leftChild) { // <expr1> ::= <lexpr><expr1> | e

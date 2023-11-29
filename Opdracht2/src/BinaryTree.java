@@ -6,12 +6,14 @@ public class BinaryTree {
     private Node gapNode; // Stores the parent of a node which still has room for children
     private int iterator;
     private int sizeVar;
+    private int reductionCounter;
 
     public BinaryTree() {
         root = null;
         gapNode = null;
         iterator = 0;
         sizeVar = 3;
+        reductionCounter = 0;
     }
     
     public Node getRoot() {
@@ -109,8 +111,13 @@ public class BinaryTree {
         return true;
     }
 
-    // Prints the tree with parameter node as root
     public void printTree(Node node) {
+        printTreeRed(node);
+        System.out.print("\n");
+    }
+
+    // Prints the tree with parameter node as root
+    private void printTreeRed(Node node) {
         if(node != null) {
             if(node.getTokenValue().equals("@")) {
                 System.out.print("(");
@@ -120,7 +127,7 @@ public class BinaryTree {
                 System.out.print(node.getTokenValue());
             }
 
-            printTree(node.leftChild);
+            printTreeRed(node.leftChild);
 
             if(node.getTokenValue().equals("@")) {
                 System.out.print(" ");
@@ -130,7 +137,7 @@ public class BinaryTree {
                 System.out.print("(");
             }
 
-            printTree(node.rightChild);
+            printTreeRed(node.rightChild);
 
             if(node.getTokenValue().equals("@") || node.getTokenValue().equals("\\")) {
                 System.out.print(")");
@@ -219,30 +226,78 @@ public class BinaryTree {
         return newString;  
     }
 
-
-    //function that looks for application node with leftchild lambda, returns true when found
-    public void findAppLambda (Node node) {
-        if(node == null || node.leftChild == null) {
+    // Recursive function that sets the lambda variable in M to N
+    public void changeVarReduction(Node node, String changeVar, Node N) {
+        if(node == null) {
             return;
         }
-                                        //TODO
-        findAppLambda(node.leftChild);
-        findAppLambda(node.rightChild);
+
+        if(node.getTokenValue().equals(changeVar)) {
+            node.setNode(N);
+            return;
+        }
+
+        changeVarReduction(node.leftChild, changeVar, N);
+        changeVarReduction(node.rightChild, changeVar, N);
+    }
+
+    // Performs reduction, node is the application node with left child lambda
+    public void reduction(Node node) {
+        System.out.println("reduction");
+        String changeVar = node.leftChild.leftChild.getTokenValue();
+        Node N = node.rightChild;
+        node.setNode(node.leftChild.rightChild);
+        changeVarReduction(node, changeVar, N);
+    }
+
+    // Calls findAppLamdaPriv until a 1000 reductions are reached (then returning false)
+    // or when there can't be reduced any further (then returning true)
+    public boolean findAppLambda(Node node) {
+        boolean change = true;
+        while(reductionCounter < 500 && change) {
+            change = findAppLambdaPriv(node);
+            System.out.println(reductionCounter);
+            printTree(node);
+        }
+        if(reductionCounter == 500) {
+            return false;
+        }
+        return true;
+    }
+
+
+    //function that looks for application node with leftchild lambda, returns true when found
+    private boolean findAppLambdaPriv (Node node) {
+        if(node == null || node.leftChild == null) {
+            return false;
+        }
+        boolean change = false;
+        if(findAppLambdaPriv(node.leftChild)) {
+            change = true;
+        }
+        if(findAppLambdaPriv(node.rightChild)) {
+            change = true;
+        }
 
         if(node.getTokenValue().equals("@") && node.leftChild.getTokenValue().equals("\\") ) {
             System.out.println("hoi");
             checkConversion(node);
+            reduction(node);
+            reductionCounter++;
+            return true;
         }
+        return change;
     }
 
     // Returns false whenever
     public boolean checkConversion(Node node) {
+        ArrayList<String> freeVarList = new ArrayList<String>();
         if(node == null || node.leftChild == null) {
-            return true;
+            return false;
         }
 
         ArrayList<String> boundVariables = new ArrayList<String>();
-        ArrayList<String> freeVarList = findFreeVar(node.rightChild, boundVariables);
+        freeVarList = findFreeVar(node.rightChild, boundVariables);
         System.out.println("\nFree variables of N");
         for(int i = 0; i < freeVarList.size(); i++) {
             System.out.println(freeVarList.get(i));
@@ -252,7 +307,6 @@ public class BinaryTree {
             if(isBound(node.leftChild, freeVarList.get(i))) {
                 doConversion(node.leftChild, freeVarList.get(i), newVar());
                 System.out.println("free var is bound in M" + freeVarList.get(i));
-                return false;
             }
         }
         return true;

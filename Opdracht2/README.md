@@ -2,6 +2,8 @@
 
 This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (s2984113) and Domen van Soest (s2962632)
 
+## TO DO PROGRAMMA AFSLUITEN MET 0, 1 OF 2
+
 ## To do uitleg over hoe te compilen en uitzoeken hoe dat via de command line kan
 
 For ubuntu on how to download java:
@@ -57,7 +59,12 @@ We hebben de code van opdracht 1 herbruikt voor deze opdracht. Dit betekent dat 
 Wat we hierbij hebben toegevoegd is dat er een abstract syntax tree wordt gemaakt tijdens de recursie. Dit gebeurt als volgt:
 
 Alle functies hebben we ten eerste veranderd van void functies naar Binary tree functies. Dit hebben we gedaan zodat we de boom stapje voor stapje kunnen opbouwen. Dit doen we omdat we de verschillende functies recursief meegeven en deze maken steeds kleine subbomen. De subbomen worden dan zo aan de boom toegevoegd dat het uiteindelijke resultaat left associative is. Herbij is de membervariabele gapnode een belangrijke toevoeging omdat we ervoor zorgen dat alle ouderknopen altijd gevuld een linker en rechterkind krijgen. 
-Als we een fout tegenkomen bij het maken van de boom dan wordt de root van de boom verwijderd en door de garbage collector van java worden alle andere kinderen ook automatisch verwijderd. Als de expressie een valide expressie is, wordt er gekeken of we alpha conversion, beta reduction of beide moeten toepassen. Bij het checken of alpha conversion nodig is wordt er eerst gekeken of variabelen vrij zijn. Als dit niet zo is moet de naam van de variabele veranderd worden zodat hij niet clasht met de bound variabelen. Als we ervoor hebben gezorgd dat niks meer met elkaar clasht wordt er gekeken of we beta reduction moeten doen op de expressie. 
+Als we een fout tegenkomen bij het maken van de boom dan wordt de root van de boom verwijderd en door de garbage collector van java worden alle andere kinderen ook automatisch verwijderd. 
+
+Als de expressie een valide expressie is, wordt er gekeken of we alleen beta reduction moeten toepassen. Als we nog een variabele moeten veranderen zodat de namen van de variabelen niet clashen moeten we eerst alpha conversion toepassen en daarna de expressie reduceren. Bij het checken of alpha conversion nodig is wordt er eerst gekeken of variabelen vrij zijn. Als dit niet zo is moet de naam van de variabele veranderd worden zodat hij niet clasht met de bound variabelen. Als we ervoor hebben gezorgd dat niks meer met elkaar clasht wordt er gekeken of we beta reduction moeten doen op de expressie. 
+
+De beta reduction wordt sowieso uitgevoerd, we reduceren hierbij de expressie tot een kleinere expressie. Als voorbeeld pakken we deze simpele lambda expressie: (lx xy) z, deze expressie wordt geinterpreteerd als volgt (l parameter  output) input. Onze beta reduction werkt dan als volgt: vind alle voorkomens van de parameter x in de output en subistitueer de input z voor de parameter x in de output.
+
 
 ----------Schrijf nog iets over beta reduction---------------------
 
