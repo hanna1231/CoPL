@@ -13,7 +13,7 @@ public class Token { // All possible options for tokens
     private String value;
 
     public Token(String newValue) { // Check what character the token is
-        switch(newValue) {
+        switch(newValue) { // Voeg nog twee tokens toe die onderscheidt maken tussen [a-z].* en [A-Z].*
             case "(":
                 type = Options.PAROPEN;
                 this.value = newValue;
@@ -33,6 +33,16 @@ public class Token { // All possible options for tokens
                 type = Options.APPLY;
                 this.value = newValue;
                 System.out.println("Token constructor apply: " + this.value);
+                break;
+            case ":":
+                type = Options.COLON;
+                this.value = newValue;
+                System.out.println("Token constructor colon: " + this.value);
+                break;
+            case "->":
+                type = Options.ARROW;
+                this.value = newValue;
+                System.out.println("Token constructor arrow: " + this.value);
                 break;
             default:
                 type = Options.UVAR;

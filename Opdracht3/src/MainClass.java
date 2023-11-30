@@ -13,27 +13,52 @@ public class MainClass {
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
             System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
-            if(invoer.charAt(i) == '(' || invoer.charAt(i) == ')') { // Check if the character is a paropen or parclose
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':') { // Check if the character is a paropen or parclose
                 if(isLVar && isUVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
                 }
                 Token nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
                 parser.addToken(nieuw);
-                isVar = false; // Reset the variable
+                isLVar = false; // Reset the variable
+                isUVar = false; // Reset the variable
                 var = ""; // Make variable empty again
             }
 
-            else if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) || (invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) || (invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z')) { //If number or letter
-               if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) && !isVar) { // If number and not variable
-                    System.out.println("Syntax error: number first character of variable");
-                    return false;
-                }
-                else if(invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) {
-                  
-                }
-                isVar = true;
-                var = var.concat(invoer.substring(i, i + 1)); // Add the number or letter to variable
+            else if(invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z'){
+               if(!isLVar){
+                  isLVar = true;
+               }
+               var = var.concat(invoer.substring(i, i + 1));
+            }
+
+            else if(invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z') {
+               if(!isUVar){
+                  isUVar = true;
+               }
+               var = var.concat(invoer.substring(i, i + 1));
+            }
+
+            else if(invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9') {
+               if(isLVar || isUVar) {
+                  var = var.concat(invoer.substring(i, i + 1));
+               }
+               else{
+                  System.out.println("Syntax error: number first character of variable");
+                  return false;
+               }
+            }
+
+            else if(invoer.charAt(i) == '-'){
+               i++;
+               if(invoer.charAt(i) == '>'){
+                  Token nieuwVarToken = new Token(var);
+                  parser.addToken(nieuwVarToken);
+               }
+               else{
+                  System.out.println("Syntax error: - not followed by >");
+                  return false;
+               }  
             }
 
             else if(invoer.charAt(i) == ' ') {// if space add variable to tokenlist
@@ -41,7 +66,8 @@ public class MainClass {
                     Token nieuwVarToken = new Token(var);
                     parser.addToken(nieuwVarToken);
                 }
-                isVar = false;
+                isLVar = false;
+                isUVar = false;
                 var = "";
             }
 
@@ -92,7 +118,7 @@ public class MainClass {
         String string = LeesFileExpressie(filenaam); // We read the file
 
         if(string != null && leesIn(string, parser)) {
-            exitStatus = parser.parse();
+            //exitStatus = parser.parse();
         }
 
         sc.close(); // We close the scanner
