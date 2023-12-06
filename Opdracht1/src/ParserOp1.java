@@ -161,7 +161,6 @@ public class ParserOp1 {
         //     Token openingToken = new Token("(");
         //     tokenList.add(iAtStart, openingToken);
         //     iterator++;
-        }
         expr1();
     }
 }
