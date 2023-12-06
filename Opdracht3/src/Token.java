@@ -5,14 +5,17 @@ public class Token { // All possible options for tokens
         LVAR,
         UVAR,
         APPLY,
+        LAMBDA,
         COLON,
         ARROW,
+        CARET,
     }
 
     Options type;
     private String value;
 
     public Token(String newValue) { // Check what character the token is
+      char firstChar = newValue.charAt(0);
         switch(newValue) { // Voeg nog twee tokens toe die onderscheidt maken tussen [a-z].* en [A-Z].*
             case "(":
                 type = Options.PAROPEN;
@@ -25,7 +28,7 @@ public class Token { // All possible options for tokens
                 System.out.println("Token constructor parclose: " + this.value);
                 break;
             case "\\":
-                type = Options.LVAR;
+                type = Options.LAMBDA;
                 this.value = newValue;
                 System.out.println("Token constructor lambda: " + this.value);
                 break;
@@ -44,8 +47,21 @@ public class Token { // All possible options for tokens
                 this.value = newValue;
                 System.out.println("Token constructor arrow: " + this.value);
                 break;
+            case "^":
+                type = Options.CARET;
+                this.value = newValue;
+                System.out.println("Token constructor caret: " + this.value);
+                break;
             default:
-                type = Options.UVAR;
+               if(firstChar >= 'a' && firstChar <= 'z'){
+                  type = Options.LVAR;
+               }
+               else if(firstChar >= 'A' && firstChar <= 'Z'){
+                  type = Options.UVAR;
+               }
+               else{
+                  System.out.println("Check your input, it's not a valid token");
+               }
                 this.value = newValue;
                 System.out.println("Token constructor var: " + this.value);
                 break;
@@ -53,11 +69,11 @@ public class Token { // All possible options for tokens
     }
 
     // Check the type of a character 
-    public boolean lVar() {
+    public boolean isLVar() {
         return (type == Options.LVAR);
     }
 
-    public boolean uVar() {
+    public boolean isUVar() {
         return (type == Options.UVAR);
     }
 
@@ -69,8 +85,24 @@ public class Token { // All possible options for tokens
         return (type == Options.PAROPEN);
     }
 
+    public boolean isLambda() {
+         return (type == Options.LAMBDA);
+    }
+
     public boolean isApply() {
         return (type == Options.APPLY);
+    }
+
+    public boolean isColon() {
+        return (type == Options.COLON);
+    }
+
+    public boolean isArrow() {
+        return (type == Options.ARROW);
+    }
+
+    public boolean isCaret() {
+        return (type == Options.CARET);
     }
 
     public String getValue() {
