@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Parser {
+public class ParserOp1 {
 
     private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
 
@@ -20,7 +20,7 @@ public class Parser {
         return false;
     }
 
-    public Parser() {
+    public ParserOp1() {
         iterator = 0;
         openPars = 0;
         error = false;
@@ -33,6 +33,9 @@ public class Parser {
     public void printList() {
         System.out.print("Output: ");
         for (int i = 0; i < tokenList.size(); i++) {
+            if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
+                System.out.println("(");
+            }
             System.out.print(tokenList.get(i).value);
             if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
                 System.out.print(" ");
@@ -149,10 +152,16 @@ public class Parser {
     
     private void expr() { // <expr> ::= <lexpr><expr1>
         System.out.println("expr");
+        int iAtStart = iterator;
         lexpr();
         if(error) {
             return;
         } // Don't continue after an error
+        // if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()) {
+        //     Token openingToken = new Token("(");
+        //     tokenList.add(iAtStart, openingToken);
+        //     iterator++;
+        }
         expr1();
     }
 }

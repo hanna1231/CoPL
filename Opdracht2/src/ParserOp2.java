@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Parser {
+public class ParserOp2 {
 
     private BinaryTree tree = new BinaryTree(); // Create a new abstract syntax tree
 
@@ -22,7 +22,7 @@ public class Parser {
         return false;
     }
 
-    public Parser() {
+    public ParserOp2() {
         iterator = 0;
         openPars = 0;
         error = false;

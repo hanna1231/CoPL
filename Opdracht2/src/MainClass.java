@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class MainClass {
 
-    public static boolean leesIn(String invoer, Parser parser) { // Reads the whole expression token by token in 
+    public static boolean leesIn(String invoer, ParserOp2 parser) { // Reads the whole expression token by token in 
         boolean isVar = false;
         String var = "";
         
@@ -56,7 +56,7 @@ public class MainClass {
     public static void main(String[] args) {
        
       // Make it so that the user can input multiple expressions
-        Parser parser = new Parser(); // We initialize a new object parser
+        ParserOp2 parser = new ParserOp2(); // We initialize a new object parser
         System.out.println("Please enter a string:");
         int exitStatus = 1;
         Scanner sc = new Scanner(System.in); // We initialize a new scanner

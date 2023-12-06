@@ -7,6 +7,7 @@ public class BinaryTree {
     private int iterator;
     private int sizeVar;
     private int reductionCounter;
+    private int changeVarCounter;
 
     public BinaryTree() {
         root = null;
@@ -14,6 +15,7 @@ public class BinaryTree {
         iterator = 0;
         sizeVar = 3;
         reductionCounter = 0;
+        changeVarCounter = 0;
     }
     
     public Node getRoot() {
@@ -234,6 +236,7 @@ public class BinaryTree {
 
         if(node.getTokenValue().equals(changeVar)) {
             node.setNode(N);
+            changeVarCounter++;
             return;
         }
 
@@ -243,11 +246,21 @@ public class BinaryTree {
 
     // Performs reduction, node is the application node with left child lambda
     public void reduction(Node node) {
-        System.out.println("reduction");
+        // System.out.println("reduction\nTree before reduction");
+        // printTree(node);
         String changeVar = node.leftChild.leftChild.getTokenValue();
         Node N = node.rightChild;
+        // System.out.println("N");
+        // printTree(N);
+        if(node == root) {
+            root = node.leftChild.rightChild;
+        }
         node.setNode(node.leftChild.rightChild);
+        // System.out.println("tree");
+        // printTree(node);
         changeVarReduction(node, changeVar, N);
+        // System.out.println("tree after reduction: " + changeVarCounter);
+        // printTree(node);
     }
 
     // Calls findAppLamdaPriv until a 1000 reductions are reached (then returning false)
@@ -255,6 +268,7 @@ public class BinaryTree {
     public boolean findAppLambda(Node node) {
         boolean change = true;
         while(reductionCounter < 500 && change) {
+            printTree(node);
             change = findAppLambdaPriv(node);
             System.out.println(reductionCounter);
             printTree(node);
@@ -284,8 +298,14 @@ public class BinaryTree {
             checkConversion(node);
             reduction(node);
             reductionCounter++;
+            // if(node == root) {
+            //     printTree(node);
+            // }
             return true;
         }
+            // if(node == root) {
+            //     printTree(node);
+            // }
         return change;
     }
 
