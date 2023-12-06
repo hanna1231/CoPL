@@ -17,7 +17,7 @@ public class MainClass {
                 if(isLVar || isUVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
-                }
+                }   
                 Token nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
                 parser.addToken(nieuw);
                 isLVar = false; // Reset the variable
@@ -52,7 +52,7 @@ public class MainClass {
             else if(invoer.charAt(i) == '-'){
                i++;
                if(invoer.charAt(i) == '>'){
-                  Token nieuwVarToken = new Token(var);
+                  Token nieuwVarToken = new Token("->");
                   parser.addToken(nieuwVarToken);
                }
                else{

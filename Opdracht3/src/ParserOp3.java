@@ -2,153 +2,222 @@ import java.util.ArrayList;
 
 public class ParserOp3 {
 
-    private BinaryTree tree = new BinaryTree(); // Create a new abstract syntax tree
+   private BinaryTree tree = new BinaryTree(); // Create a new abstract syntax tree
 
-    private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
+   private ArrayList<Token> tokenList = new ArrayList<Token>(); // Vector of tokens   
 
-    private int iterator; // Iterator which iterates over the expression
+   private int iterator; // Iterator which iterates over the expression
 
-    private int openPars; // Check how many open parenthesis there are
+   private int openPars; // Check how many open parenthesis there are
 
-    private boolean error; // To show whether there's an error in the recursion
+   private boolean error; // To show whether there's an error in the recursion
 
-    private boolean next() {
-        if(iterator+1 < tokenList.size()) {
-            iterator++;
-            System.out.println("Next is true");
-            return true;
-        }
-            System.out.println("Next is false");
-        return false;
-    }
+   private boolean next() {
+      if(iterator+1 < tokenList.size()) {
+         iterator++;
+         System.out.println("Next is true");
+         return true;
+      }
+         System.out.println("Next is false");
+      return false;
+   }
 
-    public ParserOp3() {
-        iterator = 0;
-        openPars = 0;
-        error = false;
-    }
+   public ParserOp3() {
+      iterator = 0;
+      openPars = 0;
+      error = false;
+   }
 
-    public void addToken(Token nieuwToken) {
-        tokenList.add(nieuwToken);
-    }
+   public void addToken(Token nieuwToken) {
+      tokenList.add(nieuwToken);
+   }
 
-    public void printList() {
-        System.out.print("Output: ");
-        for (int i = 0; i < tokenList.size(); i++) {
-            System.out.print(tokenList.get(i).getValue());
-            if((tokenList.get(i).isLVar() || tokenList.get(i).isUVar())  && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
-                System.out.print(" ");
-            } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
-        }
-        System.out.print("\n");
-    }
+   public void printList() {
+      System.out.print("Output: ");
+      for (int i = 0; i < tokenList.size(); i++) {
+         System.out.print(tokenList.get(i).getValue());
+         if((tokenList.get(i).isLVar() || tokenList.get(i).isUVar())  && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
+               System.out.print(" ");
+         } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
+      }
+      System.out.print("\n");
+   }
 
-    public void parse() {
-         printList();
-         if(tokenList.isEmpty()) {
-            System.out.print("Expression is empty");
-            // return 1;
+   public void parse() {
+      printList();
+      if(tokenList.isEmpty()) {
+         System.out.print("Expression is empty");
+         // return 1;
+      }
+      iterator = 0;
+      openPars = 0;
+      //Node emptyNode = null;
+      //tree = judgement(emptyNode);
+      //judgement();
+      if(iterator < tokenList.size()) {
+         System.out.println("iterator: " + tokenList.get(iterator).getValue());
+         System.out.println("(Expression isn't valid)");
+      } //Expression isn't finished
+   }
+
+   public BinaryTree type() {
+      if(tokenList.get(iterator).isUVar()) {
+         
+         next();
+      }
+      else if(tokenList.get(iterator).isParOpen()) {
+         next();
+         type();
+         if(error) {
+            return;
          }
-         iterator = 0;
-         openPars = 0;
-         //Node emptyNode = null;
-         //tree = judgement(emptyNode);
-         judgement();
-         if(iterator < tokenList.size()) {
-            System.out.println("iterator: " + tokenList.get(iterator).getValue());
-            System.out.println("(Expression isn't valid)");
-         } //Expression isn't finished
-    }
-
-    public void type() {
-
-    }
-
-    public void expr() {
-         if(tokenList.get(iterator).isLVar()){
+         if(tokenList.get(iterator).isParClose()) {
             next();
          }
-         else if(tokenList.get(iterator).isParOpen()) {
+         else {
+            error = true;
+            System.out.println("Missing closing parenthesis");
+         }
+      }
+      else{
+         type();
+         if(error) {
+            return;
+         }
+         if(tokenList.get(iterator).isArrow()) {
             next();
-            expr();
+            type();
             if(error) {
                return;
             }
-            if(tokenList.get(iterator).isParClose()) {
+         }
+         else {
+            error = true;
+            System.out.println("Missing arrow");
+         }
+         type();
+      }
+   }
+
+   public BinaryTree expr() {
+      if(tokenList.get(iterator).isLVar()){
+         next();
+      }
+      else if(tokenList.get(iterator).isParOpen()) {
+         next();
+         expr();
+         if(error) {
+            return;
+         }
+         if(tokenList.get(iterator).isParClose()) {
+            next();
+         }
+         else {
+            error = true;
+            System.out.println("Missing closing parenthesis");
+         }
+      }
+      else if(tokenList.get(iterator).isLambda()) {
+         next();
+         if(tokenList.get(iterator).isLVar()) {
+            next();
+            if(tokenList.get(iterator).isCaret()) {
                next();
+               type();
+               if(error) {
+                  return;
+               }
+               expr();
+               if(error) {
+                  return;
+               }
             }
             else {
                error = true;
-               System.out.println("Missing closing parenthesis");
+               System.out.println("Missing caret");
             }
          }
+         else {
+            error = true;
+            System.out.println("Missing variable");
+         }
+      }
+   }
+
+    private Node addColon() {
+        Token colonToken = new Token(":");
+        Node colonNode = new Node(colonToken);
+        return colonNode;
     }
 
     public void judgement() {
-       expr();
-       if(error) {
-          return;
-       }
-       if(tokenList.get(iterator).isColon()) {
-          next();
-          type();
-       }
-       else {
-          error = true;
-          System.out.println("Missing colon");
-       }
+        BinaryTree judgeTree = new BinaryTree();
+        judgeTree.addNode(addColon());
+        BinaryTree leftChild = expr();
+        judgeTree.mergeTree(leftChild);
+        if(error) {
+            return;
+        }
+        if(tokenList.get(iterator).isColon() && next()) {
+            BinaryTree rightChild = type();
+            judgeTree.mergeTree(rightChild);
+        }
+        else {
+            error = true;
+            System.out.println("Missing colon");
+        }
     }
 
 
 
 
-    // Returns true when (nested) expression is finished, otherwise false
-   //  public boolean isFinished() {
-   //      System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
-   //      if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
-   //          System.out.println("Nested expression finished");
-   //          return true;
-   //      }
-        
-   //      return false;
-   //  }
+   // Returns true when (nested) expression is finished, otherwise false
+//  public boolean isFinished() {
+//      System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
+//      if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
+//          System.out.println("Nested expression finished");
+//          return true;
+//      }
+      
+//      return false;
+//  }
 
-   //  public int parse() {
-   //      //printList();
-   //      if(tokenList.isEmpty()) { // Nothing in expression
-   //          System.out.println("Expression is empty");
-   //          return 1;
-   //      }
-   //      iterator = 0;
-   //      openPars = 0;
-   //      Node emptyNode = null;
-   //      //tree = expr(emptyNode);
-   //      if(iterator < tokenList.size()) { 
-   //          System.out.println("iterator: " + tokenList.get(iterator).getValue());
-   //          System.out.println("(Expression isn't valid)");
-   //          return 1;
-   //      } // When the expression isn't finished but the parser is
-   //      if(!error && openPars == 0) {
-   //          //printList();
-   //          BinaryTree oldTree = tree;
-   //          System.out.print("Old tree: ");
-   //          tree.printTree(tree.getRoot());
+//  public int parse() {
+//      //printList();
+//      if(tokenList.isEmpty()) { // Nothing in expression
+//          System.out.println("Expression is empty");
+//          return 1;
+//      }
+//      iterator = 0;
+//      openPars = 0;
+//      Node emptyNode = null;
+//      //tree = expr(emptyNode);
+//      if(iterator < tokenList.size()) { 
+//          System.out.println("iterator: " + tokenList.get(iterator).getValue());
+//          System.out.println("(Expression isn't valid)");
+//          return 1;
+//      } // When the expression isn't finished but the parser is
+//      if(!error && openPars == 0) {
+//          //printList();
+//          BinaryTree oldTree = tree;
+//          System.out.print("Old tree: ");
+//          tree.printTree(tree.getRoot());
 
-   //          tree.deleteApp();
-   //          System.out.println(oldTree.equals(tree));
-   //          System.out.print("Output tree: ");
-   //          tree.printTree(tree.getRoot());
-   //          // ArrayList<String> boundVar = new ArrayList<String>();
-   //          // ArrayList<String> freeVar = tree.findFreeVar(tree.getRoot(), boundVar);
-   //          // System.out.println("\nFree variables");
-   //          // for(int i = 0; i < freeVar.size(); i++) {
-   //          //     System.out.println(freeVar.get(i));
-   //          // }  
-   //          tree.printTree(tree.getRoot());
-   //          return 2;      
-   //      }
-   //      return 1;
-   //  }
+//          tree.deleteApp();
+//          System.out.println(oldTree.equals(tree));
+//          System.out.print("Output tree: ");
+//          tree.printTree(tree.getRoot());
+//          // ArrayList<String> boundVar = new ArrayList<String>();
+//          // ArrayList<String> freeVar = tree.findFreeVar(tree.getRoot(), boundVar);
+//          // System.out.println("\nFree variables");
+//          // for(int i = 0; i < freeVar.size(); i++) {
+//          //     System.out.println(freeVar.get(i));
+//          // }  
+//          tree.printTree(tree.getRoot());
+//          return 2;      
+//      }
+//      return 1;
+//  }
 
 //     private BinaryTree expr1(Node leftChild) { // <expr1> ::= <lexpr><expr1> | e
 //         System.out.println("expr1");
@@ -160,7 +229,7 @@ public class ParserOp3 {
 //         }
 //         System.out.println("Continuing in expr1");
 //         BinaryTree lexpTree = lexpr();
-    
+   
 //         if(error) {
 //             return expr1Tree;
 //         }
@@ -223,7 +292,7 @@ public class ParserOp3 {
 //                 Token closingToken = new Token(")"); // Add parentheses for ambiguity
 //                 tokenList.add(iterator, closingToken);
 //                 iterator++;
-                
+               
 //             } 
 //             else {
 //                 error = true;
@@ -235,7 +304,7 @@ public class ParserOp3 {
 //             lexprTree = pexpr();
 //             System.out.println("lexprTree");
 //             lexprTree.printTree(lexprTree.getRoot());
-            
+         
 //         }
 //         return lexprTree;
 //     }
@@ -289,7 +358,7 @@ public class ParserOp3 {
 //             System.out.println("pexprTree");
 //             pexprTree.printTree(pexprTree.getRoot());
 //         }
-    
+   
 //         else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
 //             System.out.println("(missing expression after opening parenthesis)");
 //             error = true;
@@ -298,12 +367,12 @@ public class ParserOp3 {
 //         }
 //         return pexprTree;
 //     }
-    
+   
 //     private BinaryTree expr(Node leftChild) { // <expr> ::= <lexpr><expr1>
 //         BinaryTree exprTree = new BinaryTree();
 //         System.out.println("expr");
 //         exprTree.setRoot(leftChild);
-        
+      
 //         BinaryTree lexpTree = lexpr();
 //         if(error) {
 //             return exprTree;

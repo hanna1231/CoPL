@@ -2,23 +2,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinaryTree {
-   //  private Node root;
-   //  private Node gapNode; // Stores the parent of a node which still has room for children
+    private Node root;
+    private Node gapNode; // Stores the parent of a node which still has room for children
    //  private int iterator;
    //  private int sizeVar;
    //  private int reductionCounter;
 
-   //  public BinaryTree() {
-   //      root = null;
-   //      gapNode = null;
-   //      iterator = 0;
-   //      sizeVar = 3;
-   //      reductionCounter = 0;
-   //  }
+    public BinaryTree() {
+        root = null;
+        gapNode = null;
+      //   iterator = 0;
+      //   sizeVar = 3;
+      //   reductionCounter = 0;
+    }
     
-   //  public Node getRoot() {
-   //      return root;
-   //  }
+    public Node getRoot() {
+        return root;
+    }
 
    //  public void setRoot(Node newNode) {
    //      root = newNode;
@@ -30,28 +30,29 @@ public class BinaryTree {
     
    //  // Returns if there is node which still has availability for 
    //  // and stores that in gapNode
-   //  public boolean findGap(Node node) {
-   //      if(node == null) {
-   //          return false;
-   //      }
+    public boolean findGap(Node node) {
+        if(node == null) {
+            return false;
+        }
 
-   //      if(findGap(node.leftChild)) {
-   //          return true;
-   //      }
+        if(findGap(node.leftChild)) {
+            return true;
+        }
 
-   //      if((node.token.isLambda() || node.token.isApply()) && (node.leftChild == null || node.rightChild == null)) {
-   //          gapNode = node;
-   //          System.out.println(gapNode == null);
-   //          System.out.println("changed");
-   //          return true;
-   //      }
+        if((node.token.isLambda() || node.token.isApply() || node.token.isCaret() || node.token.isArrow() || node.token.isColon())
+          && (node.leftChild == null || node.rightChild == null)) {
+            gapNode = node;
+            System.out.println(gapNode == null);
+            System.out.println("changed");
+            return true;
+        }
 
-   //      if(findGap(node.rightChild)) {
-   //          return true;
-   //      }
+        if(findGap(node.rightChild)) {
+            return true;
+        }
 
-   //      return false;
-   //  }
+        return false;
+    }
 
    //  public boolean addNodeApp(Node newNode) {
    //      if(root == null) {
@@ -78,25 +79,25 @@ public class BinaryTree {
    //  }
 
    //  // Adds a node (newNode) to the left or right child of a parent node (gapNode)
-   //  public boolean addNode(Node newNode) {
-   //      if(root == null) {
-   //          root = newNode;
-   //          return true;
-   //      }
+    public boolean addNode(Node newNode) {
+        if(root == null) {
+            root = newNode;
+            return true;
+        }
         
-   //      gapNode = null;
-   //      if(findGap(root)) {
-   //          System.out.println(gapNode == null);
-   //          if(gapNode.leftChild == null) {
-   //              gapNode.leftChild = newNode;
-   //          }
-   //          else {
-   //              gapNode.rightChild = newNode;
-   //          }
-   //          return true;
-   //      }
-   //      return false;
-   //  }
+        gapNode = null;
+        if(findGap(root)) {
+            System.out.println(gapNode == null);
+            if(gapNode.leftChild == null) {
+                gapNode.leftChild = newNode;
+            }
+            else {
+                gapNode.rightChild = newNode;
+            }
+            return true;
+        }
+        return false;
+    }
 
    //  public boolean addApplication() {
    //      Token apToken = new Token("@");
@@ -147,33 +148,31 @@ public class BinaryTree {
 
    //  // When there's no reference to objects in the tree Java will delete the objects
    //  // automatically with the garbage collector
-   //  public void clearTree() {
-   //      root = null;
-   //      gapNode = null;
-   //  }
+    public void clearTree() {
+        root = null;
+        gapNode = null;
+    }
 
-   //  public boolean mergeTree(BinaryTree addTree) {
-   //      System.out.println("HET IS HIER HANNA!");
-   //      addTree.printTree(addTree.getRoot());
-   //      if(this.root == null) {
-   //          System.out.println("ROOT");
-   //          this.root = addTree.getRoot();
-   //      }
-   //      else if(!findGap(this.root)) {
-   //          System.out.println("FOUT");
-   //          return false;
-   //      }
-   //      else if(gapNode.leftChild == null) {
-   //          System.out.println("LINKS");
-   //          gapNode.leftChild = addTree.getRoot();
-   //      }
-   //      else {
-   //          System.out.println("RECHTS");
-   //          gapNode.rightChild = addTree.getRoot();
-   //      }
+    public boolean mergeTree(BinaryTree addTree) {
+        if(this.root == null) {
+            System.out.println("ROOT");
+            this.root = addTree.getRoot();
+        }
+        else if(!findGap(this.root)) {
+            System.out.println("FOUT");
+            return false;
+        }
+        else if(gapNode.leftChild == null) {
+            System.out.println("LINKS");
+            gapNode.leftChild = addTree.getRoot();
+        }
+        else {
+            System.out.println("RECHTS");
+            gapNode.rightChild = addTree.getRoot();
+        }
 
-   //      return true;
-   //  }
+        return true;
+    }
 
    //  public void deleteApp() {
    //      Node node = this.root;

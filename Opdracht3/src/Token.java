@@ -51,12 +51,16 @@ public class Token { // All possible options for tokens
                 type = Options.CARET;
                 this.value = newValue;
                 System.out.println("Token constructor caret: " + this.value);
+                break;
             default:
                if(firstChar >= 'a' && firstChar <= 'z'){
                   type = Options.LVAR;
                }
                else if(firstChar >= 'A' && firstChar <= 'Z'){
                   type = Options.UVAR;
+               }
+               else{
+                  System.out.println("Check your input, it's not a valid token");
                }
                 this.value = newValue;
                 System.out.println("Token constructor var: " + this.value);
