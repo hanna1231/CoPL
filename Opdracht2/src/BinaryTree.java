@@ -235,17 +235,24 @@ public class BinaryTree {
         }
 
         if(node.getTokenValue().equals(changeVar)) {
+            System.out.println("old N");
+            printTree(N);
             node.setNode(N);
+            System.out.println("new N");
+            // printTree(node);
+            printTree(N);
             changeVarCounter++;
             return;
         }
 
         changeVarReduction(node.leftChild, changeVar, N);
+        // printTree(node);
         changeVarReduction(node.rightChild, changeVar, N);
+        // printTree(node);
     }
 
     // Performs reduction, node is the application node with left child lambda
-    public void reduction(Node node) {
+    public void reduction(Node node) {  
         // System.out.println("reduction\nTree before reduction");
         // printTree(node);
         String changeVar = node.leftChild.leftChild.getTokenValue();
@@ -257,7 +264,7 @@ public class BinaryTree {
         }
         node.setNode(node.leftChild.rightChild);
         // System.out.println("tree");
-        // printTree(node);
+        printTree(node);
         changeVarReduction(node, changeVar, N);
         // System.out.println("tree after reduction: " + changeVarCounter);
         // printTree(node);
@@ -268,10 +275,10 @@ public class BinaryTree {
     public boolean findAppLambda(Node node) {
         boolean change = true;
         while(reductionCounter < 500 && change) {
-            printTree(node);
+            // printTree(node);
             change = findAppLambdaPriv(node);
             System.out.println(reductionCounter);
-            printTree(node);
+            // printTree(node);
         }
         if(reductionCounter == 500) {
             return false;

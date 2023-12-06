@@ -16,8 +16,9 @@ public class Node {
     }
 
     public void setNode(Node node) {
-        token.setTokenValue(node.getTokenValue());
-        leftChild = node.leftChild;
-        rightChild = node.rightChild;
+        this.token.setTokenValue(node.getTokenValue());
+        this.leftChild = node.leftChild;
+        this.rightChild = node.rightChild;
+        System.out.println("setNode");
     }
 }
