@@ -13,8 +13,8 @@ public class MainClass {
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
             System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
-            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':') { // Check if the character is a paropen or parclose
-                if(isLVar && isUVar) { // Check for variables 
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':' || invoer.charAt(i) == '^') { // Check if the character is a paropen or parclose
+                if(isLVar || isUVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
                 }
@@ -62,7 +62,7 @@ public class MainClass {
             }
 
             else if(invoer.charAt(i) == ' ') {// if space add variable to tokenlist
-                if(isVar) {
+                if(isLVar || isUVar) {
                     Token nieuwVarToken = new Token(var);
                     parser.addToken(nieuwVarToken);
                 }
@@ -84,7 +84,6 @@ public class MainClass {
         }
         System.out.println("Yes dit werkt");
         return true;
-        
     }
 
     private static String LeesFileExpressie(String filenaam) {
@@ -113,18 +112,23 @@ public class MainClass {
 
         int exitStatus = 1;
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
-        String filenaam = sc.nextLine(); // We read the input of the user
+       
+        //String filenaam = sc.nextLine(); // We read the input of the user --> zodat we niet de hele tijd de filenaam moeten invoeren
+
+        String filenaam = "expressie.txt";
         
         String string = LeesFileExpressie(filenaam); // We read the file
 
         if(string != null && leesIn(string, parser)) {
             //exitStatus = parser.parse();
+            System.out.println("GA ik hierin");
+            parser.printList();
         }
 
         sc.close(); // We close the scanner
         System.out.println(exitStatus);
 
-        System.exit(exitStatus);
+
+        System.exit(exitStatus); 
     }
-    
 }

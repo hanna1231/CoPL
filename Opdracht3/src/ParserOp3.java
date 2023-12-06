@@ -26,23 +26,81 @@ public class ParserOp3 {
         iterator = 0;
         openPars = 0;
         error = false;
-
     }
 
     public void addToken(Token nieuwToken) {
         tokenList.add(nieuwToken);
     }
 
-   //  public void printList() {
-   //      System.out.print("Output: ");
-   //      for (int i = 0; i < tokenList.size(); i++) {
-   //          System.out.print(tokenList.get(i).getValue());
-   //          if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
-   //              System.out.print(" ");
-   //          } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
-   //      }
-   //      System.out.print("\n");
-   //  }
+    public void printList() {
+        System.out.print("Output: ");
+        for (int i = 0; i < tokenList.size(); i++) {
+            System.out.print(tokenList.get(i).getValue());
+            if((tokenList.get(i).isLVar() || tokenList.get(i).isUVar())  && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
+                System.out.print(" ");
+            } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
+        }
+        System.out.print("\n");
+    }
+
+    public void parse() {
+         printList();
+         if(tokenList.isEmpty()) {
+            System.out.print("Expression is empty");
+            // return 1;
+         }
+         iterator = 0;
+         openPars = 0;
+         //Node emptyNode = null;
+         //tree = judgement(emptyNode);
+         judgement();
+         if(iterator < tokenList.size()) {
+            System.out.println("iterator: " + tokenList.get(iterator).getValue());
+            System.out.println("(Expression isn't valid)");
+         } //Expression isn't finished
+    }
+
+    public void type() {
+
+    }
+
+    public void expr() {
+         if(tokenList.get(iterator).isLVar()){
+            next();
+         }
+         else if(tokenList.get(iterator).isParOpen()) {
+            next();
+            expr();
+            if(error) {
+               return;
+            }
+            if(tokenList.get(iterator).isParClose()) {
+               next();
+            }
+            else {
+               error = true;
+               System.out.println("Missing closing parenthesis");
+            }
+         }
+    }
+
+    public void judgement() {
+       expr();
+       if(error) {
+          return;
+       }
+       if(tokenList.get(iterator).isColon()) {
+          next();
+          type();
+       }
+       else {
+          error = true;
+          System.out.println("Missing colon");
+       }
+    }
+
+
+
 
     // Returns true when (nested) expression is finished, otherwise false
    //  public boolean isFinished() {
