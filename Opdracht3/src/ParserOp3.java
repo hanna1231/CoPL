@@ -58,63 +58,65 @@ public class ParserOp3 {
       } //Expression isn't finished
    }
 
-   public BinaryTree type() {
-      BinaryTree typeTree = new BinaryTree();
-      if(tokenList.get(iterator).isUVar()) {
-         Node typeVarNode = new Node(tokenList.get(iterator));
-         typeTree.addNode(typeVarNode);
-         next();
-      } //type is a Uvar
-      else if(tokenList.get(iterator).isParOpen()) {
-         Node parOpenNode = new Node(tokenList.get(iterator));
-         typeTree.addNode(parOpenNode);
-         next();
-         typeTree.mergeTree(type());
-         if(error) {
-            return typeTree;
-         }
-         if(tokenList.get(iterator).isParClose()) {
-            Node parClosedNode = new Node(tokenList.get(iterator));
-            typeTree.addNode(parClosedNode);
+    // WANNEER TYPE -> TYPE
+    public BinaryTree type() {
+        BinaryTree typeTree = new BinaryTree();
+        if(tokenList.get(iterator).isUVar()) {
+            Node typeVarNode = new Node(tokenList.get(iterator));
+            typeTree.addNode(typeVarNode);
             next();
-         }
-         else {
-            error = true;
-            System.out.println("Missing closing parenthesis");
-         }
-      }
-      else{
-         BinaryTree leftChildTree = new BinaryTree();
-         leftChildTree = type();
-         if(error) {
-            return typeTree;
-         }
-         if(tokenList.get(iterator).isArrow()) {
-            Node arrowNode = new Node(tokenList.get(iterator));
-            typeTree.addNode(arrowNode);
-            next();
-            BinaryTree rightChildTree = new BinaryTree();
-            rightChildTree = type();
-            typeTree.mergeTree(leftChildTree);
-            typeTree.mergeTree(rightChildTree);
+        } //type is a Uvar
+
+        else if(tokenList.get(iterator).isParOpen() && next()) {
+            openPars++;
+            typeTree = type();
             if(error) {
-               return typeTree;
+                typeTree.clearTree();
+                return typeTree;
             }
-         }
-         else {
-            error = true;
-            System.out.println("Missing arrow");
-         }
-      }
-      return typeTree;
-   }
+            if(next() && tokenList.get(iterator).isParClose()) {
+                openPars--;
+                next();
+            }
+            else {
+                error = true;
+                typeTree.clearTree();
+                System.out.println("Missing closing parenthesis");
+            }
+        } // Type is "("<type>")"
+
+        else {
+            BinaryTree leftChildTree = new BinaryTree();
+            leftChildTree = type();
+            if(error) {
+                return typeTree;
+            }
+            if(tokenList.get(iterator).isArrow()) {
+                Node arrowNode = new Node(tokenList.get(iterator));
+                typeTree.addNode(arrowNode);
+                next();
+                BinaryTree rightChildTree = new BinaryTree();
+                rightChildTree = type();
+                typeTree.mergeTree(leftChildTree);
+                typeTree.mergeTree(rightChildTree);
+                if(error) {
+                    return typeTree;
+                }
+            }
+            else {
+                error = true;
+                System.out.println("Missing arrow");
+            }
+        }
+        return typeTree;
+    }
    
     private Node addCaret() {
         Token caretToken = new Token("^");
         return (new Node(caretToken));
     }
 
-    // APPLICATION MIST NOG, HAAKJES OOK NOG AFMAKEN
+    // APPLICATION MIST NOG
     public BinaryTree expr() {
         BinaryTree exprTree = new BinaryTree();
         if(tokenList.get(iterator).isLVar()) {
@@ -123,20 +125,23 @@ public class ParserOp3 {
             next();
         } // Expr is a lvar
       
-        else if(tokenList.get(iterator).isParOpen()) {
-           next();
-           expr();
-           if(error) {
-           return;
-         }
-         if(tokenList.get(iterator).isParClose()) {
-            next();
-         }
-         else {
-            error = true;
-            System.out.println("Missing closing parenthesis");
-         }
-      }
+        else if(tokenList.get(iterator).isParOpen() && next()) {
+            openPars++;
+            exprTree = expr();
+            if(error) {
+                exprTree.clearTree();
+                return exprTree;
+            }
+            if(next() && tokenList.get(iterator).isParClose()) {
+                openPars--;
+                next();
+            }
+            else {
+                error = true;
+                exprTree.clearTree();
+                System.out.println("Missing closing parenthesis");
+            }
+        }
 
         else if(tokenList.get(iterator).isLambda()) {
             Node lambdaNode = new Node(tokenList.get(iterator));
@@ -154,10 +159,18 @@ public class ParserOp3 {
                             exprTree.clearTree();
                             return exprTree;
                         }
-                        exprTree.mergeTree(expr());
-                        if(error) {
-                            exprTree.clearTree();
-                            return exprTree;
+                        if(next()) {
+                            exprTree.mergeTree(expr());
+                            if(error) {
+                                exprTree.clearTree();
+                                return exprTree;
+                            }
+                            next();
+                        }
+                        else {
+                           error = true;
+                           exprTree.clearTree();
+                           System.out.println("Missing expression");
                         }
                     }
                     else {
@@ -178,6 +191,12 @@ public class ParserOp3 {
                 System.out.println("Missing variable");
             }
         }
+
+        else {
+            error = true;
+            System.out.println("Missing expression");
+        }
+        return exprTree;
    }
 
     private Node addColon() {
