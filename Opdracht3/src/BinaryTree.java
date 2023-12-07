@@ -20,9 +20,9 @@ public class BinaryTree {
         return root;
     }
 
-   //  public void setRoot(Node newNode) {
-   //      root = newNode;
-   //  }
+    public void setRoot(Node newNode) {
+        root = newNode;
+    }
 
    //  public Node getGapNode() {
    //      return gapNode;
@@ -54,17 +54,17 @@ public class BinaryTree {
         return false;
     }
 
-   //  public boolean addNodeApp(Node newNode) {
-   //      if(root == null) {
-   //          root = newNode;
-   //          return true;
-   //      }
-   //      else if(root.rightChild == null) {
-   //          root.rightChild = newNode;
-   //          return true;
-   //      }
-   //      return false;
-   //  }
+    public boolean addNodeApp(Node newNode) {
+        if(root == null) {
+            root = newNode;
+            return true;
+        }
+        else if(root.rightChild == null) {
+            root.rightChild = newNode;
+            return true;
+        }
+        return false;
+    }
 
    //  public boolean addNodeLeft(Node newNode) {
    //      if(root == null) {
@@ -99,18 +99,30 @@ public class BinaryTree {
         return false;
     }
 
-   //  public boolean addApplication() {
-   //      Token apToken = new Token("@");
-   //      Node apNode = new Node(apToken);
-   //      System.out.println("addApplication");
+    public boolean addArrow() {
+        Token arrowToken = new Token("->");
+        Node arrowNode = new Node(arrowToken);
 
-   //      // Application becomes the root of the tree
-   //      if(this.root != null) {
-   //          apNode.leftChild = this.root;
-   //      }
-   //      this.root = apNode;
-   //      return true;
-   //  }
+        // Application becomes the root of the tree
+        if(this.root != null) {
+            arrowNode.leftChild = this.root;
+        }
+        this.root = arrowNode;
+        return true;
+    }
+
+    public boolean addApplication() {
+        Token apToken = new Token("@");
+        Node apNode = new Node(apToken);
+        System.out.println("addApplication");
+
+        // Application becomes the root of the tree
+        if(this.root != null) {
+            apNode.leftChild = this.root;
+        }
+        this.root = apNode;
+        return true;
+    }
 
    //  public void printTree(Node node) {
    //      printTreeRed(node);
