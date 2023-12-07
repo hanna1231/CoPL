@@ -22,6 +22,12 @@ public class ParserOp3 {
       return false;
    }
 
+   public void errorMessage(String message, BinaryTree exprTree) {
+        error = true;
+        exprTree.clearTree();
+        System.out.println(message);
+   }
+
    public ParserOp3() {
       iterator = 0;
       openPars = 0;
@@ -79,9 +85,10 @@ public class ParserOp3 {
                 next();
             }
             else {
-                error = true;
-                typeTree.clearTree();
-                System.out.println("Missing closing parenthesis");
+                errorMessage("Missing closing parenthesis", typeTree);
+                // error = true;
+                // typeTree.clearTree();
+                // System.out.println("Missing closing parenthesis");
             }
         } // Type is "("<type>")"
 
@@ -104,8 +111,9 @@ public class ParserOp3 {
                 }
             }
             else {
-                error = true;
-                System.out.println("Missing arrow");
+                // error = true;
+                // System.out.println("Missing arrow");
+                errorMessage("Missing arrow", null);
             }
         }
         return typeTree;
@@ -137,9 +145,10 @@ public class ParserOp3 {
                 next();
             }
             else {
-                error = true;
-                exprTree.clearTree();
-                System.out.println("Missing closing parenthesis");
+                // error = true;
+                // exprTree.clearTree();
+                // System.out.println("Missing closing parenthesis");
+                errorMessage("Missing closing parenthesis", exprTree);
             }
         }
 
@@ -168,33 +177,38 @@ public class ParserOp3 {
                             next();
                         }
                         else {
-                           error = true;
-                           exprTree.clearTree();
-                           System.out.println("Missing expression");
+                        //    error = true;
+                        //    exprTree.clearTree();
+                        //    System.out.println("Missing expression");
+                        errorMessage("Missing expression", exprTree);
                         }
                     }
                     else {
-                        error = true;
-                        exprTree.clearTree();
-                        System.out.println("Missing type");
+                        // error = true;
+                        // exprTree.clearTree();
+                        // System.out.println("Missing type");
+                        errorMessage("Missing type", exprTree);
                     }
                 }
                 else {
-                    error = true;
-                    exprTree.clearTree();
-                    System.out.println("Missing caret");
+                    // error = true;
+                    // exprTree.clearTree();
+                    // System.out.println("Missing caret");
+                    errorMessage("Missing caret", exprTree);
                 }
             }
             else {
-                error = true;
-                exprTree.clearTree();
-                System.out.println("Missing variable");
+                // error = true;
+                // exprTree.clearTree();
+                // System.out.println("Missing variable");
+                errorMessage("Missing variable", exprTree);
             }
         }
 
         else {
-            error = true;
-            System.out.println("Missing expression");
+            // error = true;
+            // System.out.println("Missing expression");
+            errorMessage("Missing expression", null);
         }
         return exprTree;
    }
@@ -220,9 +234,10 @@ public class ParserOp3 {
             judgeTree.mergeTree(rightChild);
         }
         else {
-            error = true;
-            System.out.println("Missing colon");
-            judgeTree.clearTree();
+            // error = true;
+            // System.out.println("Missing colon");
+            // judgeTree.clearTree();
+            errorMessage("Missing colon", judgeTree);
         }
 
         return judgeTree;

@@ -117,34 +117,52 @@ public class BinaryTree {
    //      System.out.print("\n");
    //  }
 
-   //  // Prints the tree with parameter node as root
-   //  private void printTreeRed(Node node) {
-   //      if(node != null) {
-   //          if(node.getTokenValue().equals("@")) {
-   //              System.out.print("(");
-   //          }
+//    private void printTreeRed(Node node) { // Functie voor het printen van de boom
 
-   //          else {
-   //              System.out.print(node.getTokenValue());
-   //          }
+//         if(node != null) {
 
-   //          printTreeRed(node.leftChild);
+//         }
 
-   //          if(node.getTokenValue().equals("@")) {
-   //              System.out.print(" ");
-   //          }
+//    }
 
-   //          else if(node.getTokenValue().equals("\\")) {
-   //              System.out.print("(");
-   //          }
+    // Prints the tree with parameter node as root
+    private void printTree(Node node) {
+        if(node != null) {
+            
 
-   //          printTreeRed(node.rightChild);
+            if(node.getTokenValue().equals("@") || node.getTokenValue().equals(":") || node.getTokenValue().equals("->") || node.getTokenValue().equals("^")) {
+                System.out.print("(");
+            }
 
-   //          if(node.getTokenValue().equals("@") || node.getTokenValue().equals("\\")) {
-   //              System.out.print(")");
-   //          }
-   //      }
-   //  }
+            else {
+                System.out.print(node.getTokenValue());
+            }
+
+            printTree(node.leftChild);
+
+            if(node.getTokenValue().equals("@")) {
+                System.out.print(" ");
+            }
+            else if(node.getTokenValue().equals("\\")) {
+                System.out.print("(");
+            }
+            else if(node.getTokenValue().equals(":")){
+                System.out.print(":");
+            }
+            else if(node.getTokenValue().equals("->")) {
+                System.out.print("->");
+            }
+            else if(node.getTokenValue().equals("^")) {
+                System.out.print("^");
+            }
+
+            printTree(node.rightChild);
+
+            if(node.getTokenValue().equals("@") || node.getTokenValue().equals("\\") || node.getTokenValue().equals(":") || node.getTokenValue().equals("->") || node.getTokenValue().equals("^")) {
+                System.out.print(")");
+            }
+        }
+    }
 
    //  // When there's no reference to objects in the tree Java will delete the objects
    //  // automatically with the garbage collector

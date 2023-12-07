@@ -78,7 +78,7 @@ public class MainClass {
 
         }
 
-        if(isVar) {
+        if(isLVar || isUVar) {
             Token nieuwVarToken = new Token(var);
             parser.addToken(nieuwVarToken);
         }
