@@ -16,7 +16,7 @@ public class ParserOp3 {
     //    Returns true when (nested) expression is finished, otherwise false
     public boolean isFinished() {
         System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
-        if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
+        if(iterator == tokenList.size() || tokenList.get(iterator).isParClose() || tokenList.get(iterator).isColon()){
             System.out.println("Nested expression finished");
             return true;
         }
@@ -32,21 +32,21 @@ public class ParserOp3 {
         return false;
     }
 
-   public void errorMessage(String message, BinaryTree exprTree) {
-        error = true;
-        exprTree.clearTree();
-        System.out.println(message);
-   }
+    public void errorMessage(String message, BinaryTree exprTree) {
+            error = true;
+            exprTree.clearTree();
+            System.err.println(message);
+    }
 
-   public ParserOp3() {
-      iterator = 0;
-      openPars = 0;
-      error = false;
-   }
+    public ParserOp3() {
+        iterator = 0;
+        openPars = 0;
+        error = false;
+    }
 
-   public void addToken(Token nieuwToken) {
-      tokenList.add(nieuwToken);
-   }
+    public void addToken(Token nieuwToken) {
+        tokenList.add(nieuwToken);
+    }
 
     public void printList() {
         System.out.print("Output: ");
@@ -59,19 +59,25 @@ public class ParserOp3 {
         System.out.print("\n");
     }
 
-    public void parse() {
+    public int parse() {
         printList();
         if(tokenList.isEmpty()) {
-            System.out.print("Expression is empty");
-            // return 1;
+            System.err.print("Expression is empty");
+            return 1;
         }
         iterator = 0;
         openPars = 0;
         tree = judgement();
-        if(iterator < tokenList.size()) {
-            System.out.println("iterator: " + tokenList.get(iterator).getValue());
-            System.out.println("(Expression isn't valid)");
+        System.out.println(tokenList.size());
+        if(error || iterator < tokenList.size()-1) {
+            // System.out.println("iterator: " + tokenList.get(iterator).getValue());
+            System.err.println("(Expression isn't valid)");
+            return 1;
         } //Expression isn't finished
+        else {  
+            tree.printTree(tree.getRoot());
+            return 0;
+        }
     }
 
     public BinaryTree type() {
@@ -137,7 +143,9 @@ public class ParserOp3 {
         BinaryTree exprTree = new BinaryTree();
         exprTree.setRoot(leftChild);
         BinaryTree newExprTree = new BinaryTree();
+        BinaryTree child = new BinaryTree();
         if(tokenList.get(iterator).isLVar()) {
+            System.out.println("hanna banana");
             Node lvarNode = new Node(tokenList.get(iterator));
             newExprTree.addNode(lvarNode);
             next();
@@ -145,7 +153,7 @@ public class ParserOp3 {
       
         else if(tokenList.get(iterator).isParOpen() && next()) {
             openPars++;
-            newExprTree = expr();
+            newExprTree = expr(child.getRoot());
             if(error) {
                 exprTree.clearTree();
                 return exprTree;
@@ -179,7 +187,7 @@ public class ParserOp3 {
                             return exprTree;
                         }
                         if(next()) {
-                            newExprTree.mergeTree(expr());
+                            newExprTree = expr(child.getRoot());
                             if(error) {
                                 exprTree.clearTree();
                                 return exprTree;
@@ -218,7 +226,7 @@ public class ParserOp3 {
         else {
             // error = true;
             // System.out.println("Missing expression");
-            errorMessage("Missing expression", null);
+            errorMessage("Missing expression HANNAHANNAHANNA", exprTree);
             return exprTree;
         }
         exprTree.addApplication();
@@ -239,8 +247,10 @@ public class ParserOp3 {
     public BinaryTree judgement() {
         BinaryTree judgeTree = new BinaryTree();
         judgeTree.addNode(addColon());
-        BinaryTree leftChild = expr(judgeTree.getRoot());
+        BinaryTree emptyTree = new BinaryTree();
+        BinaryTree leftChild = expr(emptyTree.getRoot());
         leftChild.deleteApp();
+        leftChild.printTree(leftChild.getRoot());
         judgeTree.mergeTree(leftChild);
         if(error) {
             judgeTree.clearTree();
@@ -250,6 +260,7 @@ public class ParserOp3 {
         // Continuing with right side of colon
         if(tokenList.get(iterator).isColon() && next()) {
             BinaryTree rightChild = type();
+            rightChild.printTree(rightChild.getRoot());
             judgeTree.mergeTree(rightChild);
         }
         else {

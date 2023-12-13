@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class MainClass {
 
     public static boolean leesIn(String invoer, ParserOp3 parser) { // Reads the whole expression token by token in 
+        System.out.println(invoer);
         boolean isVar = false;
         boolean isLVar = false;
         boolean isUVar = false;
@@ -44,7 +45,7 @@ public class MainClass {
                   var = var.concat(invoer.substring(i, i + 1));
                }
                else{
-                  System.out.println("Syntax error: number first character of variable");
+                  System.err.println("Syntax error: number first character of variable");
                   return false;
                }
             }
@@ -56,7 +57,7 @@ public class MainClass {
                   parser.addToken(nieuwVarToken);
                }
                else{
-                  System.out.println("Syntax error: - not followed by >");
+                  System.err.println("Syntax error: - not followed by >");
                   return false;
                }  
             }
@@ -86,29 +87,29 @@ public class MainClass {
         return true;
     }
 
-    private static String LeesFileExpressie(String filenaam) {
+   //  private static String LeesFileExpressie(String filenaam) {
          
-      try{
-         Scanner filescanner = new Scanner(new File(filenaam)); // We initialize a new scanner
-         StringBuilder expressie = new StringBuilder(); // We initialize a new stringbuilder
+   //    try{
+   //       Scanner filescanner = new Scanner(new File(filenaam)); // We initialize a new scanner
+   //       StringBuilder expressie = new StringBuilder(); // We initialize a new stringbuilder
 
-         while(filescanner.hasNextLine()){
-               expressie.append(filescanner.nextLine()); // We add the next line to the stringbuilder
-         }
-         filescanner.close(); // We close the scanner
-         return expressie.toString(); // We return the stringbuilder as a string
-      }
-      catch(FileNotFoundException e){
-         System.out.println("File not found");
-         return null;
-      }
-    }
+   //       while(filescanner.hasNextLine()){
+   //             expressie.append(filescanner.nextLine()); // We add the next line to the stringbuilder
+   //             System.out.println(expressie.toString());
+   //       }
+   //       filescanner.close(); // We close the scanner
+   //       return expressie.toString(); // We return the stringbuilder as a string
+   //    }
+   //    catch(FileNotFoundException e){
+   //       System.err.println("File not found");
+   //       return null;
+   //    }
+   //  }
     
     public static void main(String[] args) {
        
       // Make it so that the user can input multiple expressions
         ParserOp3 parser = new ParserOp3(); // We initialize a new object parser
-        System.out.println("Please provide a text file to read in from:");
 
         int exitStatus = 1;
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
@@ -117,12 +118,12 @@ public class MainClass {
 
         String filenaam = "expressie.txt";
         
-        String string = LeesFileExpressie(filenaam); // We read the file
-
+        //String string = LeesFileExpressie(filenaam); // We read the file
+        String string = sc.nextLine();
         if(string != null && leesIn(string, parser)) {
-            //exitStatus = parser.parse();
-            System.out.println("GA ik hierin");
-            parser.printList();
+            exitStatus = parser.parse();
+            // System.out.println("GA ik hierin");
+            // parser.printList();
         }
 
         sc.close(); // We close the scanner

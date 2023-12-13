@@ -137,15 +137,16 @@ public class BinaryTree {
 
 //    }
 
-    // Prints the tree with parameter node as root
-    private void printTree(Node node) {
-        if(node != null) {
-            
 
-            if(node.getTokenValue().equals("@") || node.getTokenValue().equals(":") || node.getTokenValue().equals("->") || node.getTokenValue().equals("^")) {
+    // Prints the tree with parameter node as root
+    public void printTree(Node node) {
+        if(node != null) {
+            if(node.getTokenValue().equals("@") || node.getTokenValue().equals(":") || node.getTokenValue().equals("->") ) {
                 System.out.print("(");
             }
-
+            else if(node.getTokenValue().equals("^")) {
+                //stik er in
+            }
             else {
                 System.out.print(node.getTokenValue());
             }
@@ -165,7 +166,7 @@ public class BinaryTree {
                 System.out.print("->");
             }
             else if(node.getTokenValue().equals("^")) {
-                System.out.print("^");
+                System.out.print("^ (");
             }
 
             printTree(node.rightChild);
@@ -173,6 +174,8 @@ public class BinaryTree {
             if(node.getTokenValue().equals("@") || node.getTokenValue().equals("\\") || node.getTokenValue().equals(":") || node.getTokenValue().equals("->") || node.getTokenValue().equals("^")) {
                 System.out.print(")");
             }
+           
+            
         }
     }
 
