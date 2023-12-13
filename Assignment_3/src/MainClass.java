@@ -12,7 +12,7 @@ public class MainClass {
         String var = "";
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
-            System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
+            //System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
             if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':' || invoer.charAt(i) == '^') { // Check if the character is a paropen or parclose
                 if(isLVar || isUVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
@@ -72,7 +72,7 @@ public class MainClass {
             }
 
             else { // Fault has occured
-                System.out.println("Dit werkt niet loser");
+                //System.out.println("Dit werkt niet loser");
                 return false;
             }
 
@@ -82,7 +82,7 @@ public class MainClass {
             Token nieuwVarToken = new Token(var);
             parser.addToken(nieuwVarToken);
         }
-        System.out.println("Yes dit werkt");
+        //System.out.println("Yes dit werkt");
         return true;
     }
 

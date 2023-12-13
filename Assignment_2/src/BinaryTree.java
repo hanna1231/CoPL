@@ -44,7 +44,7 @@ public class BinaryTree {
         if((node.token.isLambda() || node.token.isApply()) && (node.leftChild == null || node.rightChild == null)) {
             gapNode = node;
             System.out.println(gapNode == null);
-            System.out.println("changed");
+            // System.out.println("changed");
             return true;
         }
 
@@ -88,7 +88,7 @@ public class BinaryTree {
         
         gapNode = null;
         if(findGap(root)) {
-            System.out.println(gapNode == null);
+            // System.out.println(gapNode == null);
             if(gapNode.leftChild == null) {
                 gapNode.leftChild = newNode;
             }
@@ -103,7 +103,7 @@ public class BinaryTree {
     public boolean addApplication() {
         Token apToken = new Token("@");
         Node apNode = new Node(apToken);
-        System.out.println("addApplication");
+        // System.out.println("addApplication");
 
         // Application becomes the root of the tree
         if(this.root != null) {
@@ -155,22 +155,22 @@ public class BinaryTree {
     }
 
     public boolean mergeTree(BinaryTree addTree) {
-        System.out.println("HET IS HIER HANNA!");
+        // System.out.println("HET IS HIER HANNA!");
         addTree.printTree(addTree.getRoot());
         if(this.root == null) {
-            System.out.println("ROOT");
+            // System.out.println("ROOT");
             this.root = addTree.getRoot();
         }
         else if(!findGap(this.root)) {
-            System.out.println("FOUT");
+            // System.out.println("FOUT");
             return false;
         }
         else if(gapNode.leftChild == null) {
-            System.out.println("LINKS");
+            // System.out.println("LINKS");
             gapNode.leftChild = addTree.getRoot();
         }
         else {
-            System.out.println("RECHTS");
+            // System.out.println("RECHTS");
             gapNode.rightChild = addTree.getRoot();
         }
 
@@ -193,7 +193,7 @@ public class BinaryTree {
         deleteApp(node.leftChild, node);
         deleteApp(node.rightChild, node);
 
-        System.out.println("deleteApp" + node.getTokenValue());
+        // System.out.println("deleteApp" + node.getTokenValue());
         if(node.leftChild == null && node.rightChild != null) {
             if(node == this.root) {
                 this.root = node.rightChild;
@@ -235,12 +235,12 @@ public class BinaryTree {
         }
 
         if(node.getTokenValue().equals(changeVar)) {
-            System.out.println("old N");
-            printTree(N);
+            // System.out.println("old N");
+            // printTree(N);
             node.setNode(N);
-            System.out.println("new N");
+            // System.out.println("new N");
             // printTree(node);
-            printTree(N);
+            // printTree(N);
             changeVarCounter++;
             return;
         }
@@ -264,7 +264,7 @@ public class BinaryTree {
         }
         node.setNode(node.leftChild.rightChild);
         // System.out.println("tree");
-        printTree(node);
+        // printTree(node);
         changeVarReduction(node, changeVar, N);
         // System.out.println("tree after reduction: " + changeVarCounter);
         // printTree(node);
@@ -277,7 +277,7 @@ public class BinaryTree {
         while(reductionCounter < 500 && change) {
             // printTree(node);
             change = findAppLambdaPriv(node);
-            System.out.println(reductionCounter);
+            // System.out.println(reductionCounter);
             // printTree(node);
         }
         if(reductionCounter == 500) {
@@ -301,7 +301,7 @@ public class BinaryTree {
         }
 
         if(node.getTokenValue().equals("@") && node.leftChild.getTokenValue().equals("\\") ) {
-            System.out.println("hoi");
+            // System.out.println("hoi");
             checkConversion(node);
             reduction(node);
             reductionCounter++;
@@ -325,15 +325,15 @@ public class BinaryTree {
 
         ArrayList<String> boundVariables = new ArrayList<String>();
         freeVarList = findFreeVar(node.rightChild, boundVariables);
-        System.out.println("\nFree variables of N");
+        // System.out.println("\nFree variables of N");
         for(int i = 0; i < freeVarList.size(); i++) {
-            System.out.println(freeVarList.get(i));
+            // System.out.println(freeVarList.get(i));
         }
         
         for(int i = 0; i < freeVarList.size(); i++) {
             if(isBound(node.leftChild, freeVarList.get(i))) {
                 doConversion(node.leftChild, freeVarList.get(i), newVar());
-                System.out.println("free var is bound in M" + freeVarList.get(i));
+                // System.out.println("free var is bound in M" + freeVarList.get(i));
             }
         }
         return true;

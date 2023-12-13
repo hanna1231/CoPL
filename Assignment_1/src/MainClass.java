@@ -55,7 +55,7 @@ public class MainClass {
     
     public static void main(String[] args) {
         ParserOp1 parser = new ParserOp1(); // We initialize a new object parser
-        System.out.println("Please enter a string:");
+        // System.out.println("Please enter a string:");
         boolean exitStatus = false;
 
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
@@ -76,7 +76,7 @@ public class MainClass {
          }
 
          parser = new ParserOp1(); // We initialize a new object parser
-         System.out.println("Please enter a string:");
+        //  System.out.println("Please enter a string:");
          //exitStatus = false;
          sc = new Scanner(System.in); // We initialize a new scanner
          string = sc.nextLine(); // We read the input of the user

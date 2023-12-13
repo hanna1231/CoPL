@@ -31,7 +31,7 @@ public class ParserOp1 {
     }
 
     public void printList() {
-        System.out.print("Output: ");
+        //System.out.print("Output: ");
         for (int i = 0; i < tokenList.size(); i++) {
             // if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
             //     System.out.println("(");

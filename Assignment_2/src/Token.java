@@ -16,27 +16,27 @@ public class Token { // All possible options for tokens
             case "(":
                 type = Options.PAROPEN;
                 this.value = newValue;
-                System.out.println("Token constructor paropen: " + this.value);
+                //System.out.println("Token constructor paropen: " + this.value);
                 break;
             case ")":
                 type = Options.PARCLOSE;
                 this.value = newValue;
-                System.out.println("Token constructor parclose: " + this.value);
+                //System.out.println("Token constructor parclose: " + this.value);
                 break;
             case "\\":
                 type = Options.LAMBDA;
                 this.value = newValue;
-                System.out.println("Token constructor lambda: " + this.value);
+                //System.out.println("Token constructor lambda: " + this.value);
                 break;
             case "@":
                 type = Options.APPLY;
                 this.value = newValue;
-                System.out.println("Token constructor apply: " + this.value);
+                //System.out.println("Token constructor apply: " + this.value);
                 break;
             default:
                 type = Options.VAR;
                 this.value = newValue;
-                System.out.println("Token constructor var: " + this.value);
+                //System.out.println("Token constructor var: " + this.value);
                 break;
         }
     }

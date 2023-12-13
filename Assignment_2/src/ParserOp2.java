@@ -15,10 +15,10 @@ public class ParserOp2 {
     private boolean next() {
         if(iterator+1 < tokenList.size()) {
             iterator++;
-            System.out.println("Next is true");
+            // System.out.println("Next is true");
             return true;
         }
-            System.out.println("Next is false");
+            // System.out.println("Next is false");
         return false;
     }
 
@@ -34,7 +34,7 @@ public class ParserOp2 {
     }
 
     public void printList() {
-        System.out.print("Output: ");
+        // System.out.print("Output: ");
         for (int i = 0; i < tokenList.size(); i++) {
             System.out.print(tokenList.get(i).getValue());
             if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
@@ -46,9 +46,9 @@ public class ParserOp2 {
 
     // Returns true when (nested) expression is finished, otherwise false
     public boolean isFinished() {
-        System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
+        // System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
         if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
-            System.out.println("Nested expression finished");
+            // System.out.println("Nested expression finished");
             return true;
         }
         
@@ -56,7 +56,7 @@ public class ParserOp2 {
     }
 
     public int parse() {
-        printList();
+        // printList();
         if(tokenList.isEmpty()) { // Nothing in expression
             System.out.println("Expression is empty");
             return 1;
@@ -66,20 +66,20 @@ public class ParserOp2 {
         Node emptyNode = null;
         tree = expr(emptyNode);
         if(iterator < tokenList.size()) { 
-            System.out.println("iterator: " + tokenList.get(iterator).getValue());
+            // System.out.println("iterator: " + tokenList.get(iterator).getValue());
             System.out.println("(Expression isn't valid)");
             return 1;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
-            printList();
+            // printList();
             BinaryTree oldTree = tree;
-            System.out.print("Old tree: ");
-            tree.printTree(tree.getRoot());
+            // System.out.print("Old tree: ");
+            // tree.printTree(tree.getRoot());
 
             tree.deleteApp();
-            System.out.println(oldTree.equals(tree));
-            System.out.print("Output tree: ");
-            tree.printTree(tree.getRoot());
+            // System.out.println(oldTree.equals(tree));
+            // System.out.print("Output tree: ");
+            // tree.printTree(tree.getRoot());
             // ArrayList<String> boundVar = new ArrayList<String>();
             // ArrayList<String> freeVar = tree.findFreeVar(tree.getRoot(), boundVar);
             // System.out.println("\nFree variables");
@@ -98,14 +98,14 @@ public class ParserOp2 {
     }
 
     private BinaryTree expr1(Node leftChild) { // <expr1> ::= <lexpr><expr1> | e
-        System.out.println("expr1");
+        // System.out.println("expr1");
         BinaryTree expr1Tree =  new BinaryTree();
         expr1Tree.setRoot(leftChild);
-        System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
+        // System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
         if(isFinished()){
             return expr1Tree;
         }
-        System.out.println("Continuing in expr1");
+        // System.out.println("Continuing in expr1");
         BinaryTree lexpTree = lexpr();
     
         if(error) {
@@ -125,7 +125,7 @@ public class ParserOp2 {
 
     private BinaryTree lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
         BinaryTree lexprTree = new BinaryTree();
-        System.out.println("lexpr");
+        // System.out.println("lexpr");
         if(tokenList.get(iterator).isLambda()) {
             Token openingToken = new Token("(");
             tokenList.add(iterator, openingToken); // Add parentheses for ambiguity
@@ -139,12 +139,12 @@ public class ParserOp2 {
                 lexprTree.clearTree();
                 return lexprTree;
             }
-            System.out.print("Output tree: ");
-            tree.printTree(tree.getRoot());
-            System.out.print("\n");
+            // System.out.print("Output tree: ");
+            // tree.printTree(tree.getRoot());
+            // System.out.print("\n");
 
             if(next() && tokenList.get(iterator).isVar()) { // Jump to variable
-                System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
+                // System.out.println("var (" + tokenList.get(iterator).getValue() + ")");
 
                 // Add var to tree
                 Node varNode = new Node(tokenList.get(iterator));
@@ -180,8 +180,8 @@ public class ParserOp2 {
         }   
         else {
             lexprTree = pexpr();
-            System.out.println("lexprTree");
-            lexprTree.printTree(lexprTree.getRoot());
+            // System.out.println("lexprTree");
+            // lexprTree.printTree(lexprTree.getRoot());
             
         }
         return lexprTree;
@@ -189,7 +189,7 @@ public class ParserOp2 {
 
     private BinaryTree pexpr() { // <pexpr> ::= <var> | (<expr>)
         BinaryTree pexprTree = new BinaryTree();
-        System.out.println("pexpr");
+        // System.out.println("pexpr");
 
         if(tokenList.size() == iterator) {
             System.out.println("Not a complete expression");
@@ -222,9 +222,9 @@ public class ParserOp2 {
         }
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
-            System.out.println("var (" + tokenList.get(iterator).getValue() + "), iterator: " + iterator);
+            // System.out.println("var (" + tokenList.get(iterator).getValue() + "), iterator: " + iterator);
             Node varNode = new Node(tokenList.get(iterator));
-            System.out.println(varNode.getTokenValue());
+            // System.out.println(varNode.getTokenValue());
             // pexprTree.addApplication();
             if(!pexprTree.addNode(varNode)) {
                 System.out.println("Node can't be added to tree");
@@ -233,8 +233,8 @@ public class ParserOp2 {
                 return pexprTree;
             }
             iterator++;
-            System.out.println("pexprTree");
-            pexprTree.printTree(pexprTree.getRoot());
+            // System.out.println("pexprTree");
+            // pexprTree.printTree(pexprTree.getRoot());
         }
     
         else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
@@ -248,7 +248,7 @@ public class ParserOp2 {
     
     private BinaryTree expr(Node leftChild) { // <expr> ::= <lexpr><expr1>
         BinaryTree exprTree = new BinaryTree();
-        System.out.println("expr");
+        // System.out.println("expr");
         exprTree.setRoot(leftChild);
         
         BinaryTree lexpTree = lexpr();
@@ -260,8 +260,8 @@ public class ParserOp2 {
 
         if(!isFinished()) {
             BinaryTree rightChild = expr1(exprTree.getRoot());
-            System.out.println("rightChild");
-            rightChild.printTree(rightChild.getRoot());
+            // System.out.println("rightChild");
+            // rightChild.printTree(rightChild.getRoot());
             return rightChild;
         }
         return exprTree;
