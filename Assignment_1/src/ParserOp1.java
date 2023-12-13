@@ -13,10 +13,10 @@ public class ParserOp1 {
     private boolean next() {
         if(iterator+1 < tokenList.size()) {
             iterator++;
-            System.out.println("Next is true");
+            // System.out.println("Next is true");
             return true;
         }
-            System.out.println("Next is false");
+            // System.out.println("Next is false");
         return false;
     }
 
@@ -33,9 +33,9 @@ public class ParserOp1 {
     public void printList() {
         System.out.print("Output: ");
         for (int i = 0; i < tokenList.size(); i++) {
-            if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
-                System.out.println("(");
-            }
+            // if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
+            //     System.out.println("(");
+            // }
             System.out.print(tokenList.get(i).value);
             if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
                 System.out.print(" ");
@@ -45,7 +45,7 @@ public class ParserOp1 {
     }
 
     public boolean parse() {
-        printList();
+        // printList();
         if(tokenList.isEmpty()) { // Nothing in expression
             //System.out.println("Expression is empty");
             return false;

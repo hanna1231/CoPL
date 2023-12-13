@@ -65,7 +65,7 @@ public class MainClass {
          if(leesIn(string, parser)) {
                exitStatus = parser.parse();
          }
-         System.out.println("\n" + exitStatus);
+        //  System.out.println("\n" + exitStatus);
 
          // if(exitStatus) { // Print the exit status
          //       System.exit(0);
