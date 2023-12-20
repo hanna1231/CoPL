@@ -30,44 +30,40 @@ public class ParserOp1 {
         tokenList.add(nieuwToken);
     }
 
+    // printList is only called after parsing and assumes a correct grammar
     public void printList() {
         //System.out.print("Output: ");
         for (int i = 0; i < tokenList.size(); i++) {
-            // if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
-            //     System.out.println("(");
-            // }
             System.out.print(tokenList.get(i).value);
-            if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
-                System.out.println(" ");
+            if((tokenList.get(i).isVar() || tokenList.get(i).isParClose()) && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
+                System.out.print(" ");
             } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
         }
         System.out.print("\n");
     }
 
-    public boolean parse() {
+    public int parse() {
         // printList();
         if(tokenList.isEmpty()) { // Nothing in expression
             System.err.println("Expression is empty");
-            return false;
+            return 1;
         }
         iterator = 0;
         openPars = 0;
         expr();
         if(iterator < tokenList.size()) { 
             //System.out.println("iterator: " + tokenList.get(iterator).value);
-            //System.out.println("(Expression isn't valid)");
-            return false;
+            System.err.println("(Expression isn't valid)");
+            return 1;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
             printList();
-            return true;
+            return 0;
         }
-        return false;
+        return 1;
     }
 
-    private void expr1() { // <expr1> ::= <lexpr><expr1> | e
-        // System.out.println("expr1");
-        // System.out.println("iterator: " + iterator + ", tokenList size: " + tokenList.size());
+    private void expr1(int start) { // <expr1> ::= <lexpr><expr1> | e
         if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
             //System.out.println("Nested expression finished");
             return;
@@ -77,7 +73,15 @@ public class ParserOp1 {
         if(error) {
             return;
         }
-        expr1();
+        // Add parentheses for ambiguity
+        Token openingToken = new Token("(");
+        tokenList.add(start, openingToken);
+        iterator++; // Token added so iterator needs to increase
+        Token closingToken = new Token(")");
+        tokenList.add(iterator, closingToken);
+        iterator++; // Token added so iterator needs to increase
+
+        expr1(start);
     }
 
     private void lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
@@ -152,15 +156,11 @@ public class ParserOp1 {
     
     private void expr() { // <expr> ::= <lexpr><expr1>
         // System.out.println("expr");
-        int iAtStart = iterator;
+        int itAtStart = iterator;
         lexpr();
         if(error) {
             return;
         } // Don't continue after an error
-        // if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()) {
-        //     Token openingToken = new Token("(");
-        //     tokenList.add(iAtStart, openingToken);
-        //     iterator++;
-        expr1();
+        expr1(itAtStart);
     }
 }
