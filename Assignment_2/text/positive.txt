@@ -1,8 +1,6 @@
-(x y)                         ## no b reduction ##
-\x\y(x\z y)                   ## no b reduction ##
-(\x x)(\y y)                  ## b reduction to (\y y) ##
-(\x \y x)(\z y)               ## a conversion to (\x \Randomvar x)(\z y) b reduction to (\x \w x)(\z y) b redcution to (\w \z y) 
-
-(\x y)((\x (x x))(\x (x x)))  ## (\x y)((\x (x x))(\x (x x))) --> ((\x (x x))(\x (x x))) --> ()
-
-(\x x x)(\x x x)              ## b reduction to (x x)       
+(x y)
+\x\y(x\z y)
+(\x x)(\y y)
+(\x \y x)(\z y)
+(\x y)((\x (x x))(\x (x x)))
+(\x x x)(\x x x)

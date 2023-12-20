@@ -103,7 +103,7 @@ public class BinaryTree {
         Token arrowToken = new Token("->");
         Node arrowNode = new Node(arrowToken);
 
-        // Application becomes the root of the tree
+        // Arrow becomes the root of the tree
         if(this.root != null) {
             arrowNode.leftChild = this.root;
         }
@@ -237,6 +237,30 @@ public class BinaryTree {
             return;
         }
     }
+
+    public boolean checkType() {
+        if(root == null) {
+            return true;
+        }
+        return checkTypePriv(getRoot().leftChild, getRoot().rightChild);
+    }
+
+    private boolean checkTypePriv(Node rootLeft, Node rootRight, boolean lambdaNecessary) {
+        if(!rootLeft.token.isLambda()) {
+            checkTypePriv(rootLeft, rootRight)
+        }
+        
+        if(rootLeft.token.isLambda()) {
+            if(!rootRight.token.isLambda()) {
+                checkTypePriv(rootLeft, rootRight, lambdaNecessary)
+            }
+        }
+    }
+
+
+
+
+
 }
 
     

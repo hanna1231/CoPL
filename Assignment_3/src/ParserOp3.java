@@ -86,10 +86,11 @@ public class ParserOp3 {
             Node typeVarNode = new Node(tokenList.get(iterator));
             typeTree.addNode(typeVarNode);
             if(next() && tokenList.get(iterator).isArrow()) {
+                System.out.println("There's an arrow");
                 typeTree.addArrow();
                 if(next()) {
                     typeTree.mergeTree(type());
-                    next();
+                    // next();
                 }
                 else {
                     error = true;
@@ -106,11 +107,13 @@ public class ParserOp3 {
                 typeTree.clearTree();
                 return typeTree;
             }
-            if(next() && tokenList.get(iterator).isParClose()) {
+            // misschien nog een is finished check in deze if 
+            if(iterator != tokenList.size() && tokenList.get(iterator).isParClose()) {
                 openPars--;
             }
             else {
-                errorMessage("Missing closing parenthesis", typeTree);
+                System.out.println( tokenList.get(iterator).getValue());
+                errorMessage("Missing closing parenthesis TYpe", typeTree);
                 // error = true;
                 // typeTree.clearTree();
                 // System.out.println("Missing closing parenthesis");
@@ -120,7 +123,7 @@ public class ParserOp3 {
                 typeTree.addArrow();
                 if(next()) {
                     typeTree.mergeTree(type());
-                    next();
+                    // next();
                 }
                 else {
                     error = true;
@@ -154,11 +157,13 @@ public class ParserOp3 {
         else if(tokenList.get(iterator).isParOpen() && next()) {
             openPars++;
             newExprTree = expr(child.getRoot());
+            newExprTree.printTree(newExprTree.getRoot());
+            System.out.println(tokenList.get(iterator).getValue());
             if(error) {
                 exprTree.clearTree();
                 return exprTree;
             }
-            if(next() && tokenList.get(iterator).isParClose()) {
+            if(iterator != tokenList.size() && tokenList.get(iterator).isParClose()) {
                 openPars--;
                 next();
             }
@@ -166,7 +171,7 @@ public class ParserOp3 {
                 // error = true;
                 // exprTree.clearTree();
                 // System.out.println("Missing closing parenthesis");
-                errorMessage("Missing closing parenthesis", exprTree);
+                errorMessage("Missing closing parenthesis EXpR", exprTree);
             }
         }
 
@@ -186,13 +191,15 @@ public class ParserOp3 {
                             exprTree.clearTree();
                             return exprTree;
                         }
-                        if(next()) {
-                            newExprTree = expr(child.getRoot());
+                        if(!isFinished()) {
+                            System.out.println("expression after type");
+                            newExprTree.mergeTree(expr(child.getRoot()));
+                            newExprTree.printTree(newExprTree.getRoot());
+                            System.out.println("iterator" + tokenList.get(iterator).getValue());
                             if(error) {
                                 exprTree.clearTree();
                                 return exprTree;
                             }
-                            next();
                         }
                         else {
                         //    error = true;
@@ -252,10 +259,12 @@ public class ParserOp3 {
         leftChild.deleteApp();
         leftChild.printTree(leftChild.getRoot());
         judgeTree.mergeTree(leftChild);
+        System.out.println("TERUG IN JUDGEMENT1");
         if(error) {
             judgeTree.clearTree();
             return judgeTree;
         }
+        System.out.println("TERUG IN JUDGEMENT2");
 
         // Continuing with right side of colon
         if(tokenList.get(iterator).isColon() && next()) {

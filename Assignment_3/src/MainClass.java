@@ -5,21 +5,34 @@ import java.util.Scanner;
 public class MainClass {
 
     public static boolean leesIn(String invoer, ParserOp3 parser) { // Reads the whole expression token by token in 
-        System.out.println(invoer);
+        System.out.println(invoer); 
         boolean isVar = false;
         boolean isLVar = false;
         boolean isUVar = false;
+        Token nieuw = null;
 
         String var = "";
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
             //System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
-            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':' || invoer.charAt(i) == '^') { // Check if the character is a paropen or parclose
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':' || invoer.charAt(i) == '^' || invoer.charAt(i) == '-') { // Check if the character is a paropen or parclose
                 if(isLVar || isUVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
-                }   
-                Token nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
+                }
+                if(invoer.charAt(i) == '-') {
+                    i++;
+                    if(invoer.charAt(i) == '>'){
+                        nieuw = new Token("->");
+                    }
+                    else{
+                        System.err.println("Syntax error: - not followed by >");
+                        return false;
+                    } 
+                }
+                else {
+                    nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
+                }
                 parser.addToken(nieuw);
                 isLVar = false; // Reset the variable
                 isUVar = false; // Reset the variable

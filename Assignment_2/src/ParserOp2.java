@@ -58,7 +58,7 @@ public class ParserOp2 {
     public int parse() {
         // printList();
         if(tokenList.isEmpty()) { // Nothing in expression
-            System.out.println("Expression is empty");
+            System.err.println("Expression is empty");
             return 1;
         }
         iterator = 0;
@@ -67,7 +67,7 @@ public class ParserOp2 {
         tree = expr(emptyNode);
         if(iterator < tokenList.size()) { 
             // System.out.println("iterator: " + tokenList.get(iterator).getValue());
-            System.out.println("(Expression isn't valid)");
+            System.err.println("(Expression isn't valid)");
             return 1;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
@@ -134,7 +134,7 @@ public class ParserOp2 {
             next(); // Move iterator to lambda
             Node lambdaNode = new Node(tokenList.get(iterator));
             if(!lexprTree.addNodeApp(lambdaNode)) {
-                System.out.println("Node can't be added to tree");
+                System.err.println("Node can't be added to tree");
                 error = true;
                 lexprTree.clearTree();
                 return lexprTree;
@@ -149,14 +149,14 @@ public class ParserOp2 {
                 // Add var to tree
                 Node varNode = new Node(tokenList.get(iterator));
                 if(!lexprTree.addNodeLeft(varNode)) {
-                    System.out.println("Node can't be added to tree");
+                    System.err.println("Node can't be added to tree");
                     error = true;
                     lexprTree.clearTree();
                     return lexprTree;
                 }
 
                 if(!next()) { // If no expression --> error
-                    System.out.println("Missing expression after lambda");
+                    System.err.println("Missing expression after lambda");
                     error = true;
                     lexprTree.clearTree();
                     return lexprTree;
@@ -174,7 +174,7 @@ public class ParserOp2 {
             } 
             else {
                 error = true;
-                System.out.println("(missing variable after lambda)");
+                System.err.println("(missing variable after lambda)");
             }
 
         }   
@@ -192,7 +192,7 @@ public class ParserOp2 {
         // System.out.println("pexpr");
 
         if(tokenList.size() == iterator) {
-            System.out.println("Not a complete expression");
+            System.err.println("Not a complete expression");
             error = true;
             pexprTree.clearTree();
             return pexprTree;
@@ -216,7 +216,7 @@ public class ParserOp2 {
             }
             else { // Error if there is no closing parenthesis
                 error = true;
-                System.out.println("Missing closing parenteses");
+                System.err.println("Missing closing parenteses");
                 pexprTree.clearTree();
             }
         }
@@ -227,7 +227,7 @@ public class ParserOp2 {
             // System.out.println(varNode.getTokenValue());
             // pexprTree.addApplication();
             if(!pexprTree.addNode(varNode)) {
-                System.out.println("Node can't be added to tree");
+                System.err.println("Node can't be added to tree");
                 error = true;
                 pexprTree.clearTree();
                 return pexprTree;
@@ -238,7 +238,7 @@ public class ParserOp2 {
         }
     
         else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
-            System.out.println("(missing expression after opening parenthesis)");
+            System.err.println("(missing expression after opening parenthesis)");
             error = true;
             pexprTree.clearTree();
 

@@ -21,7 +21,7 @@ public class MainClass {
 
             else if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) || (invoer.charAt(i) >= 'a' && invoer.charAt(i) <= 'z' ) || (invoer.charAt(i) >= 'A' && invoer.charAt(i) <= 'Z')) { //If number or letter
                if((invoer.charAt(i) >= '0' && invoer.charAt(i) <= '9' ) && !isVar) { // If number and not variable
-                    System.out.println("Syntax error: number first character of variable");
+                    System.err.println("Syntax error: number first character of variable");
                     return false;
                 }
                 isVar = true;
@@ -52,6 +52,27 @@ public class MainClass {
         return true;
         
     }
+
+    //  private static String LeesFileExpressie(String filenaam) {
+         
+    //    try{
+    //       Scanner filescanner = new Scanner(new File(filenaam)); // We initialize a new scanner
+    //       StringBuilder expressie = new StringBuilder(); // We initialize a new stringbuilder
+
+    //       while(filescanner.hasNextLine()){
+    //             expressie.append(filescanner.nextLine()); // We add the next line to the stringbuilder
+    //             System.out.println(expressie.toString());
+    //       }
+    //       filescanner.close(); // We close the scanner
+    //       return expressie.toString(); // We return the stringbuilder as a string
+    //    }
+    //    catch(FileNotFoundException e){
+    //       System.err.println("File not found");
+    //       return null;
+    //    }
+    //  }
+
+
     
     public static void main(String[] args) {
        
@@ -59,6 +80,11 @@ public class MainClass {
         ParserOp2 parser = new ParserOp2(); // We initialize a new object parser
         // System.out.println("Please enter a string:");
         int exitStatus = 1;
+
+        //String filenaam = sc.nextLine(); // We read the input of the user --> zodat we niet de hele tijd de filenaam moeten invoeren
+
+        //String filenaam = "expressie.txt";
+
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
         String string = sc.nextLine(); // We read the input of the user
         

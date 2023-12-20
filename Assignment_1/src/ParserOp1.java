@@ -38,7 +38,7 @@ public class ParserOp1 {
             // }
             System.out.print(tokenList.get(i).value);
             if(tokenList.get(i).isVar() && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
-                System.out.print(" ");
+                System.out.println(" ");
             } // Only print a whitespace whenever there's no closing parentheses following or it isn't the end of line
         }
         System.out.print("\n");
@@ -47,7 +47,7 @@ public class ParserOp1 {
     public boolean parse() {
         // printList();
         if(tokenList.isEmpty()) { // Nothing in expression
-            //System.out.println("Expression is empty");
+            System.err.println("Expression is empty");
             return false;
         }
         iterator = 0;
@@ -88,7 +88,7 @@ public class ParserOp1 {
             if(next() && next() && tokenList.get(iterator).isVar()) { // Jump to variable
                 //System.out.println("var (" + tokenList.get(iterator).value + ")");
                 if(!next()) { // If no expression --> error
-                    System.out.println("Missing expression after lambda");
+                    System.err.println("Missing expression after lambda");
                     error = true;
                     return;
                 }
@@ -103,7 +103,7 @@ public class ParserOp1 {
             } 
             else {
                 error = true;
-                System.out.println("(missing variable after lambda)");
+                System.err.println("(missing variable after lambda)");
             }
         }   
         else {
@@ -114,7 +114,7 @@ public class ParserOp1 {
     private void pexpr() { // <pexpr> ::= <var> | (<expr>)
         // System.out.println("pexpr");
         if(tokenList.size() == iterator) {
-            System.out.println("Not a complete expression");
+            System.err.println("Not a complete expression");
             error = true;
             return;
         } // If expression stop here it is not a complete one
@@ -135,7 +135,7 @@ public class ParserOp1 {
 
             else { // Error if there is no closing parenthesis
                 error = true;
-                System.out.println("Missing closing parenteses");
+                System.err.println("Missing closing parenteses");
             }
         }
 
@@ -145,7 +145,7 @@ public class ParserOp1 {
         }
     
         else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
-            System.out.println("(missing expression after opening parenthesis)");
+            System.err.println("(Missing expression after opening parenthesis)");
             error = true;
         }
     }
