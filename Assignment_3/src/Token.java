@@ -69,7 +69,12 @@ public class Token { // All possible options for tokens
         }
     }
 
+    
     // Check the type of a character 
+    public boolean isVar() {
+        return(type == Options.LVAR || type == Options.UVAR);
+    }
+
     public boolean isLVar() {
         return (type == Options.LVAR);
     }

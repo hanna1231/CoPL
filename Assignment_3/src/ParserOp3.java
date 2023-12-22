@@ -70,13 +70,26 @@ public class ParserOp3 {
         tree = judgement();
         System.out.println(tokenList.size());
         if(error || iterator < tokenList.size()-1) {
-            // System.out.println("iterator: " + tokenList.get(iterator).getValue());
             System.err.println("(Expression isn't valid)");
             return 1;
         } //Expression isn't finished
-        else {  
+        else {
+            ArrayList<String> emptyList = new ArrayList<String>();
             tree.printTree(tree.getRoot());
-            return 0;
+            if(!tree.findFreeVar(tree.getRoot(), emptyList).isEmpty()) {
+                ArrayList<Node> caretTokens = new ArrayList<Node>();
+                tree.makeTypeTree(tree.getRoot().leftChild, null, caretTokens);
+                System.out.println("Created type tree: ");
+                tree.printTree(tree.getTypeTreeRoot());
+                if(tree.checkEquality(tree.getTypeTreeRoot(), tree.getRoot().rightChild)) {
+                    tree.printTree(tree.getRoot());
+                return 0;
+                }
+                System.err.println("Type oli is dom");
+                return 1;
+            }
+            System.err.println("Free variables in tree");
+            return 1;
         }
     }
 

@@ -4,8 +4,7 @@ public class Token { // All possible options for tokens
         PARCLOSE,
         LAMBDA,
         VAR,
-        APPLY,
-        DOT  // MISSCHIEN DEZE WEGHALEN
+        APPLY
     }
 
     Options type;
@@ -16,27 +15,22 @@ public class Token { // All possible options for tokens
             case "(":
                 type = Options.PAROPEN;
                 this.value = newValue;
-                //System.out.println("Token constructor paropen: " + this.value);
                 break;
             case ")":
                 type = Options.PARCLOSE;
                 this.value = newValue;
-                //System.out.println("Token constructor parclose: " + this.value);
                 break;
             case "\\":
                 type = Options.LAMBDA;
                 this.value = newValue;
-                //System.out.println("Token constructor lambda: " + this.value);
                 break;
             case "@":
                 type = Options.APPLY;
                 this.value = newValue;
-                //System.out.println("Token constructor apply: " + this.value);
                 break;
             default:
                 type = Options.VAR;
                 this.value = newValue;
-                //System.out.println("Token constructor var: " + this.value);
                 break;
         }
     }
@@ -65,10 +59,6 @@ public class Token { // All possible options for tokens
     public String getValue() {
         return value;
     }
-
-    // public boolean isDot() {
-    //     return (type == Options.DOT);
-    // }
 
     public void setTokenValue(String newValue) {
         this.value = newValue;

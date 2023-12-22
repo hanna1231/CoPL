@@ -6,17 +6,34 @@ public class MainClass {
 
     public static boolean leesIn(String invoer, ParserOp2 parser) { // Reads the whole expression token by token in 
         boolean isVar = false;
+        int dot = 0;
         String var = "";
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
             // System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
-            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')') { // Check if the character is a lambda, paropen or parclose
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == '.') { // Check if the character is a lambda, paropen, parclose or dot
                 if(isVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
                 }
-                Token nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
-                parser.addToken(nieuw);
+                if(invoer.charAt(i) == '.') {
+                    Token newParantheses = new Token("(");
+                    parser.addToken(newParantheses);
+                    dot++;
+                }
+                else if(invoer.charAt(i) == ')') {
+                    for(int j = 0; j < dot; j++) {
+                        Token newParantheses = new Token(")"); // Add closing parantheses for every dot
+                        parser.addToken(newParantheses);
+                    }
+                    dot = 0;
+                    Token nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
+                    parser.addToken(nieuw);
+                }
+                else {
+                    Token nieuw  = new Token(invoer.substring(i, i + 1)); //Add the substring to the tokenlist
+                    parser.addToken(nieuw);
+                }
                 isVar = false; // Reset the variable
                 var = ""; // Make variable empty again
             }
@@ -40,7 +57,7 @@ public class MainClass {
             }
 
             else { // Fault has occured
-                // System.out.println("Dit werkt niet loser");
+                System.err.println("Character not allowed");
                 return false;
             }
 
@@ -50,7 +67,12 @@ public class MainClass {
             Token nieuwVarToken = new Token(var);
             parser.addToken(nieuwVarToken);
         }
-        // System.out.println("Yes dit werkt");
+        if(dot > 0) {
+            for(int j = 0; j < dot; j++) {
+                Token newParantheses = new Token(")"); // Add closing parantheses for every dot
+                parser.addToken(newParantheses);
+            }
+        }
         return true;
     }
 

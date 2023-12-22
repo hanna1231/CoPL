@@ -4,16 +4,12 @@ import java.util.List;
 public class BinaryTree {
     private Node root;
     private Node gapNode; // Stores the parent of a node which still has room for children
-   //  private int iterator;
-   //  private int sizeVar;
-   //  private int reductionCounter;
+    private Node typeTreeRoot; // Stores the root of type tree that can be made from left side of tree
 
     public BinaryTree() {
         root = null;
         gapNode = null;
-      //   iterator = 0;
-      //   sizeVar = 3;
-      //   reductionCounter = 0;
+        typeTreeRoot = null;
     }
     
     public Node getRoot() {
@@ -24,9 +20,9 @@ public class BinaryTree {
         root = newNode;
     }
 
-   //  public Node getGapNode() {
-   //      return gapNode;
-   //  }
+    public Node getTypeTreeRoot() {
+        return typeTreeRoot;
+    }
     
    //  // Returns if there is node which still has availability for 
    //  // and stores that in gapNode
@@ -65,18 +61,6 @@ public class BinaryTree {
         }
         return false;
     }
-
-   //  public boolean addNodeLeft(Node newNode) {
-   //      if(root == null) {
-   //          root = newNode;
-   //          return true;
-   //      }
-   //      else if(root.leftChild == null) {
-   //          root.leftChild = newNode;
-   //          return true;
-   //      }
-   //      return false;
-   //  }
 
    //  // Adds a node (newNode) to the left or right child of a parent node (gapNode)
     public boolean addNode(Node newNode) {
@@ -123,19 +107,6 @@ public class BinaryTree {
         this.root = apNode;
         return true;
     }
-
-   //  public void printTree(Node node) {
-   //      printTreeRed(node);
-   //      System.out.print("\n");
-   //  }
-
-//    private void printTreeRed(Node node) { // Functie voor het printen van de boom
-
-//         if(node != null) {
-
-//         }
-
-//    }
 
 
     // Prints the tree with parameter node as root
@@ -238,23 +209,207 @@ public class BinaryTree {
         }
     }
 
-    public boolean checkType() {
-        if(root == null) {
-            return true;
-        }
-        return checkTypePriv(getRoot().leftChild, getRoot().rightChild);
-    }
-
-    private boolean checkTypePriv(Node rootLeft, Node rootRight, boolean lambdaNecessary) {
-        if(!rootLeft.token.isLambda()) {
-            checkTypePriv(rootLeft, rootRight)
-        }
-        
-        if(rootLeft.token.isLambda()) {
-            if(!rootRight.token.isLambda()) {
-                checkTypePriv(rootLeft, rootRight, lambdaNecessary)
+    private Boolean hasVar(String var, ArrayList<String> varList) {
+        for(int i = 0; i < varList.size(); i++) {
+            if(varList.get(i).equals(var)) {
+                return true;
             }
         }
+        return false;
+    }
+
+    // Returns all free variables from the (sub)tree node
+    public ArrayList<String> findFreeVar(Node node, ArrayList<String> boundVariables) {
+        ArrayList<String> varList = new ArrayList<String>();
+        if(node == null) {
+            return varList;
+        }
+        
+        if(node.getTokenValue().equals("\\")) {
+            boundVariables.add(node.leftChild.leftChild.getTokenValue());
+        }
+
+        else if(node.token.isVar() && !hasVar(node.getTokenValue(), boundVariables)) {
+            varList.add(node.getTokenValue());
+        }
+
+        varList.addAll(findFreeVar(node.leftChild, boundVariables));
+        varList.addAll(findFreeVar(node.rightChild, boundVariables));
+
+        return varList;
+    }
+
+    public boolean checkEquality(Node lambdaType, Node arrowType) {
+        if(lambdaType == null && arrowType == null) {
+            return true;
+        }
+        else if(lambdaType == null || arrowType == null) {
+            return false;
+        }
+        else {
+            return((lambdaType.getTokenValue().equals(arrowType.getTokenValue())) && checkEquality(lambdaType.leftChild, arrowType.leftChild) && checkEquality(lambdaType.rightChild, arrowType.rightChild));
+        }
+    }
+
+    public Node copyTree(Node node) {
+        if(node == null) {
+            return null;
+        }
+        Node newNode = new Node(new Token(node.getTokenValue()));
+        newNode.leftChild = copyTree(node.leftChild);
+        newNode.rightChild = copyTree(node.rightChild);
+        return newNode;
+    }
+
+    // Returns the pointer Node to type of the variable var, returns null if not found
+    public Node findType(ArrayList<Node> caretTokens, String var) {
+        for(int i = caretTokens.size()-1; i >= 0; i--) {
+            if(caretTokens.get(i).leftChild.getTokenValue().equals(var)) {
+                return caretTokens.get(i).rightChild;
+            }
+        } // Go backwards through list to find the closest lambda
+        return null;
+    }
+    
+
+    // public boolean makeTypeTree(Node node, Node typeTreeNode, ArrayList<Node> caretTokens) {
+    //     System.out.println("makeTypeTree");
+    //     if(node == null) {
+    //         System.out.println("node is null");
+    //         return false;
+    //     }
+        
+    //     if(node.token.isLambda()) {
+    //         caretTokens.add(node.leftChild);
+    //         Node newTypeNode = new Node(new Token("->"));
+    //         newTypeNode.leftChild = copyTree(node.leftChild.rightChild);
+
+    //         if(typeTreeNode == null) {
+    //             typeTreeNode = newTypeNode;
+    //             typeTreeRoot = newTypeNode;
+    //         }
+            
+            
+    //         else if(typeTreeNode.leftChild == null) {
+    //             typeTreeNode.leftChild = newTypeNode;
+    //         }
+    //         else if(typeTreeNode.rightChild == null) {
+    //             typeTreeNode.rightChild = newTypeNode;
+    //         }
+    //         return makeTypeTree(node.rightChild, newTypeNode, caretTokens);
+    //     }
+    //     else if(node.token.isApply()) {
+    //         Node typeNodeLeft = findType(caretTokens, node.leftChild.getTokenValue());
+    //         Node typeNodeRight = findType(caretTokens, node.rightChild.getTokenValue());
+
+    //         if(typeNodeLeft == null || typeNodeRight == null) {
+    //             return false;
+    //         }
+    //         if(typeNodeLeft.token.isArrow() && checkEquality(typeNodeLeft.leftChild, typeNodeRight)) {
+    //             if(typeTreeNode.leftChild == null) {
+    //                 typeTreeNode.leftChild = copyTree(typeNodeLeft.rightChild);
+    //             }
+    //             else if(typeTreeNode.rightChild == null) {
+    //                 typeTreeNode.rightChild = copyTree(typeNodeLeft.rightChild);
+    //             }
+    //             return true;
+    //         }
+    //         return false;
+    //     }
+    //     else if(node.token.isLVar()) {
+    //         System.out.println("lvar");
+    //         Node typeNode = findType(caretTokens, node.getTokenValue());
+    //         if(typeNode == null) {
+    //             System.out.println("type is null");
+    //             return false;
+    //         }
+    //         typeTreeNode.rightChild = copyTree(typeNode);
+    //         return true;
+
+    //     }
+    //     System.out.println("return false");
+    //     return false;
+    // }
+
+    public Node makeTypeTree(Node node, Node typeTreeNode, ArrayList<Node> caretTokens) {
+        System.out.println("makeTypeTree");
+        if(node == null) {
+            System.out.println("node is null");
+            return null;
+        }
+        
+        if(node.token.isLambda()) {
+            caretTokens.add(node.leftChild);
+            Node newTypeNode = new Node(new Token("->"));
+            newTypeNode.leftChild = copyTree(node.leftChild.rightChild);
+            boolean treeNodeNull = false;
+
+            if(typeTreeNode == null) {
+                typeTreeNode = newTypeNode;
+                typeTreeRoot = newTypeNode;
+                treeNodeNull = true;
+            }
+            
+            
+            else if(typeTreeNode.leftChild == null) {
+                typeTreeNode.leftChild = newTypeNode;
+            }
+            else if(typeTreeNode.rightChild == null) {
+                typeTreeNode.rightChild = newTypeNode;
+            }
+            Node right = makeTypeTree(node.rightChild, newTypeNode, caretTokens);
+            if(right == null) {
+                return null;
+            }
+            newTypeNode.rightChild = right;
+            if(treeNodeNull) {
+                typeTreeRoot = newTypeNode;
+            }
+            return newTypeNode;
+        }
+        else if(node.token.isApply()) {
+            Node typeNodeLeft = null;
+            Node typeNodeRight = null;
+            if(node.leftChild.token.isApply()) {
+                typeNodeLeft = makeTypeTree(node.leftChild, null, caretTokens);
+            }
+            else {
+                typeNodeLeft = findType(caretTokens, node.leftChild.getTokenValue());
+            }
+
+            if(node.rightChild.token.isApply()) {
+                typeNodeRight = makeTypeTree(node.rightChild, null, caretTokens);
+            }
+            else {
+                typeNodeRight = findType(caretTokens, node.rightChild.getTokenValue());
+            }
+
+            if(typeNodeLeft == null || typeNodeRight == null) {
+                return null;
+            }
+            if(typeNodeLeft.token.isArrow() && checkEquality(typeNodeLeft.leftChild, typeNodeRight)) {
+                if(typeTreeNode.leftChild == null) {
+                    typeTreeNode.leftChild = copyTree(typeNodeLeft.rightChild);
+                }
+                else if(typeTreeNode.rightChild == null) {
+                    typeTreeNode.rightChild = copyTree(typeNodeLeft.rightChild);
+                }
+                return typeTreeNode;
+            }
+            return null;
+        }
+        else if(node.token.isLVar()) {
+            System.out.println("lvar");
+            Node typeNode = findType(caretTokens, node.getTokenValue());
+            if(typeNode == null) {
+                System.out.println("type is null");
+                return null;
+            }
+            return copyTree(typeNode);
+
+        }
+        System.out.println("return false");
+        return null;
     }
 
 

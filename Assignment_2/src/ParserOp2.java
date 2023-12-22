@@ -56,7 +56,7 @@ public class ParserOp2 {
     }
 
     public int parse() {
-        // printList();
+        printList();
         if(tokenList.isEmpty()) { // Nothing in expression
             System.err.println("Expression is empty");
             return 1;

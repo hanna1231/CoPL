@@ -1,4 +1,4 @@
-\x x \y x
+\x. x
 abc
 a b c
 a (b c)
