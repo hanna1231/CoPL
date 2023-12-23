@@ -1,11 +1,9 @@
 # CoPL
 
+## The class and group number, and the names of the student(s) who worked on the assignment. (Putting the names of the student(s) in each source file is good practice too.)
 This assignment is made by Hanna Straathof (s3001202), Oliver ten Hoor (s2984113) and Domen van Soest (s2962632)
 
-## TO DO PROGRAMMA AFSLUITEN MET 0, 1 OF 2
-
-## To do uitleg over hoe te compilen en uitzoeken hoe dat via de command line kan
-
+## Compiling and running the program
 For ubuntu on how to download java:
 sudo apt-get update.
 sudo apt install default-jdk.
@@ -26,18 +24,31 @@ Met de makefile
 Compile: make
 Runnen: make run
 
-## To do uitleg over of het programma helemaal werkt
-
+## The compiler version and operating system used by the student(s) if applicable.
 The assignment submission must include a README file that documents:
 
 Operating system: Linux
 Compiler version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
 
+## Whether it is known that the program works correctly, or whether the program has known defects.
+The must implementations have all been completed
 
 ## Whether there are any deviations from the assignment, and reasons why.
+Not as of yet
 
-// Op dit moment --> beta reduction nog niet toegevoegd
---Als gedaan --> klaar opdracht 2
+## The README may include an explanation of how the program works, and remarks for improving the assignment
+
+Summary assignment 1:
+We have reused the code from assignment 1 for this assignment. This means that we first tokenize the expression and then we recursively check the expression to see if it meets all requirements.
+
+What we have added is that an abstract syntax tree is created during the recursion. This happens as follows:
+
+First, we changed all functions from void functions to Binary tree functions. We did this so that we can build the tree step by step. We do this because we pass the various functions recursively and these always create small subtrees. The subtrees are then added to the tree in such a way that the final result is left associative. Here again, the member variable gapnode is an important addition because we ensure that all parent nodes always have a left and right child filled.
+If we encounter an error while creating the tree then the root of the tree is deleted and java's garbage collector automatically deletes all other children as well.
+
+If the expression is a valid expression, we check whether we should only apply beta reduction. If we need to change another variable so that the variable names do not clash, we must first apply alpha conversion and then reduce the expression. When checking whether alpha conversion is necessary, we first check whether variables are free. If this is not the case, the name of the variable must be changed so that it does not clash with the bound variables. Once we have ensured that nothing clashes anymore, we check whether we need to do beta reduction on the expression.
+
+The beta reduction is carried out anyway, we reduce the expression to a smaller expression. As an example we take this simple lambda expression: (lx xy) z, this expression is interpreted as follows (l parameter output) input. Our beta reduction then works as follows: find all occurrences of the parameter x in the output and substitute the input z for the parameter x in the output.
 
 ## Dingen die we nog kunnen implementeren
 
@@ -47,28 +58,7 @@ Compiler version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
 --Should only accept one expression in the input file
 --Should be grammar insensitive
 
-## TO DO reduction
+## TO DO PROGRAMMA AFSLUITEN MET 0, 1 OF 2
 
 
 
-## Werking programma
-
-Samenvatting opdracht 1:
-We hebben de code van opdracht 1 herbruikt voor deze opdracht. Dit betekent dat we de expressie eerst tokenizen en vervolgens checken we de expressie recursief om te kijken of hij aan alle eisen voldoet.
-
-Wat we hierbij hebben toegevoegd is dat er een abstract syntax tree wordt gemaakt tijdens de recursie. Dit gebeurt als volgt:
-
-Alle functies hebben we ten eerste veranderd van void functies naar Binary tree functies. Dit hebben we gedaan zodat we de boom stapje voor stapje kunnen opbouwen. Dit doen we omdat we de verschillende functies recursief meegeven en deze maken steeds kleine subbomen. De subbomen worden dan zo aan de boom toegevoegd dat het uiteindelijke resultaat left associative is. Herbij is de membervariabele gapnode een belangrijke toevoeging omdat we ervoor zorgen dat alle ouderknopen altijd gevuld een linker en rechterkind krijgen. 
-Als we een fout tegenkomen bij het maken van de boom dan wordt de root van de boom verwijderd en door de garbage collector van java worden alle andere kinderen ook automatisch verwijderd. 
-
-Als de expressie een valide expressie is, wordt er gekeken of we alleen beta reduction moeten toepassen. Als we nog een variabele moeten veranderen zodat de namen van de variabelen niet clashen moeten we eerst alpha conversion toepassen en daarna de expressie reduceren. Bij het checken of alpha conversion nodig is wordt er eerst gekeken of variabelen vrij zijn. Als dit niet zo is moet de naam van de variabele veranderd worden zodat hij niet clasht met de bound variabelen. Als we ervoor hebben gezorgd dat niks meer met elkaar clasht wordt er gekeken of we beta reduction moeten doen op de expressie. 
-
-De beta reduction wordt sowieso uitgevoerd, we reduceren hierbij de expressie tot een kleinere expressie. Als voorbeeld pakken we deze simpele lambda expressie: (lx xy) z, deze expressie wordt geinterpreteerd als volgt (l parameter  output) input. Onze beta reduction werkt dan als volgt: vind alle voorkomens van de parameter x in de output en subistitueer de input z voor de parameter x in de output.
-
-
-----------Schrijf nog iets over beta reduction---------------------
-
-
-## Finally, the assignment submission may include the following two files:
-• An archive (positive.tar.gz) of the positive examples used for testing.
-• An archive (negative.tar.gz) of the negative examples used for testing.
