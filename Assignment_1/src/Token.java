@@ -27,6 +27,11 @@ public class Token { // All possible options for tokens
                 this.value = newValue;
                 //System.out.println("Token constructor lambda: " + this.value);
                 break;
+            case "λ":
+                type = Options.LAMBDA;
+                this.value = newValue;
+                //System.out.println("Token constructor lambda: " + this.value);
+                break;
             default:
                 type = Options.VAR;
                 this.value = newValue;
