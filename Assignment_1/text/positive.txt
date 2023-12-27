@@ -1,9 +1,9 @@
-\x. x
+λx. x
 abc
 a b c
 a (b c)
-(\ x a b)
-(\x((a) (b)))
+(λ x a b)
+(λx((a) (b)))
 \x x
 a
-(\x a) b
+(λx a) b

@@ -81,11 +81,11 @@ public class MainClass {
 
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
 
-        while(true){
+        while(sc.hasNextLine()){
             String string = sc.nextLine(); // We read the input of the user
             System.out.println(string);
             
-            if(string.equals("exit")){
+            if(string.equals("exit") ){
                 break;
             }
 
@@ -100,5 +100,4 @@ public class MainClass {
         System.exit(exitStatus);
         sc.close(); // We close the scanner
     }
-    
 }
