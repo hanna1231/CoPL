@@ -240,7 +240,6 @@ public class BinaryTree {
     }
 
     public boolean checkEquality(Node lambdaType, Node arrowType) {
-        System.out.println("checkEquality");
         if(lambdaType == null && arrowType == null) {
             return true;
         }
@@ -252,6 +251,7 @@ public class BinaryTree {
         }
     }
 
+    // Makes a hard copy of the node including its children
     public Node copyTree(Node node) {
         if(node == null) {
             return null;
@@ -264,76 +264,13 @@ public class BinaryTree {
 
     // Returns the pointer Node to type of the variable var, returns null if not found
     public Node findType(ArrayList<Node> caretTokens, String var) {
-        // System.out.println(caretTokens.size());s
         for(int i = caretTokens.size()-1; i >= 0; i--) {
-            // System.out.println(caretTokens.get(i).leftChild.getTokenValue());
             if(caretTokens.get(i).leftChild.getTokenValue().equals(var)) {
                 return caretTokens.get(i).rightChild;
             }
         } // Go backwards through list to find the closest lambda
-        System.out.println("null");
         return null;
     }
-    
-
-    // public boolean makeTypeTree(Node node, Node typeTreeNode, ArrayList<Node> caretTokens) {
-    //     System.out.println("makeTypeTree");
-    //     if(node == null) {
-    //         System.out.println("node is null");
-    //         return false;
-    //     }
-        
-    //     if(node.token.isLambda()) {
-    //         caretTokens.add(node.leftChild);
-    //         Node newTypeNode = new Node(new Token("->"));
-    //         newTypeNode.leftChild = copyTree(node.leftChild.rightChild);
-
-    //         if(typeTreeNode == null) {
-    //             typeTreeNode = newTypeNode;
-    //             typeTreeRoot = newTypeNode;
-    //         }
-            
-            
-    //         else if(typeTreeNode.leftChild == null) {
-    //             typeTreeNode.leftChild = newTypeNode;
-    //         }
-    //         else if(typeTreeNode.rightChild == null) {
-    //             typeTreeNode.rightChild = newTypeNode;
-    //         }
-    //         return makeTypeTree(node.rightChild, newTypeNode, caretTokens);
-    //     }
-    //     else if(node.token.isApply()) {
-    //         Node typeNodeLeft = findType(caretTokens, node.leftChild.getTokenValue());
-    //         Node typeNodeRight = findType(caretTokens, node.rightChild.getTokenValue());
-
-    //         if(typeNodeLeft == null || typeNodeRight == null) {
-    //             return false;
-    //         }
-    //         if(typeNodeLeft.token.isArrow() && checkEquality(typeNodeLeft.leftChild, typeNodeRight)) {
-    //             if(typeTreeNode.leftChild == null) {
-    //                 typeTreeNode.leftChild = copyTree(typeNodeLeft.rightChild);
-    //             }
-    //             else if(typeTreeNode.rightChild == null) {
-    //                 typeTreeNode.rightChild = copyTree(typeNodeLeft.rightChild);
-    //             }
-    //             return true;
-    //         }
-    //         return false;
-    //     }
-    //     else if(node.token.isLVar()) {
-    //         System.out.println("lvar");
-    //         Node typeNode = findType(caretTokens, node.getTokenValue());
-    //         if(typeNode == null) {
-    //             System.out.println("type is null");
-    //             return false;
-    //         }
-    //         typeTreeNode.rightChild = copyTree(typeNode);
-    //         return true;
-
-    //     }
-    //     System.out.println("return false");
-    //     return false;
-    // }
 
     public Node makeTypeTree(Node node, Node typeTreeNode, ArrayList<Node> caretTokens) {
         System.out.println("makeTypeTree");
@@ -368,8 +305,6 @@ public class BinaryTree {
             if(treeNodeNull) {
                 typeTreeRoot = newTypeNode;
             }
-
-                System.out.println("uit lambda");
             return newTypeNode;
         }
         else if(node.token.isApply()) {
@@ -377,13 +312,9 @@ public class BinaryTree {
             Node typeNodeRight = null;
             if(node.leftChild.token.isApply() || node.leftChild.token.isLambda()) {
                 typeNodeLeft = makeTypeTree(node.leftChild, null, caretTokens);
-
-                printTree(typeNodeLeft);
             }
             else {
                 typeNodeLeft = findType(caretTokens, node.leftChild.getTokenValue());
-                System.out.println("typeNodeLeft");
-                printTree(typeNodeLeft);
             }
 
             if(node.rightChild.token.isApply()) {
@@ -391,22 +322,13 @@ public class BinaryTree {
             }
             else {
                 typeNodeRight = findType(caretTokens, node.rightChild.getTokenValue());
-                System.out.println("typeNodeRight");
-                printTree(typeNodeRight);
             }
 
             if(typeNodeLeft == null || typeNodeRight == null) {
                 return null;
             }
             if(typeNodeLeft.token.isArrow() && checkEquality(typeNodeLeft.leftChild, typeNodeRight)) {
-                System.out.println(typeTreeNode == null);
-                if(typeTreeNode.leftChild == null) {
-                    typeTreeNode.leftChild = copyTree(typeNodeLeft.rightChild);
-                }
-                else if(typeTreeNode.rightChild == null) {
-                    typeTreeNode.rightChild = copyTree(typeNodeLeft.rightChild);
-                }
-                return typeTreeNode;
+                return copyTree(typeNodeLeft.rightChild);
             }
             return null;
         }
@@ -414,7 +336,6 @@ public class BinaryTree {
             System.out.println("lvar");
             Node typeNode = findType(caretTokens, node.getTokenValue());
             if(typeNode == null) {
-                System.out.println("type is null");
                 return null;
             }
             return copyTree(typeNode);

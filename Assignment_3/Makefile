@@ -24,3 +24,4 @@ run: build
 
 clean:
 			$(RM) *.class $(JAR)
+
