@@ -240,6 +240,7 @@ public class BinaryTree {
     }
 
     public boolean checkEquality(Node lambdaType, Node arrowType) {
+        System.out.println("checkEquality");
         if(lambdaType == null && arrowType == null) {
             return true;
         }
@@ -263,11 +264,14 @@ public class BinaryTree {
 
     // Returns the pointer Node to type of the variable var, returns null if not found
     public Node findType(ArrayList<Node> caretTokens, String var) {
+        // System.out.println(caretTokens.size());s
         for(int i = caretTokens.size()-1; i >= 0; i--) {
+            // System.out.println(caretTokens.get(i).leftChild.getTokenValue());
             if(caretTokens.get(i).leftChild.getTokenValue().equals(var)) {
                 return caretTokens.get(i).rightChild;
             }
         } // Go backwards through list to find the closest lambda
+        System.out.println("null");
         return null;
     }
     
@@ -349,8 +353,6 @@ public class BinaryTree {
                 typeTreeRoot = newTypeNode;
                 treeNodeNull = true;
             }
-            
-            
             else if(typeTreeNode.leftChild == null) {
                 typeTreeNode.leftChild = newTypeNode;
             }
@@ -359,22 +361,29 @@ public class BinaryTree {
             }
             Node right = makeTypeTree(node.rightChild, newTypeNode, caretTokens);
             if(right == null) {
+                System.out.println("return null");
                 return null;
             }
             newTypeNode.rightChild = right;
             if(treeNodeNull) {
                 typeTreeRoot = newTypeNode;
             }
+
+                System.out.println("uit lambda");
             return newTypeNode;
         }
         else if(node.token.isApply()) {
             Node typeNodeLeft = null;
             Node typeNodeRight = null;
-            if(node.leftChild.token.isApply()) {
+            if(node.leftChild.token.isApply() || node.leftChild.token.isLambda()) {
                 typeNodeLeft = makeTypeTree(node.leftChild, null, caretTokens);
+
+                printTree(typeNodeLeft);
             }
             else {
                 typeNodeLeft = findType(caretTokens, node.leftChild.getTokenValue());
+                System.out.println("typeNodeLeft");
+                printTree(typeNodeLeft);
             }
 
             if(node.rightChild.token.isApply()) {
@@ -382,12 +391,15 @@ public class BinaryTree {
             }
             else {
                 typeNodeRight = findType(caretTokens, node.rightChild.getTokenValue());
+                System.out.println("typeNodeRight");
+                printTree(typeNodeRight);
             }
 
             if(typeNodeLeft == null || typeNodeRight == null) {
                 return null;
             }
             if(typeNodeLeft.token.isArrow() && checkEquality(typeNodeLeft.leftChild, typeNodeRight)) {
+                System.out.println(typeTreeNode == null);
                 if(typeTreeNode.leftChild == null) {
                     typeTreeNode.leftChild = copyTree(typeNodeLeft.rightChild);
                 }

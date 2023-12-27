@@ -35,3 +35,6 @@ The program may support international variable names (i.e. Unicode), and also ac
 
 ## Remarks for improving the assignment
 NO improving yet
+
+## Add Makefile arguments assignment 3
+## Add Makefile arguments assignment 2
