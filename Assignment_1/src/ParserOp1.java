@@ -58,8 +58,10 @@ public class ParserOp1 {
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
             printList();
+            tokenList.clear(); // Clear the tokenlist for the next expression
             return 0;
         }
+        tokenList.clear(); // Clear the tokenlist for the next expression
         return 1;
     }
 
