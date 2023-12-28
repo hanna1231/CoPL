@@ -158,6 +158,9 @@ public class BinaryTree {
     }
 
     public boolean mergeTree(BinaryTree addTree) {
+        if(addTree == null) {
+            return false;
+        }
         if(this.root == null) {
             System.out.println("ROOT");
             this.root = addTree.getRoot();
