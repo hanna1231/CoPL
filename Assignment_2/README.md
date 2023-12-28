@@ -30,6 +30,7 @@ Compiler version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
 
 ## Whether it is known that the program works correctly, or whether the program has known defects.
 The must implementations have all been completed
+Defects, when a certain <- (verander dit naar een concrete expresssie) expression is executed, it will go in an infinite loop and the program will crash
 
 ## Whether there are any deviations from the assignment, and reasons why.
 Not as of yet
