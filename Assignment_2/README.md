@@ -17,12 +17,10 @@ sudo apt-get update -y
 sudo apt-get install -y openjdk-11-jdk-headless
 
 
-Compilen: javac MainClass.javac
-Runnen: java Mainclass
+Makefile compiling and running:
 
-Met de makefile
 Compile: make
-Runnen: make run
+Runnen: make run postives.txt
 
 ## The compiler version and operating system used by the student(s) if applicable.
 The assignment submission must include a README file that documents:
@@ -57,8 +55,11 @@ The beta reduction is carried out anyway, we reduce the expression to a smaller 
 --The α-conversions should only be performed if a β-reduction would otherwise lead to a captured variable
 --Should only accept one expression in the input file
 --Should be grammar insensitive
+--But may also work for files which contain non-printable ASCII characters
 
 ## TO DO PROGRAMMA AFSLUITEN MET 0, 1 OF 2
 
+File meegegeven vanuit command line
+Inlezen meerdere expressies
 
 
