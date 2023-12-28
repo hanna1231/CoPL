@@ -20,7 +20,7 @@ jar: build
 			$(JARCMD) cvfe $(JAR) $(MAIN) *.class
 
 run: build
-			$(JVM) -cp $(SOURCE_DIR) $(MAIN) < text/positive.txt
+			$(JVM) -cp $(SOURCE_DIR) $(MAIN) < positives.txt
 
 clean:
 			$(RM) *.class $(JAR)

@@ -8,7 +8,6 @@ public class MainClass {
         String var = "";
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
-            //System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
             if(invoer.charAt(i) == '\\' || invoer.charAt(i) == 'λ' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == '.') { // Check if the character is a lambda, paropen, parclose or dot
                 if(isVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
@@ -78,10 +77,11 @@ public class MainClass {
     public static void main(String[] args) {
         ParserOp1 parser = new ParserOp1(); // We initialize a new object parser
         int exitStatus = 1;
+        boolean end = false;
 
         Scanner sc = new Scanner(System.in); // We initialize a new scanner
 
-        while(sc.hasNextLine()){
+        while(!end && sc.hasNextLine()){
             String string = sc.nextLine(); // We read the input of the user
             System.out.println(string);
             
@@ -89,10 +89,11 @@ public class MainClass {
                 break;
             }
 
-            System.out.println("You entered: " + string);
-
             if(leesIn(string, parser)) {
                 exitStatus = parser.parse();
+                if(exitStatus == 1) {
+                    end = true;
+                }
             }
             string = "";
         }

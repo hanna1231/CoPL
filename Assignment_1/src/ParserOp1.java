@@ -13,10 +13,8 @@ public class ParserOp1 {
     private boolean next() {
         if(iterator+1 < tokenList.size()) {
             iterator++;
-            // System.out.println("Next is true");
             return true;
         }
-            // System.out.println("Next is false");
         return false;
     }
 
@@ -32,7 +30,6 @@ public class ParserOp1 {
 
     // printList is only called after parsing and assumes a correct grammar
     public void printList() {
-        //System.out.print("Output: ");
         for (int i = 0; i < tokenList.size(); i++) {
             System.out.print(tokenList.get(i).value);
             if((tokenList.get(i).isVar() || tokenList.get(i).isParClose()) && !(i+1 == tokenList.size() || tokenList.get(i+1).isParClose())) {
@@ -43,7 +40,6 @@ public class ParserOp1 {
     }
 
     public int parse() {
-        // printList();
         if(tokenList.isEmpty()) { // Nothing in expression
             System.err.println("Expression is empty");
             return 1;
@@ -51,9 +47,8 @@ public class ParserOp1 {
         iterator = 0;
         openPars = 0;
         expr();
-        if(iterator < tokenList.size()) { 
-            //System.out.println("iterator: " + tokenList.get(iterator).value);
-            System.err.println("(Expression isn't valid)");
+        if(iterator < tokenList.size()) {
+            System.err.println("Expression isn't valid");
             return 1;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
@@ -67,15 +62,13 @@ public class ParserOp1 {
 
     private void expr1(int start) { // <expr1> ::= <lexpr><expr1> | e
         if(iterator == tokenList.size() || tokenList.get(iterator).isParClose()){
-            //System.out.println("Nested expression finished");
             return;
         }
-        //System.out.println("Continuing in expr1");
         lexpr();
         if(error) {
             return;
         }
-        // Add parentheses for ambiguity
+        // Add parentheses to prevent ambiguity
         Token openingToken = new Token("(");
         tokenList.add(start, openingToken);
         iterator++; // Token added so iterator needs to increase
@@ -87,12 +80,10 @@ public class ParserOp1 {
     }
 
     private void lexpr() { // <lexpr> ::= <pexpr> |  \l<var><lexpr>
-        //System.out.println("lexpr");
         if(tokenList.get(iterator).isLambda()) {
             Token openingToken = new Token("(");
             tokenList.add(iterator, openingToken); // Add parentheses for ambiguity
             if(next() && next() && tokenList.get(iterator).isVar()) { // Jump to variable
-                //System.out.println("var (" + tokenList.get(iterator).value + ")");
                 if(!next()) { // If no expression --> error
                     System.err.println("Missing expression after lambda");
                     error = true;
@@ -109,7 +100,7 @@ public class ParserOp1 {
             } 
             else {
                 error = true;
-                System.err.println("(missing variable after lambda)");
+                System.err.println("Missing variable after lambda");
             }
         }   
         else {
@@ -118,7 +109,6 @@ public class ParserOp1 {
     }
 
     private void pexpr() { // <pexpr> ::= <var> | (<expr>)
-        // System.out.println("pexpr");
         if(tokenList.size() == iterator) {
             System.err.println("Not a complete expression");
             error = true;
@@ -146,18 +136,16 @@ public class ParserOp1 {
         }
 
         else if(tokenList.get(iterator).isVar()) { // If token is not opening parenthesis --> must be a var
-            //System.out.println("var (" + tokenList.get(iterator).value + ")");
             iterator++;
         }
     
         else if(tokenList.get(iterator).isParClose()){ // If closing parenthesis --> error
-            System.err.println("(Missing expression after opening parenthesis)");
+            System.err.println("Missing expression after opening parenthesis");
             error = true;
         }
     }
     
     private void expr() { // <expr> ::= <lexpr><expr1>
-        // System.out.println("expr");
         int itAtStart = iterator;
         lexpr();
         if(error) {
