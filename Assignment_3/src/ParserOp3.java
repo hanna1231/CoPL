@@ -62,6 +62,7 @@ public class ParserOp3 {
         iterator = 0;
         openPars = 0;
         tree = judgement();
+        System.out.println("tokenlist size " + tokenList.size());
         System.out.println("iterator " + iterator);
         if(error || iterator < tokenList.size()-1) {
             System.err.println("Expression isn't valid");
@@ -82,6 +83,7 @@ public class ParserOp3 {
                 tree.makeTypeTree(tree.getRoot().leftChild, null, caretTokens);
                 if(tree.checkEquality(tree.getTypeTreeRoot(), tree.getRoot().rightChild)) {
                     tree.printTree(tree.getRoot());
+                    System.out.print("\n");
                     return 0;
                 }
                 System.err.println("Type tree is incorrect");
@@ -132,6 +134,9 @@ public class ParserOp3 {
                     return errorMessage("Missing type after arrow");
                 }
             }
+            // else {
+            //     iterator++;
+            // }
         } // Type is "("<type>")"
         return typeTree;
     }
