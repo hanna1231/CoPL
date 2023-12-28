@@ -24,6 +24,10 @@ public class Token { // All possible options for tokens
                 type = Options.LAMBDA;
                 this.value = newValue;
                 break;
+            case "λ":
+                type = Options.LAMBDA;
+                this.value = newValue;
+                break;
             case "@":
                 type = Options.APPLY;
                 this.value = newValue;

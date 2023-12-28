@@ -11,7 +11,7 @@ public class MainClass {
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
             // System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
-            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == '.') { // Check if the character is a lambda, paropen, parclose or dot
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == 'λ' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == '.') { // Check if the character is a lambda, paropen, parclose or dot
                 if(isVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
