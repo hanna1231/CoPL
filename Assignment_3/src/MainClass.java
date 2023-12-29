@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class MainClass {
 
     public static boolean leesIn(String invoer, ParserOp3 parser) { // Reads the whole expression token by token in 
-        System.out.println(invoer); 
-        boolean isVar = false;
+        System.out.println(invoer);
         boolean isLVar = false;
         boolean isUVar = false;
         Token nieuw = null;
@@ -14,8 +13,7 @@ public class MainClass {
         String var = "";
         
         for(int i = 0; i < invoer.length(); i++) { // Iterate over the whole string
-            //System.out.println("leesIn: " + invoer.charAt(i)); // Check if the string is read in correctly
-            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == 'λ' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':' || invoer.charAt(i) == '^' || invoer.charAt(i) == '-') { // Check if the character is a paropen or parclose
+            if(invoer.charAt(i) == '\\' || invoer.charAt(i) == 'λ' || invoer.charAt(i) == '(' || invoer.charAt(i) == ')' || invoer.charAt(i) == ':' || invoer.charAt(i) == '^' || invoer.charAt(i) == '-') {
                 if(isLVar || isUVar) { // Check for variables 
                     Token nieuwVarToken = new Token(var); 
                     parser.addToken(nieuwVarToken); 
@@ -86,7 +84,6 @@ public class MainClass {
             }
 
             else { // Fault has occured
-                //System.out.println("Dit werkt niet loser");
                 return false;
             }
 
@@ -96,45 +93,25 @@ public class MainClass {
             Token nieuwVarToken = new Token(var);
             parser.addToken(nieuwVarToken);
         }
-        //System.out.println("Yes dit werkt");
         return true;
     }
 
-   //  private static String LeesFileExpressie(String filenaam) {
-         
-   //    try{
-   //       Scanner filescanner = new Scanner(new File(filenaam)); // We initialize a new scanner
-   //       StringBuilder expressie = new StringBuilder(); // We initialize a new stringbuilder
-
-   //       while(filescanner.hasNextLine()){
-   //             expressie.append(filescanner.nextLine()); // We add the next line to the stringbuilder
-   //             System.out.println(expressie.toString());
-   //       }
-   //       filescanner.close(); // We close the scanner
-   //       return expressie.toString(); // We return the stringbuilder as a string
-   //    }
-   //    catch(FileNotFoundException e){
-   //       System.err.println("File not found");
-   //       return null;
-   //    }
-   //  }
+    // Input must be read from file called filenaam
     private static String LeesFileExpressie(String filenaam) {
-         
         try{
-           Scanner filescanner = new Scanner(new File(filenaam)); // We initialize a new scanner
-           StringBuilder expressie = new StringBuilder(); // We initialize a new stringbuilder
- 
-           while(filescanner.hasNextLine()){
-              expressie.append(filescanner.nextLine()); // We add the next line to the stringbuilder
-              expressie.append("_");
-                 //System.out.println(expressie.toString());
-           }
-           filescanner.close(); // We close the scanner
-           return expressie.toString(); // We return the stringbuilder as a string
+            Scanner filescanner = new Scanner(new File(filenaam)); // We initialize a new scanner
+            StringBuilder expressie = new StringBuilder(); // We initialize a new stringbuilder
+    
+            while(filescanner.hasNextLine()){
+                expressie.append(filescanner.nextLine()); // We add the next line to the stringbuilder
+                expressie.append("_");
+            }
+            filescanner.close(); // We close the scanner
+            return expressie.toString(); // We return the stringbuilder as a string
         }
         catch(FileNotFoundException e){
-           System.err.println("File not found");
-           return null;
+            System.err.println("File not found");
+            return null;
         }
     }
  
