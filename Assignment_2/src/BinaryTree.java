@@ -43,7 +43,6 @@ public class BinaryTree {
 
         if((node.token.isLambda() || node.token.isApply()) && (node.leftChild == null || node.rightChild == null)) {
             gapNode = node;
-            System.out.println(gapNode == null);
             return true;
         }
 
@@ -89,7 +88,6 @@ public class BinaryTree {
         
         gapNode = null;
         if(findGap(root)) {
-            // System.out.println(gapNode == null);
             if(gapNode.leftChild == null) {
                 gapNode.leftChild = newNode;
             }
@@ -135,13 +133,13 @@ public class BinaryTree {
                 System.out.print(" ");
             }
 
-            else if(node.getTokenValue().equals("\\")) {
+            else if(node.getTokenValue().equals("\\") || node.getTokenValue().equals("λ")) {
                 System.out.print("(");
             }
 
             printTreeRed(node.rightChild);
 
-            if(node.getTokenValue().equals("@") || node.getTokenValue().equals("\\")) {
+            if(node.getTokenValue().equals("@") || node.getTokenValue().equals("\\") || node.getTokenValue().equals("λ")) {
                 System.out.print(")");
             }
         }
@@ -155,7 +153,6 @@ public class BinaryTree {
     }
 
     public boolean mergeTree(BinaryTree addTree) {
-        addTree.printTree(addTree.getRoot());
         if(this.root == null) {
             this.root = addTree.getRoot();
         }
@@ -284,7 +281,6 @@ public class BinaryTree {
         if(node.getTokenValue().equals("@") && node.leftChild.getTokenValue().equals("\\") ) {
             checkConversion(node);
             reduction(node);
-            printTree(node);
             reductionCounter++;
             return true;
         }

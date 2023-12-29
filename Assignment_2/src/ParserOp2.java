@@ -65,15 +65,12 @@ public class ParserOp2 {
             return 1;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
-            BinaryTree oldTree = tree;
-
             tree.deleteApp();
             
             if(tree.findAppLambda(tree.getRoot())) {
                 tree.printTree(tree.getRoot());
                 return 0;
             }
-            // tree.printTree(tree.getRoot());
             return 2;      
         }
         return 1;
