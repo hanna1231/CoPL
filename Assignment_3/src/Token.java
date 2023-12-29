@@ -20,52 +20,42 @@ public class Token { // All possible options for tokens
             case "(":
                 type = Options.PAROPEN;
                 this.value = newValue;
-                System.out.println("Token constructor paropen: " + this.value);
                 break;
             case ")":
                 type = Options.PARCLOSE;
                 this.value = newValue;
-                System.out.println("Token constructor parclose: " + this.value);
                 break;
             case "\\":
                 type = Options.LAMBDA;
                 this.value = newValue;
-                System.out.println("Token constructor lambda: " + this.value);
                 break;
             case "λ":
                 type = Options.LAMBDA;
                 this.value = newValue;
-                System.out.println("Token constructor lambda: " + this.value);
                 break;
             case "@":
                 type = Options.APPLY;
                 this.value = newValue;
-                System.out.println("Token constructor apply: " + this.value);
                 break;
             case ":":
                 type = Options.COLON;
                 this.value = newValue;
-                System.out.println("Token constructor colon: " + this.value);
                 break;
             case "->":
                 type = Options.ARROW;
                 this.value = newValue;
-                System.out.println("Token constructor arrow: " + this.value);
                 break;
             case "^":
                 type = Options.CARET;
                 this.value = newValue;
-                System.out.println("Token constructor caret: " + this.value);
                 break;
             default:
                 this.value = newValue;
                 if(firstChar >= 'a' && firstChar <= 'z'){
                     type = Options.LVAR;
-                    System.out.println("Token constructor lvar: " + this.value);
                 }
                 else if(firstChar >= 'A' && firstChar <= 'Z'){
                     type = Options.UVAR;
-                    System.out.println("Token constructor uvar: " + this.value);
                 }
                 else{
                     System.err.println("Check your input, it's not a valid token");

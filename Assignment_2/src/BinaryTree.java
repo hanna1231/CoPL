@@ -240,19 +240,24 @@ public class BinaryTree {
 
     // Performs reduction, node is the application node with left child lambda
     public void reduction(Node node) {  
+        boolean isRoot = false;
         String changeVar = node.leftChild.leftChild.getTokenValue();
         Node N = node.rightChild;
         if(node == root) {
-            root = node.leftChild.rightChild;
+            isRoot = true;
         }
         node.setNode(node.leftChild.rightChild);
         changeVarReduction(node, changeVar, N);
+        if(isRoot) {
+            root = node;
+        }
     }
 
     // Calls findAppLamdaPriv until a 1000 reductions are reached (then returning false)
     // or when there can't be reduced any further (then returning true)
     public boolean findAppLambda(Node node) {
         boolean change = true;
+        reductionCounter = 0;
         while(reductionCounter < 500 && change) {
             change = findAppLambdaPriv(node);
         }
@@ -279,6 +284,7 @@ public class BinaryTree {
         if(node.getTokenValue().equals("@") && node.leftChild.getTokenValue().equals("\\") ) {
             checkConversion(node);
             reduction(node);
+            printTree(node);
             reductionCounter++;
             return true;
         }

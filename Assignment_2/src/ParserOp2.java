@@ -60,8 +60,8 @@ public class ParserOp2 {
         openPars = 0;
         Node emptyNode = null;
         tree = expr(emptyNode);
-        if(iterator < tokenList.size()) { 
-            System.err.println("(Expression isn't valid)");
+        if(iterator < tokenList.size()) {
+            System.err.println("Expression isn't valid");
             return 1;
         } // When the expression isn't finished but the parser is
         if(!error && openPars == 0) {
@@ -73,7 +73,7 @@ public class ParserOp2 {
                 tree.printTree(tree.getRoot());
                 return 0;
             }
-            tree.printTree(tree.getRoot());
+            // tree.printTree(tree.getRoot());
             return 2;      
         }
         return 1;
