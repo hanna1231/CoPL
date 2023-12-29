@@ -253,6 +253,7 @@ public class BinaryTree {
 
     // Performs reduction, node is the application node with left child lambda
     public void reduction(Node node) {  
+        boolean isRoot = false;
         // System.out.println("reduction\nTree before reduction");
         // printTree(node);
         String changeVar = node.leftChild.leftChild.getTokenValue();
@@ -260,12 +261,17 @@ public class BinaryTree {
         // System.out.println("N");
         // printTree(N);
         if(node == root) {
-            root = node.leftChild.rightChild;
+            // System.out.println("hoi" + (node == root));
+            isRoot = true;
         }
         node.setNode(node.leftChild.rightChild);
         // System.out.println("tree");
         // printTree(node);
         changeVarReduction(node, changeVar, N);
+        if(isRoot) {
+            // System.out.println("hoi" + (node == root));
+            root = node;
+        }
         // System.out.println("tree after reduction: " + changeVarCounter);
         // printTree(node);
     }
@@ -274,6 +280,7 @@ public class BinaryTree {
     // or when there can't be reduced any further (then returning true)
     public boolean findAppLambda(Node node) {
         boolean change = true;
+        reductionCounter = 0;
         while(reductionCounter < 500 && change) {
             // printTree(node);
             change = findAppLambdaPriv(node);
@@ -301,12 +308,14 @@ public class BinaryTree {
         }
 
         if(node.getTokenValue().equals("@") && node.leftChild.getTokenValue().equals("\\") ) {
-            // System.out.println("hoi");
+            // System.out.println("hoi" + (node == root));
             checkConversion(node);
             reduction(node);
+            printTree(node);
             reductionCounter++;
             // if(node == root) {
             //     printTree(node);
+            // // System.out.println("doei" + (node == root));
             // }
             return true;
         }
