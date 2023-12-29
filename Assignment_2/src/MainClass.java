@@ -96,12 +96,8 @@ public class MainClass {
 
 
     public static void main(String[] args) {
-       
-        // Make it so that the user can input multiple expressions
           ParserOp2 parser = new ParserOp2(); // We initialize a new object parser
-  
           int exitStatus = 1;         
-          //String filenaam = sc.nextLine(); // We read the input of the user --> zodat we niet de hele tijd de filenaam moeten invoeren
   
           if(args.length != 1) {
             System.err.println("Please enter a filename");
@@ -112,16 +108,11 @@ public class MainClass {
           
           String string = LeesFileExpressie(filenaam); // We read the file
 
-          //String string = LeesFileExpressie(filenaam); // We read the file
           if(string != null && leesIn(string, parser)) {
               exitStatus = parser.parse();
-              // System.out.println("GA ik hierin");
-              // parser.printList();
           }
   
           System.out.println(exitStatus);
-  
-  
           System.exit(exitStatus); 
       }
     

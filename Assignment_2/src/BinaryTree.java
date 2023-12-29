@@ -2,12 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinaryTree {
-    private Node root;
+    private Node root; // Root of the tree
     private Node gapNode; // Stores the parent of a node which still has room for children
-    private int iterator;
-    private int sizeVar;
-    private int reductionCounter;
-    private int changeVarCounter;
+    private int iterator; // Iterator which iterates over the expression
+    private int sizeVar; 
+    private int reductionCounter; // Counts the number of reductions
+    private int changeVarCounter; // Counts the number of variable changes
 
     public BinaryTree() {
         root = null;
@@ -44,7 +44,6 @@ public class BinaryTree {
         if((node.token.isLambda() || node.token.isApply()) && (node.leftChild == null || node.rightChild == null)) {
             gapNode = node;
             System.out.println(gapNode == null);
-            // System.out.println("changed");
             return true;
         }
 
@@ -55,6 +54,7 @@ public class BinaryTree {
         return false;
     }
 
+    // Adds a node with application
     public boolean addNodeApp(Node newNode) {
         if(root == null) {
             root = newNode;
@@ -66,7 +66,8 @@ public class BinaryTree {
         }
         return false;
     }
-
+    
+    
     public boolean addNodeLeft(Node newNode) {
         if(root == null) {
             root = newNode;
@@ -103,7 +104,6 @@ public class BinaryTree {
     public boolean addApplication() {
         Token apToken = new Token("@");
         Node apNode = new Node(apToken);
-        // System.out.println("addApplication");
 
         // Application becomes the root of the tree
         if(this.root != null) {
@@ -155,22 +155,17 @@ public class BinaryTree {
     }
 
     public boolean mergeTree(BinaryTree addTree) {
-        // System.out.println("HET IS HIER HANNA!");
         addTree.printTree(addTree.getRoot());
         if(this.root == null) {
-            // System.out.println("ROOT");
             this.root = addTree.getRoot();
         }
         else if(!findGap(this.root)) {
-            // System.out.println("FOUT");
             return false;
         }
         else if(gapNode.leftChild == null) {
-            // System.out.println("LINKS");
             gapNode.leftChild = addTree.getRoot();
         }
         else {
-            // System.out.println("RECHTS");
             gapNode.rightChild = addTree.getRoot();
         }
 
@@ -193,7 +188,6 @@ public class BinaryTree {
         deleteApp(node.leftChild, node);
         deleteApp(node.rightChild, node);
 
-        // System.out.println("deleteApp" + node.getTokenValue());
         if(node.leftChild == null && node.rightChild != null) {
             if(node == this.root) {
                 this.root = node.rightChild;
@@ -235,39 +229,24 @@ public class BinaryTree {
         }
 
         if(node.getTokenValue().equals(changeVar)) {
-            // System.out.println("old N");
-            // printTree(N);
             node.setNode(N);
-            // System.out.println("new N");
-            // printTree(node);
-            // printTree(N);
             changeVarCounter++;
             return;
         }
 
         changeVarReduction(node.leftChild, changeVar, N);
-        // printTree(node);
         changeVarReduction(node.rightChild, changeVar, N);
-        // printTree(node);
     }
 
     // Performs reduction, node is the application node with left child lambda
     public void reduction(Node node) {  
-        // System.out.println("reduction\nTree before reduction");
-        // printTree(node);
         String changeVar = node.leftChild.leftChild.getTokenValue();
         Node N = node.rightChild;
-        // System.out.println("N");
-        // printTree(N);
         if(node == root) {
             root = node.leftChild.rightChild;
         }
         node.setNode(node.leftChild.rightChild);
-        // System.out.println("tree");
-        // printTree(node);
         changeVarReduction(node, changeVar, N);
-        // System.out.println("tree after reduction: " + changeVarCounter);
-        // printTree(node);
     }
 
     // Calls findAppLamdaPriv until a 1000 reductions are reached (then returning false)
@@ -275,10 +254,7 @@ public class BinaryTree {
     public boolean findAppLambda(Node node) {
         boolean change = true;
         while(reductionCounter < 500 && change) {
-            // printTree(node);
             change = findAppLambdaPriv(node);
-            // System.out.println(reductionCounter);
-            // printTree(node);
         }
         if(reductionCounter == 500) {
             return false;
@@ -301,18 +277,11 @@ public class BinaryTree {
         }
 
         if(node.getTokenValue().equals("@") && node.leftChild.getTokenValue().equals("\\") ) {
-            // System.out.println("hoi");
             checkConversion(node);
             reduction(node);
             reductionCounter++;
-            // if(node == root) {
-            //     printTree(node);
-            // }
             return true;
         }
-            // if(node == root) {
-            //     printTree(node);
-            // }
         return change;
     }
 
@@ -325,15 +294,12 @@ public class BinaryTree {
 
         ArrayList<String> boundVariables = new ArrayList<String>();
         freeVarList = findFreeVar(node.rightChild, boundVariables);
-        // System.out.println("\nFree variables of N");
         for(int i = 0; i < freeVarList.size(); i++) {
-            // System.out.println(freeVarList.get(i));
         }
         
         for(int i = 0; i < freeVarList.size(); i++) {
             if(isBound(node.leftChild, freeVarList.get(i))) {
                 doConversion(node.leftChild, freeVarList.get(i), newVar());
-                // System.out.println("free var is bound in M" + freeVarList.get(i));
             }
         }
         return true;

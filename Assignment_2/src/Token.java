@@ -10,7 +10,8 @@ public class Token { // All possible options for tokens
     Options type;
     private String value;
 
-    public Token(String newValue) { // Check what character the token is
+    // Check what character the token is
+    public Token(String newValue) { 
         switch(newValue) {
             case "(":
                 type = Options.PAROPEN;

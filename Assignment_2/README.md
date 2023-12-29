@@ -49,18 +49,20 @@ If the expression is a valid expression, we check whether we should only apply b
 
 The beta reduction is carried out anyway, we reduce the expression to a smaller expression. As an example we take this simple lambda expression: (lx xy) z, this expression is interpreted as follows (l parameter output) input. Our beta reduction then works as follows: find all occurrences of the parameter x in the output and substitute the input z for the parameter x in the output.
 
+## Strategies implemented for reduction
+--TODO--
+
+## Fout gevonden?
+(\x x)(\y y) wordt x maar moet (\y y) worden
+(\x y)((\x (x x))(\x (x x))) -> moet ook in een oneindige loop komen
+
 ## Dingen die we nog kunnen implementeren
 
-
-//Should's die te doen zijn:
---The α-conversions should only be performed if a β-reduction would otherwise lead to a captured variable
---Should only accept one expression in the input file
---Should be grammar insensitive
 --But may also work for files which contain non-printable ASCII characters
+--Specifieke error messages
 
 ## TO DO PROGRAMMA AFSLUITEN MET 0, 1 OF 2
+Dit gaat dan waarschijnlijk over de fout met de oneindige loop -> 2
 
-File meegegeven vanuit command line
-Inlezen meerdere expressies
 
 
