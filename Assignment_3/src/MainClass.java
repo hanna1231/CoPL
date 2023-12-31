@@ -143,36 +143,35 @@ public class MainClass {
     }
  
      
-     public static void main(String[] args) {
-        
-         int index = 0; //Iterator which loops over the substrings, so you can read in multiple expressions
-         int laatste_expressie = 0; //Keeps track of where the last expression has been built
-         int exitStatus = 1;
+    public static void main(String[] args) {
+        int index = 0; //Iterator which loops over the substrings, so you can read in multiple expressions
+        int laatste_expressie = 0; //Keeps track of where the last expression has been built
+        int exitStatus = 1;
 
- 
-         if(args.length != 1) {
-             System.err.println("Please enter a filename");
-             System.exit(1);
-         }
- 
-         String string = args[0]; // We read the input of the user
-         String alle_expressies = LeesFileExpressie(string);
-         
-         while(laatste_expressie < alle_expressies.length()){ // Check voor einde expressies
-             ParserOp3 parser = new ParserOp3(); // We initialize a new object parser
-             String expressie = ""; 
-             index++;
-             while(alle_expressies.charAt(index) != '\n') { //Zolang geen spatie, maak de substring verder
-                index++;
-             }
-             expressie = alle_expressies.substring(laatste_expressie, index); // Maak de substring
-             if(leesIn(expressie, parser)) {
-                exitStatus = parser.parse();
-             }
-             System.out.println("\n");
-             laatste_expressie = index + 1;
-         }
-         
-         System.exit(exitStatus);
-     }
+
+        if(args.length != 1) {
+            System.err.println("Please enter a filename");
+            System.exit(1);
+        }
+
+        String string = args[0]; // We read the input of the user
+        String alle_expressies = LeesFileExpressie(string);
+        
+        while(laatste_expressie < alle_expressies.length()){ // Check voor einde expressies
+            ParserOp3 parser = new ParserOp3(); // We initialize a new object parser
+            String expressie = ""; 
+            index++;
+            while(alle_expressies.charAt(index) != '\n') { //Zolang geen spatie, maak de substring verder
+            index++;
+            }
+            expressie = alle_expressies.substring(laatste_expressie, index); // Maak de substring
+            if(leesIn(expressie, parser)) {
+            exitStatus = parser.parse();
+            }
+            System.out.println("\n");
+            laatste_expressie = index + 1;
+        }
+        
+        System.exit(exitStatus);
+    }
 }

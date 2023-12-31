@@ -96,24 +96,22 @@ public class MainClass {
 
 
     public static void main(String[] args) {
-          ParserOp2 parser = new ParserOp2(); // We initialize a new object parser
-          int exitStatus = 1;         
-  
-          if(args.length != 1) {
-            System.err.println("Please enter a filename");
-            System.exit(1);
-          }
+        ParserOp2 parser = new ParserOp2(); // We initialize a new object parser
+        int exitStatus = 1;         
 
-          String filenaam = args[0]; // We read the input of the user
-          
-          String string = LeesFileExpressie(filenaam); // We read the file
+        if(args.length != 1) {
+        System.err.println("Please enter a filename");
+        System.exit(1);
+        }
 
-          if(string != null && leesIn(string, parser)) {
-              exitStatus = parser.parse();
-          }
-  
-          System.out.println(exitStatus);
-          System.exit(exitStatus); 
+        String filenaam = args[0]; // We read the input of the user
+        
+        String string = LeesFileExpressie(filenaam); // We read the file
+
+        if(string != null && leesIn(string, parser)) {
+            exitStatus = parser.parse();
+        }
+        System.exit(exitStatus); 
       }
     
 }
